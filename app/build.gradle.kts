@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.androidX.appCompat)
     implementation(libs.kotlinx.coroutines.android) // Корутины
 
-
     // UI layer libraries
     implementation(libs.ui.material)
     implementation(libs.ui.constraintLayout)
@@ -71,7 +70,6 @@ dependencies {
     // Navigation
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-
 
     // region Unit tests
     testImplementation(libs.unitTests.junit)
