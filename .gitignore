@@ -1,24 +1,17 @@
 # IntelliJ
 *.iml
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.idea/kotlinc.xml
-/.idea/gradle.xml
-/.idea/compiler.xml
-/.idea/misc.xml
+.idea/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
 
 # Gradle files
 .gradle/
-build/
-out/
 
 # Local configuration file (sdk path, etc)
 local.properties
 develop.properties
+/app/src/main/java/ru/practicum/android/diploma/develop/properties
 
 # Gradle-profiler data
 profile-out*/
@@ -30,6 +23,9 @@ captures/
 .externalNativeBuild/
 .cxx/
 output.json
+
+# Sandbox stuff
+_sandbox
 
 # Built application files
 *.apk
@@ -47,3 +43,31 @@ google-services.json
 # OS specific
 .DS_Store
 *.log
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+out/
+build/
+
+# Eclipse project files
+.classpath
+.project
+
+# Keep the code styles.
+!/.idea/codeStyles
+/.idea/codeStyles/*
+!/.idea/codeStyles/Project.xml
+!/.idea/codeStyles/codeStyleConfig.xml
+
+# Gradle cache
+.gradle
+
+
+
