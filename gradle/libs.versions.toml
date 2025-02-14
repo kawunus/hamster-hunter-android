@@ -1,6 +1,15 @@
 [versions]
 
+compiler = "4.16.0"
 java = "VERSION_1_8"
+koin = "4.0.1"
+glide = "4.16.0"
+kotlinxCoroutinesAndroid = "1.8.0"
+lifecycleViewmodelKtx = "2.8.7"
+retrofit = "2.11.0"
+navigation = "2.8.7"
+roomVersion = "2.6.1"
+roomKtx = "2.6.1"
 
 # Build constants
 minSdk = "26"
@@ -12,6 +21,35 @@ detekt = "1.23.3"
 detektTwitterComposeRules ="0.0.26"
 
 [libraries]
+# Koin (DI)
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+# Glide (Image Loading)
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+
+# Room (Database)
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+
+room-compiler-v261 = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+room-runtime = "androidx.room:room-runtime:${versions.room}"
+
+
+
+#  Lifecycle
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+
+# Retrofit (Networking)
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
+# Navigation (Safe Args)
+navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+
 
 # Detekt
 staticAnalysis-detektPlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
