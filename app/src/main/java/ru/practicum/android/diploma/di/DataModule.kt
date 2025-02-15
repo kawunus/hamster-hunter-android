@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import ru.practicum.android.diploma.core.database.AppDatabase
+import ru.practicum.android.diploma.core.data.database.AppDatabase
 
 val dataModule = module {
 
