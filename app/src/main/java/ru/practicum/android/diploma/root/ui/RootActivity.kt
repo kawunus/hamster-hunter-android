@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.root
+package ru.practicum.android.diploma.root.ui
 
 import ru.practicum.android.diploma.core.ui.BaseActivity
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
