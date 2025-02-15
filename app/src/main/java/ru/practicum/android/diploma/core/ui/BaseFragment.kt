@@ -24,7 +24,9 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
     abstract val viewModel: VM
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
