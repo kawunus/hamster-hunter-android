@@ -1,4 +1,4 @@
-package com.kawunus.playlistmaker.core.ui
+package ru.practicum.android.diploma.core.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
