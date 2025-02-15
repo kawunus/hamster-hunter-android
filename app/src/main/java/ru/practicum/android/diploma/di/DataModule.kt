@@ -8,6 +8,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.core.data.database.AppDatabase
 import ru.practicum.android.diploma.core.network.HHApiService
+import ru.practicum.android.diploma.core.network.NetworkClient
+import ru.practicum.android.diploma.core.network.RetrofitNetworkClient
 
 val dataModule = module {
 
@@ -18,6 +20,10 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HHApiService::class.java)
+    }
+
+    single<NetworkClient> {
+        RetrofitNetworkClient(get())
     }
 
     single {
