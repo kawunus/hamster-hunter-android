@@ -7,6 +7,4 @@ import androidx.room.RoomDatabase
     version = 1,
     entities = []
 )
-abstract class AppDatabase : RoomDatabase() {
-
-}
+abstract class AppDatabase : RoomDatabase()
