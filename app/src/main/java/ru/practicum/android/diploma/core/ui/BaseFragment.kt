@@ -19,7 +19,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
 ) : Fragment() {
 
     private var _binding: VB? = null
-    protected val binding: VB get() = _binding!!
+    protected val binding: VB get() = requireNotNull(_binding) { "Binding wasn't initialized" }
 
     abstract val viewModel: VM
 
