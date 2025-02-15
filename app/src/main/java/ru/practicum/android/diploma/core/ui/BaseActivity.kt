@@ -16,7 +16,7 @@ abstract class BaseActivity<VB : ViewBinding>(
 ) : AppCompatActivity() {
 
     private var _binding: VB? = null
-    protected val binding: VB get() =  requireNotNull(_binding) { "Binding wasn't initialized" }
+    protected val binding: VB get() = requireNotNull(_binding) { "Binding wasn't initialized" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
