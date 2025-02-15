@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.vacancy.presentation.view_model.VacancyViewModel
+import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
 
 class VacancyFragment(
     override val viewModel: VacancyViewModel

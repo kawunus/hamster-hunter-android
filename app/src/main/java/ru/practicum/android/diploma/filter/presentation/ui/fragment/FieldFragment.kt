@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFieldBinding
-import ru.practicum.android.diploma.filter.presentation.view_model.FieldViewModel
+import ru.practicum.android.diploma.filter.presentation.viewmodel.FieldViewModel
 
 class FieldFragment(
     override val viewModel: FieldViewModel

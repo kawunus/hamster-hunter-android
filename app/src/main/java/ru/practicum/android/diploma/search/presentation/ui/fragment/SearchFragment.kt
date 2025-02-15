@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.search.presentation.ui.fragment
 
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.search.presentation.view_model.SearchViewModel
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 
 class SearchFragment(
     override val viewModel: SearchViewModel

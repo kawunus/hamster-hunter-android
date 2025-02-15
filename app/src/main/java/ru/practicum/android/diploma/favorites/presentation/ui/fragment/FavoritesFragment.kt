@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.favorites.presentation.ui.fragment
 
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
-import ru.practicum.android.diploma.favorites.presentation.view_model.FavoritesViewModel
+import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavoritesViewModel
 
 class FavoritesFragment(
     override val viewModel: FavoritesViewModel
