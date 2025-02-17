@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name" translatable="false">Hamster-Hunter</string>
+    <string name="text_team">Команда</string>
+    <string name="worked_on_project">Над приложением работали</string>
+    <string name="dev1">Аксенов Александр Сергеевич</string>
+    <string name="dev2">Артеменко Евгений Александрович</string>
+    <string name="dev3">Григорьев Давид Петрович</string>
+    <string name="dev4">Марковцев Станислав Вадимович</string>
+    <string name="dev5">Филиппова Светлана Владимировна</string>
+    <string name="dev6">Шахов Сергей Геннадьевич</string>
 </resources>
