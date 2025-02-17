@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.root.ui
 
-import android.view.View
 import androidx.core.bundle.Bundle
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.practicum.android.diploma.R
@@ -13,7 +13,6 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         initViews()
     }
 
@@ -24,7 +23,6 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
     private fun bottomNavigationManager() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
-
         binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -37,22 +35,12 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
     }
 
     private fun hideBottomNavigation() {
-        binding.bottomNavigationView.gone()
-        binding.divider.gone()
+        binding.bottomNavigationView.isVisible = false
+        binding.divider.isVisible = false
     }
 
     private fun showBottomNavigation() {
-        binding.bottomNavigationView.visible()
-        binding.divider.visible()
-    }
-
-    fun View.gone() {
-        this.visibility = View.GONE
-    }
-
-    fun View.visible() {
-        this.visibility = View.VISIBLE
+        binding.bottomNavigationView.isVisible = true
+        binding.divider.isVisible = true
     }
 }
-
-
