@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <dimen name="_12sp_text">12sp</dimen>
     <dimen name="_16sp_text">16sp</dimen>
     <dimen name="_22sp_text">22sp</dimen>
@@ -13,6 +13,7 @@
     <dimen name="_14_5dp">14.5dp</dimen>
     <dimen name="_16dp">16dp</dimen>
     <dimen name="_18dp">18dp</dimen>
+    <dimen name="_19dp">19dp</dimen>
     <dimen name="_20dp">20dp</dimen>
     <dimen name="_22dp">22dp</dimen>
     <dimen name="_24dp">24dp</dimen>
@@ -20,5 +21,4 @@
     <dimen name="_48dp">48dp</dimen>
     <dimen name="_56dp">56dp</dimen>
     <dimen name="_60dp">60dp</dimen>
-    <!--<dimen name="design_bottom_navigation_height" tools:override="true">20dp</dimen>-->
 </resources>
