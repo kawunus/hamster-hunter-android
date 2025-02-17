@@ -44,5 +44,3 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
         binding.divider.isVisible = true
     }
 }
-
-
