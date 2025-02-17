@@ -155,4 +155,19 @@
         <item name="android:layout_height">@dimen/_48dp</item>
         <item name="android:background">"@drawable/shape_employer_icon"</item>
     </style>
+
+    <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_56dp</item>
+        <item name="itemIconTint">@color/bottom_navigation_color</item>
+        <item name="itemTextColor">@color/bottom_navigation_color</item>
+    </style>
+
+    <style name="BottomNavigationViewTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>
