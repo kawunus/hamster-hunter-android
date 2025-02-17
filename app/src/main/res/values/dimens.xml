@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="_12sp_text">12sp</dimen>
     <dimen name="_16sp_text">16sp</dimen>
     <dimen name="_22sp_text">22sp</dimen>
     <dimen name="_32sp_text">32sp</dimen>
     <dimen name="zero">0dp</dimen>
+    <dimen name="_1dp">1dp</dimen>
     <dimen name="_2dp">2dp</dimen>
     <dimen name="_4dp">4dp</dimen>
     <dimen name="_8dp">8dp</dimen>
@@ -17,5 +18,7 @@
     <dimen name="_24dp">24dp</dimen>
     <dimen name="_40dp">40dp</dimen>
     <dimen name="_48dp">48dp</dimen>
+    <dimen name="_56dp">56dp</dimen>
     <dimen name="_60dp">60dp</dimen>
+    <!--<dimen name="design_bottom_navigation_height" tools:override="true">20dp</dimen>-->
 </resources>
