@@ -1,6 +1,62 @@
 <resources>
     <string name="app_name" translatable="false">Hamster-Hunter</string>
+    <!--боттом_меню-->
+    <string name="home">Главная</string>
+    <string name="favorite">Избранное</string>
     <string name="text_team">Команда</string>
+    <!--поиск-->
+    <string name="job_search">Поиск вакансий</string>
+    <string name="enter_your_request">Введите запрос</string>
+    <string name="no_job_found">Таких вакансий нет</string>
+    <string name="found_many">Найдено </string>
+    <string name="found_1">Найдена </string>
+    <string name="job"> вакансия</string>
+    <string name="jobs"> вакансий</string>
+    <!--фильтрация-->
+    <string name="filtering_settings">Настройки фильтрации</string>
+    <string name="job_location">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="expected_salary">Ожидаемая зарплата</string>
+    <string name="enter_salary">Введите сумму</string>
+    <string name="dont_show_results_without_salary">Не показывать без зарплаты</string>
+    <!--выбор места работы-->
+    <string name="choose_job_location">Выбор места работы</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <!--выбор страны/региона/отрасли-->
+    <string name="choose_country">Выбор страны</string>
+    <string name="choose_region">Выбор региона</string>
+    <string name="enter_region">Введите регион</string>
+    <string name="choose_industry">Выбор отрасли</string>
+    <string name="enter_industry">Введите отрасль</string>
+    <!--деньги -->
+    <string name="rur_rub"> ₽</string><!--согласно readme rur/rub-->
+    <string name="byr"> Br</string>
+    <string name="usd"> $</string>
+    <string name="eur"> €</string>
+    <string name="kzt"> 〒</string>
+    <string name="uah"> ₴</string>
+    <string name="azn"> ₼</string>
+    <string name="uzs"> soʻm</string>
+    <string name="gel"> ლ</string>
+    <string name="kgt"> с</string>
+    <!--вакансии -->
+    <string name="from_title">От </string>
+    <string name="from">от </string>
+    <string name="to_title">До </string>
+    <string name="to">до </string>
+    <string name="no_salary_info">Зарплата не указана</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="job_description">Описание вакансии</string>
+    <!--кнопки-->
+    <string name="select">Выбрать</string>
+    <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
+    <!--error-->
+    <string name="error_no_internet">Нет интернета</string>
+    <string name="error_server">Ошибка сервера</string>
+    <string name="error_job_not_found_or_deleted">Вакансия не найдена или удалена</string>
+    <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
     <string name="dev1">Аксенов Александр Сергеевич</string>
     <string name="dev2">Артеменко Евгений Александрович</string>
