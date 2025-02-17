@@ -26,25 +26,7 @@
         <item name="fontWeight">700</item>
         <item name="fontFamily">@font/ys_display_bold</item>
     </style>
-    <!--стили для боттом меню-->
-    <style name="BottomMenuStyle">
-        <item name="itemTextAppearanceActiveBoldEnabled">false</item>
-        <item name="backgroundTint">@color/transparent</item>
-        <item name="background">@color/transparent</item>
-        <item name="itemIconTint">@color/bottom_navigation_color</item>
-        <item name="iconSize">@dimen/_24dp</item>
-        <item name="itemTextColor">@color/bottom_navigation_color</item>
-        <item name="itemTextAppearanceInactive">@style/Regular12TextStyle</item>
-        <item name="itemTextAppearanceActive">@style/Regular12TextStyle</item>
-        <item name="itemActiveIndicatorStyle">@style/BottomMenuIndicatorStyle</item>
-        <item name="minHeight">@dimen/_40dp</item>
-        <item name="itemPaddingTop">@dimen/_8dp</item>
-        <item name="itemPaddingBottom">@dimen/_8dp</item>-
-    </style>
 
-    <style name="BottomMenuIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/transparent</item>
-    </style>
     <!--стиль для нотификации результата поиска -->
     <style name="BlueNotificationStyle" parent="Regular16TextStyle">
         <item name="android:background">@drawable/notification_shape</item>
@@ -56,6 +38,7 @@
         <item name="android:paddingEnd">@dimen/_12dp</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
     <!--стили больших кнопок, по умолчанию enabled:false -->
     <style name="ApplyButtonStyle" parent="Medium16Style">
         <item name="android:background">@drawable/notification_shape</item>
@@ -155,4 +138,19 @@
         <item name="android:layout_height">@dimen/_48dp</item>
         <item name="android:background">"@drawable/shape_employer_icon"</item>
     </style>
+
+    <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_56dp</item>
+        <item name="itemIconTint">@color/bottom_navigation_color</item>
+        <item name="itemTextColor">@color/bottom_navigation_color</item>
+    </style>
+
+    <style name="BottomNavigationViewTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

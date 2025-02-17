@@ -6,14 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".root.ui.RootActivity">
 
-    <TextView
-        android:id="@+id/buildConfigReadExampleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/_1dp"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        style="@style/BottomNavStyle"
+        app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
+        app:itemTextAppearanceActiveBoldEnabled="false"
+        app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:menu="@menu/bottom_navigation_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
