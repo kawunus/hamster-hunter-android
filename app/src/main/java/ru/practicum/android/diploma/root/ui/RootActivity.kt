@@ -13,7 +13,6 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         initViews()
     }
 
@@ -24,7 +23,6 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
     private fun bottomNavigationManager() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
-
         binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -45,7 +43,6 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
         binding.bottomNavigationView.isVisible = true
         binding.divider.isVisible = true
     }
-
 }
 
 
