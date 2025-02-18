@@ -18,11 +18,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         setupClearButtonClickListener()
     }
 
-    //настройка отслеживания изменений текста
+    // настройка отслеживания изменений текста
     private fun setupSearchTextWatcher() {
         binding.edittextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 updateClearButtonIcon(s)
             }
@@ -31,11 +30,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         })
     }
 
-    //обновление иконки кнопки
+    // обновление иконки кнопки
     private fun updateClearButtonIcon(text: CharSequence?) {
         binding.buttonClear.setImageResource(
-            if (text?.isNotEmpty() == true) R.drawable.edit_text_clear_button
-            else R.drawable.ic_search
+            if (text?.isNotEmpty() == true) {
+                R.drawable.edit_text_clear_button
+            } else {
+                R.drawable.ic_search
+            }
         )
     }
 
