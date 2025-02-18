@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.ui.fragment
 
-import android.text.Editable
-import android.text.TextWatcher
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
@@ -20,14 +19,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     // настройка отслеживания изменений текста
     private fun setupSearchTextWatcher() {
-        binding.edittextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateClearButtonIcon(s)
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
+        binding.edittextSearch.addTextChangedListener(
+            beforeTextChanged = { _, _, _, _ -> },
+            onTextChanged = { text, start, before, count ->
+                updateClearButtonIcon(text)
+            },
+            afterTextChanged = { _ -> }
+        )
     }
 
     // обновление иконки кнопки
