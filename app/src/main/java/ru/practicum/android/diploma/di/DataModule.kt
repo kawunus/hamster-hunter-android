@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.core.network.RetrofitNetworkClient
 val dataModule = module {
 
     single<HHApiService> {
-        val hhBaseUrl = ""
+        val hhBaseUrl = "https://api.hh.ru/"
         Retrofit.Builder()
             .baseUrl(hhBaseUrl)
             .addConverterFactory(GsonConverterFactory.create())

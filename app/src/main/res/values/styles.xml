@@ -27,6 +27,7 @@
         <item name="fontFamily">@font/ys_display_bold</item>
     </style>
 
+
     <!--стиль для нотификации результата поиска -->
     <style name="BlueNotificationStyle" parent="Regular16TextStyle">
         <item name="android:background">@drawable/notification_shape</item>
@@ -139,6 +140,11 @@
         <item name="android:background">"@drawable/shape_employer_icon"</item>
     </style>
 
+    <style name="HeadToolBarStyle" parent="Medium22TextStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">@dimen/_64dp</item>
+    </style>
+
     <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
         <item name="backgroundTint">@color/white</item>
         <item name="android:layout_width">match_parent</item>
@@ -153,4 +159,5 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <dimen name="_64dp">64dp</dimen>
 </resources>

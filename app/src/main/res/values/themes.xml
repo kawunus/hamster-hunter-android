@@ -5,6 +5,7 @@
         <item name="colorOnPrimary">@color/black</item>
         <item name="customColorEditText">@color/light_gray</item>
         <item name="customColorEditTextHint">@color/gray</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>
