@@ -11,12 +11,10 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     override val viewModel: FavoritesViewModel by viewModels()
 
     override fun initViews() {
-
         // init views
     }
 
     override fun subscribe() {
-
         // subscribe on viewModel
     }
 }
