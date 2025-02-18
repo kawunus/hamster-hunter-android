@@ -7,14 +7,10 @@ data class VacanciesSearchResponse(
     val items: List<VacancySimpleDto>, // Список найденных вакансийэлементов
     val page: Int, // Текущая страница
     val pages: Int, // Общее количество страниц
-
-    @SerializedName("per_page")
-    val perPage: Int, // Количество элементов на странице
 ) : Response()
 
 data class Employer(
     val name: String?,
-
     @SerializedName("logo_urls")
     val logoUrls: LogoUrls?,
 )
