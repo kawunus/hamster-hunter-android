@@ -10,6 +10,7 @@ retrofit = "2.11.0"
 navigation = "2.8.7"
 roomVersion = "2.6.1"
 roomKtx = "2.6.1"
+paging = "3.2.0"
 
 # Build constants
 minSdk = "26"
@@ -36,8 +37,6 @@ room-compiler-v261 = { module = "androidx.room:room-compiler", version.ref = "ro
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 room-runtime = "androidx.room:room-runtime:${versions.room}"
 
-
-
 #  Lifecycle
 lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
@@ -49,7 +48,6 @@ retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", ve
 # Navigation (Safe Args)
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-
 
 # Detekt
 staticAnalysis-detektPlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
@@ -63,6 +61,9 @@ staticAnalysis-detektTwitterComposeRules = { module = "com.twitter.compose.rules
 # AndroidX
 androidX-core = "androidx.core:core-ktx:1.15.0"
 androidX-appCompat = "androidx.appcompat:appcompat:1.7.0"
+
+# Paging
+paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 
 # UI layer libraries
 ui-material = "com.google.android.material:material:1.12.0"
