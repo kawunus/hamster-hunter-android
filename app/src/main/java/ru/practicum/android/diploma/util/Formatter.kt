@@ -1,25 +1,23 @@
 package ru.practicum.android.diploma.util
 
+import android.content.Context
 import ru.practicum.android.diploma.R
 import java.text.NumberFormat
 import java.util.Locale
 
-fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currency: String): String {
+fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currency: String, context: Context): String {
     return when {
         salaryFrom != null && salaryTo == null ->
-            "${R.string.from_title} ${formatNumber(salaryFrom)} ${formatCurrency(currency)}"
+            "${context.getString(R.string.from_title)} ${formatNumber(salaryFrom)} ${formatCurrency(currency)}"
 
         salaryFrom == null && salaryTo != null ->
-            "${R.string.to_title} ${formatNumber(salaryTo)} ${formatCurrency(currency)}"
+            "${context.getString(R.string.to_title)} ${formatNumber(salaryTo)} ${formatCurrency(currency)}"
 
         salaryFrom != null && salaryTo != null ->
-            "${R.string.from_title} ${formatNumber(salaryFrom)} ${R.string.to} ${formatNumber(salaryTo)} ${
-                formatCurrency(
-                    currency
-                )
-            }"
+            "${context.getString(R.string.from_title)} ${formatNumber(salaryFrom)} " +
+                "${context.getString(R.string.to)} ${formatNumber(salaryTo)} ${formatCurrency(currency)}"
 
-        else -> "${R.string.no_salary_info}"
+        else -> context.getString(R.string.no_salary_info)
     }
 }
 

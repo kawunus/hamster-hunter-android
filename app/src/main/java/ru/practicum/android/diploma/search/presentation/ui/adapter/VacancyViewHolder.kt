@@ -18,7 +18,7 @@ class VacancyViewHolder(
         binding.vacancyNameAndLocation.text = "${vacancy.name}, ${vacancy.area}"
         binding.companyName.text = vacancy.company
 
-        binding.salary.text = formatSalary(vacancy.salaryFrom, vacancy.salaryTo, vacancy.currency)
+        binding.salary.text = formatSalary(vacancy.salaryFrom, vacancy.salaryTo, vacancy.currency, itemView.context)
 
         Glide.with(itemView)
             .load(vacancy.icon)
