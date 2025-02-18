@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/_16dp"
+    android:background="?attr/colorPrimary"
+    tools:context=".team.presentation.ui.fragment.TeamFragment">
+
+    <TextView
+        android:id="@+id/team"
+        style="@style/HeadToolBarStyle"
+        android:layout_width="match_parent"
+        android:text="@string/text_team"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/section_name"
+        style="@style/Bold32TextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/worked_on_project"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/team" />
+
+    <TextView
+        android:id="@+id/dev1"
+        style="@style/ProjectTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/dev1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/section_name" />
+
+    <TextView
+        android:id="@+id/dev2"
+        style="@style/ProjectTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dev2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev1" />
+
+    <TextView
+        android:id="@+id/dev3"
+        style="@style/ProjectTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dev3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev2" />
+
+    <TextView
+        android:id="@+id/dev4"
+        style="@style/ProjectTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dev4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev3" />
+
+    <TextView
+        android:id="@+id/dev5"
+        style="@style/ProjectTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dev5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev4" />
+
+    <TextView
+        android:id="@+id/dev6"
+        style="@style/ProjectTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dev6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dev5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

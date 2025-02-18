@@ -1,10 +1,19 @@
 [versions]
 
+compiler = "4.16.0"
 java = "VERSION_1_8"
+koin = "4.0.1"
+glide = "4.16.0"
+kotlinxCoroutinesAndroid = "1.8.0"
+lifecycleViewmodelKtx = "2.8.7"
+retrofit = "2.11.0"
+navigation = "2.8.7"
+roomVersion = "2.6.1"
+roomKtx = "2.6.1"
 
 # Build constants
 minSdk = "26"
-compileSdk = "34"
+compileSdk = "35"
 targetSdk = "33"
 
 # Detekt
@@ -12,6 +21,35 @@ detekt = "1.23.3"
 detektTwitterComposeRules ="0.0.26"
 
 [libraries]
+# Koin (DI)
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+# Glide (Image Loading)
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+
+
+# Room (Database)
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+
+room-compiler-v261 = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
+room-runtime = "androidx.room:room-runtime:${versions.room}"
+
+
+
+#  Lifecycle
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+
+# Retrofit (Networking)
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+
+# Navigation (Safe Args)
+navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+
 
 # Detekt
 staticAnalysis-detektPlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
@@ -23,18 +61,18 @@ staticAnalysis-detektLibraries = { module = "io.gitlab.arturbosch.detekt:detekt-
 staticAnalysis-detektTwitterComposeRules = { module = "com.twitter.compose.rules:detekt", version.ref = "detektTwitterComposeRules" }
 
 # AndroidX
-androidX-core = "androidx.core:core-ktx:1.12.0"
-androidX-appCompat = "androidx.appcompat:appcompat:1.6.1"
+androidX-core = "androidx.core:core-ktx:1.15.0"
+androidX-appCompat = "androidx.appcompat:appcompat:1.7.0"
 
 # UI layer libraries
-ui-material = "com.google.android.material:material:1.10.0"
-ui-constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.4"
+ui-material = "com.google.android.material:material:1.12.0"
+ui-constraintLayout = "androidx.constraintlayout:constraintlayout:2.2.0"
 
 # Unit tests
 unitTests-junit = "junit:junit:4.13.2"
 
 # UI tests
-uiTests-junitExt = "androidx.test.ext:junit:1.1.5"
-uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.5.1"
+uiTests-junitExt = "androidx.test.ext:junit:1.2.1"
+uiTests-espressoCore = "androidx.test.espresso:espresso-core:3.6.1"
 
 [bundles]
