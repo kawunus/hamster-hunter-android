@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.root.ui
 
-import android.content.Context
-import android.util.TypedValue
 import androidx.core.bundle.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
