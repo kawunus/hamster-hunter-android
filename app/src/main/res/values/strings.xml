@@ -8,10 +8,18 @@
     <string name="job_search">Поиск вакансий</string>
     <string name="enter_your_request">Введите запрос</string>
     <string name="no_job_found">Таких вакансий нет</string>
-    <string name="found_many">Найдено </string>
-    <string name="found_1">Найдена </string>
-    <string name="job"> вакансия</string>
-    <string name="jobs"> вакансий</string>
+    <plurals name="found">
+        <item quantity="one">Найдена </item>
+        <item quantity="other">Найдено </item>
+    </plurals>
+    <plurals name="jobs">
+        <item quantity="zero">нет вакансий</item>
+        <item quantity="one">%1$d вакансия</item>
+        <item quantity="two">%1$d вакансии</item>
+        <item quantity="few">%1$d вакансии</item>
+        <item quantity="many">%1$d вакансий</item>
+        <item quantity="other">%1$d вакансий</item>
+    </plurals>
     <!--фильтрация-->
     <string name="filtering_settings">Настройки фильтрации</string>
     <string name="job_location">Место работы</string>
