@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.search.data.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class VacancySimpleDto(
+data class VacancyShortDto(
     val id: String, // Идентификатор вакансии
     val name: String, // Название вакансии
     val salary: Salary, // Зарплата

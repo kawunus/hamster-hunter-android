@@ -1,10 +1,11 @@
 package ru.practicum.android.diploma.search.data.dto
 
 import com.google.gson.annotations.SerializedName
+import ru.practicum.android.diploma.core.network.dto.Response
 
 data class VacanciesSearchResponse(
     val found: Int, // Общее количество найденных элементов
-    val items: List<VacancySimpleDto>, // Список найденных вакансийэлементов
+    val items: List<VacancyShortDto>, // Список найденных вакансийэлементов
     val page: Int, // Текущая страница
     val pages: Int, // Общее количество страниц
 ) : Response()
