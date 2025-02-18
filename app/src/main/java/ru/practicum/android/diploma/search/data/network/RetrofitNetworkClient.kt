@@ -1,10 +1,10 @@
-package ru.practicum.android.diploma.core.network
+package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.core.network.dto.Response
+import ru.practicum.android.diploma.search.data.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancyByIdRequest
 import ru.practicum.android.diploma.util.NetworkMonitor
@@ -34,9 +34,9 @@ class RetrofitNetworkClient(
                         vacancyId = dto.id,
                     )
 
-                    else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
+                    else -> Response().apply { resultCode = 400 }
                 }
-                response.apply { resultCode = HTTP_SUCCESS }
+                response.apply { resultCode = 200 }
             } catch (e: Throwable) {
                 Response().apply { resultCode = 500 }
             }
@@ -49,8 +49,6 @@ class RetrofitNetworkClient(
     }
 
     companion object {
-        private const val HTTP_BAD_REQUEST = 400
-        private const val HTTP_SUCCESS = 200
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
         const val USER_AGENT = "HamsterHunter/1.0 (s.rubinets@gmail.com)"
     }
