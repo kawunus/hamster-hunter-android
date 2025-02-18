@@ -46,11 +46,3 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
         binding.divider.isVisible = true
     }
 }
-
-fun Context.dpToPx(dp: Float): Int {
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        dp,
-        resources.displayMetrics
-    ).toInt()
-}
