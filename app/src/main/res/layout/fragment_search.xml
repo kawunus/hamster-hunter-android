@@ -12,7 +12,7 @@
         android:id="@+id/job_search"
         style="@style/HeadToolBarStyle"
         android:layout_width="wrap_content"
-        android:paddingStart="@dimen/_16dp"
+        android:paddingStart="@dimen/dp16"
         android:text="@string/job_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,11 +21,11 @@
         android:id="@+id/button_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_8dp"
+        android:layout_marginEnd="@dimen/dp8"
         android:background="?attr/colorPrimary"
-        android:paddingHorizontal="@dimen/_12dp"
+        android:paddingHorizontal="@dimen/dp12"
         android:src="@drawable/ic_filter_off"
-        android:layout_marginTop="@dimen/_20dp"
+        android:layout_marginTop="@dimen/dp20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="?attr/colorOnPrimary" />
@@ -34,7 +34,7 @@
         android:id="@+id/edittext_search"
         style="@style/EditSearchTextStyle"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/_12dp"
+        android:layout_marginTop="@dimen/dp12"
         android:hint="@string/enter_your_request"
         app:layout_constraintTop_toBottomOf="@id/job_search" />
 
@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="@id/edittext_search"
         app:layout_constraintEnd_toEndOf="@id/edittext_search"
         app:layout_constraintTop_toTopOf="@id/edittext_search"
-        android:src ="@drawable/ic_search"/>
+        android:src ="@drawable/ic_search" />
 
     <TextView
         android:id="@+id/notification_text"
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edittext_search"
-        android:layout_marginTop="@dimen/_12dp"
+        android:layout_marginTop="@dimen/dp12"
         android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -66,12 +66,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/notification_text"
-        android:layout_marginTop="@dimen/_8dp"/>
+        android:layout_marginTop="@dimen/dp8"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="@dimen/_36dp"
-        android:layout_height="@dimen/_36dp"
+        android:layout_width="@dimen/dp36"
+        android:layout_height="@dimen/dp36"
         android:indeterminateTint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,8 +81,8 @@
 
     <ImageView
         android:id="@+id/placeholderMain"
-        android:layout_width="@dimen/_328dp"
-        android:layout_height="@dimen/_223dp"
+        android:layout_width="@dimen/dp328"
+        android:layout_height="@dimen/dp223"
         android:src="@drawable/placeholder_search_fragment"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,8 +94,8 @@
 
     <ImageView
         android:id="@+id/networkErrorImage"
-        android:layout_width="@dimen/_328dp"
-        android:layout_height="@dimen/_223dp"
+        android:layout_width="@dimen/dp328"
+        android:layout_height="@dimen/dp223"
         android:src="@drawable/placeholder_network_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,8 +109,8 @@
         style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_46dp"
-        android:layout_marginTop="@dimen/_16dp"
+        android:paddingHorizontal="@dimen/dp46"
+        android:layout_marginTop="@dimen/dp16"
         android:text="@string/error_no_internet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="@dimen/_16dp"
+    android:layout_marginHorizontal="@dimen/dp16"
     android:background="?attr/colorPrimary"
     tools:context=".team.presentation.ui.fragment.TeamFragment">
 
@@ -22,7 +22,7 @@
         style="@style/Bold32TextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginTop="@dimen/dp16"
         android:paddingVertical="8dp"
         android:text="@string/worked_on_project"
         app:layout_constraintEnd_toEndOf="parent"
