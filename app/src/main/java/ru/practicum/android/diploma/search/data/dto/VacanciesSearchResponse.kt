@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class VacanciesSearchResponse(
     val found: Int, // Общее количество найденных элементов
-    val items: List<VacancyShortDto>, // Список найденных вакансийэлементов
+    val items: List<VacancySimpleDto>, // Список найденных вакансийэлементов
     val page: Int, // Текущая страница
     val pages: Int, // Общее количество страниц
 
