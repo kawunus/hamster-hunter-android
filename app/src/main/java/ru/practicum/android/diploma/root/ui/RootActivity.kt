@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.root.ui
 
-import android.content.Context
-import android.util.TypedValue
 import androidx.core.bundle.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
@@ -45,10 +43,4 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
         binding.bottomNavigationView.isVisible = true
         binding.divider.isVisible = true
     }
-}
-
-fun Context.dpToPx(dp: Float): Int {
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics
-    ).toInt()
 }
