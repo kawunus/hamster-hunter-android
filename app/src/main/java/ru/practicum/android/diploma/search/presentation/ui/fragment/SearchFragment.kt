@@ -11,8 +11,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override val viewModel: SearchViewModel by viewModels()
 
     override fun initViews() {
+
+        // TODO: init views
     }
 
     override fun subscribe() {
+
+        // TODO: subscribe on viewModel
     }
 }
