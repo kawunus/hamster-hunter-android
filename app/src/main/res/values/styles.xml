@@ -33,10 +33,8 @@
         <item name="android:background">@drawable/notification_shape</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingBottom">@dimen/_4dp</item>
-        <item name="android:paddingTop">@dimen/_4dp</item>
-        <item name="android:paddingStart">@dimen/_12dp</item>
-        <item name="android:paddingEnd">@dimen/_12dp</item>
+        <item name="android:paddingVertical">@dimen/_4dp</item>
+        <item name="android:paddingHorizontal">@dimen/_12dp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -70,8 +68,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:layout_width">@dimen/zero</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/_16dp</item>
-        <item name="android:layout_marginEnd">@dimen/_16dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/_16dp</item>
         <item name="android:paddingStart">@dimen/_16dp</item>
         <!-- место для вспомогательной кнопки х/search -->
         <item name="android:paddingEnd">@dimen/_48dp</item>
@@ -86,12 +83,12 @@
 
     <style name="EditSearchClearButton">
         <!-- изменение enabled из fragment сменит картинку автоматически-->
-        <item name="android:src">@drawable/edit_text_clear_button</item>
+
         <item name="android:layout_width">@dimen/_40dp</item>
         <item name="android:layout_height">@dimen/_40dp</item>
         <item name="android:layout_marginEnd">@dimen/_4dp</item>
         <item name="android:background">@color/transparent</item>
-        <item name="android:padding">@dimen/zero</item>
+        <item name="android:paddingEnd">@dimen/zero</item>
     </style>
 
     <style name="EditSalaryStyle" parent="EditSearchTextStyle">
