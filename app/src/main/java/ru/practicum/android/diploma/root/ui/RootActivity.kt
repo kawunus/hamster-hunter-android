@@ -49,6 +49,8 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
 
 fun Context.dpToPx(dp: Float): Int {
     return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp,
+        resources.displayMetrics
     ).toInt()
 }

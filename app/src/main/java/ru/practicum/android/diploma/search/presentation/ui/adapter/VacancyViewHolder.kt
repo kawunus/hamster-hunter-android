@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.root.ui.dpToPx
 import ru.practicum.android.diploma.search.presentation.model.Vacancy
+import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
 
 class VacancyViewHolder(
@@ -24,7 +25,7 @@ class VacancyViewHolder(
             .load(vacancy.icon)
             .placeholder(R.drawable.placeholder_32px)
             .fitCenter()
-            .transform(RoundedCorners(itemView.context.dpToPx(12.0F))).into(binding.companyIcon)
+            .transform(RoundedCorners(itemView.context.dpToPx(Constants.CORNER_RADIUS))).into(binding.companyIcon)
 
         binding.root.setOnClickListener { onVacancyClick(vacancy) }
     }
