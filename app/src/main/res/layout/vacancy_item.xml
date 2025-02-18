@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_16dp"
+    android:layout_marginVertical="@dimen/_8dp">
+
+    <ImageView
+        android:id="@+id/company_icon"
+        style="@style/EmployerPicStyle"
+        android:src="@drawable/placeholder_32px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
+
+    <TextView
+        android:id="@+id/vacancy_name_and_location"
+        style="@style/Medium22TextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12dp"
+        android:text="Android-разработчик, Москва"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintMarginStart="12dp"
+        app:layout_constraintStart_toEndOf="@id/company_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/company_name"
+        style="@style/Regular16TextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Яндекс"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintMarginStart="12dp"
+        app:layout_constraintStart_toStartOf="@id/vacancy_name_and_location"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_name_and_location" />
+
+    <TextView
+        android:id="@+id/salary"
+        style="@style/Regular16TextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="от 150000 до 250000 ₽"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/company_name"
+        app:layout_constraintTop_toBottomOf="@id/company_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
