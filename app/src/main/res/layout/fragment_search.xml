@@ -21,11 +21,11 @@
         android:id="@+id/button_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20dp"
         android:layout_marginEnd="@dimen/_8dp"
         android:background="?attr/colorPrimary"
         android:paddingHorizontal="@dimen/_12dp"
         android:src="@drawable/ic_filter_off"
-        android:layout_marginTop="@dimen/_20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="?attr/colorOnPrimary" />
@@ -42,54 +42,54 @@
         android:id="@+id/button_clear"
         style="@style/EditSearchClearButton"
         android:contentDescription="@string/reset"
+        android:src="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="@id/edittext_search"
         app:layout_constraintEnd_toEndOf="@id/edittext_search"
-        app:layout_constraintTop_toTopOf="@id/edittext_search"
-        android:src ="@drawable/ic_search"/>
+        app:layout_constraintTop_toTopOf="@id/edittext_search" />
 
     <TextView
         android:id="@+id/notification_text"
         style="@style/BlueNotificationStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12dp"
         android:text="@string/text_team"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edittext_search"
-        android:layout_marginTop="@dimen/_12dp"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/edittext_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notification_text"
-        android:layout_marginTop="@dimen/_8dp"/>
+        app:layout_constraintTop_toBottomOf="@id/notification_text" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="@dimen/_36dp"
         android:layout_height="@dimen/_36dp"
         android:indeterminateTint="@color/blue"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/placeholderMain"
         android:layout_width="@dimen/_328dp"
         android:layout_height="@dimen/_223dp"
-        android:src="@drawable/placeholder_search_fragment"
         android:scaleType="centerInside"
+        android:src="@drawable/placeholder_search_fragment"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_search"
-        android:visibility="visible"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -97,25 +97,25 @@
         android:layout_width="@dimen/_328dp"
         android:layout_height="@dimen/_223dp"
         android:src="@drawable/placeholder_network_error"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_search"
-        tools:ignore="ContentDescription"
-        android:visibility="gone"/>
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/error_text"
         style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_46dp"
         android:layout_marginTop="@dimen/_16dp"
+        android:paddingHorizontal="@dimen/_46dp"
         android:text="@string/error_no_internet"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/networkErrorImage"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/networkErrorImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
