@@ -10,6 +10,8 @@ import ru.practicum.android.diploma.core.data.database.AppDatabase
 import ru.practicum.android.diploma.core.network.HHApiService
 import ru.practicum.android.diploma.core.network.NetworkClient
 import ru.practicum.android.diploma.core.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
+import ru.practicum.android.diploma.search.data.impl.VacanciesPagingSource
 
 val dataModule = module {
 
@@ -22,13 +24,6 @@ val dataModule = module {
             .create(HHApiService::class.java)
     }
 
-    single<NetworkClient> {
-        RetrofitNetworkClient(
-            context = androidContext(),
-            hHApiService = get()
-        )
-    }
-
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "hamster_hunter_database.db").build()
     }
@@ -36,4 +31,16 @@ val dataModule = module {
     single {
         androidContext().getSharedPreferences("hamster_hunter_shared_preferences", Context.MODE_PRIVATE)
     }
+
+    single<NetworkClient> {
+        RetrofitNetworkClient(
+            context = androidContext(),
+            hHApiService = get()
+        )
+    }
+
+    factory { (searchRequest: VacanciesSearchRequest) ->
+        VacanciesPagingSource(get(), searchRequest) //
+    }
+
 }
