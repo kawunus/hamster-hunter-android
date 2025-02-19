@@ -5,14 +5,26 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
+data class DebounceResult<T>(
+    val cancel: () -> Unit,
+    val invoke: (T) -> Unit
+)
+
 fun <T> debounce(
     delayMillis: Long,
     coroutineScope: CoroutineScope,
     useLastParam: Boolean,
     action: (T) -> Unit
-): (T) -> Unit {
+): DebounceResult<T> {
     var debounceJob: Job? = null
-    return { param: T ->
+
+    val cancel: () -> Unit = {
+        debounceJob?.cancel()
+        debounceJob = null
+    }
+
+    val invoke: (T) -> Unit = { param: T ->
         if (useLastParam) {
             debounceJob?.cancel()
         }
@@ -23,4 +35,6 @@ fun <T> debounce(
             }
         }
     }
+
+    return DebounceResult(cancel, invoke)
 }
