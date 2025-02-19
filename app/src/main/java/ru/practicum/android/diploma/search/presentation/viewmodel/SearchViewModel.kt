@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
@@ -26,7 +24,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
     fun searchWithDebounce(changedText: String) {
         val actualSearchResults = getActualSearchResults(changedText)
-        if (!actualSearchResults.isNullOrEmpty()) {
+        if (actualSearchResults != null) {
             searchState.postValue(SearchScreenState.SearchResults(actualSearchResults))
             return
         } else trackSearchDebounce.invoke(changedText)
@@ -39,19 +37,23 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
     fun startSearch(expression: String) {
         searchState.postValue(SearchScreenState.Loading)
+
         viewModelScope.launch {
-            val vacanciesFlow: Flow<PagingData<Vacancy>> = interactor
-                .searchVacancies(expression)
-                .cachedIn(viewModelScope) // Кэширование данных в ViewModelScope
+            interactor
+                .searchVacancies(expression).collect { data -> processSearchResult(data) }
         }
     }
 
 
-    private fun getActualSearchResults(changedText: String): ArrayList<Vacancy>? {
+    private fun processSearchResult(pagingData: PagingData<Vacancy>) {
+        //TODO
+    }
+
+    private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {
         if ((latestSearchText == changedText) && (searchState.value is
                 SearchScreenState.SearchResults)
         ) {
-            return (searchState.value as SearchScreenState.SearchResults).data
+            return (searchState.value as SearchScreenState.SearchResults).pagingData
         } else {
             latestSearchText = changedText
             return null
@@ -62,6 +64,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     private companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
+
 }
 
 sealed interface SearchScreenState {
@@ -69,5 +72,5 @@ sealed interface SearchScreenState {
     data object Empty : SearchScreenState
     data object NothingFound : SearchScreenState
     data object NetworkError : SearchScreenState
-    data class SearchResults(var data: ArrayList<Vacancy>) : SearchScreenState
+    data class SearchResults(var pagingData: PagingData<Vacancy>) : SearchScreenState
 }

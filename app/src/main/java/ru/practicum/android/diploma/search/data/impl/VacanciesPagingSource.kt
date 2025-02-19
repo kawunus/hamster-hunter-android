@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.core.network.NetworkClient
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.data.mapper.toDomain
-import ru.practicum.android.diploma.search.presentation.model.Vacancy
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
