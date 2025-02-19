@@ -4,7 +4,7 @@ import ru.practicum.android.diploma.search.data.dto.VacancyDto
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 fun VacancyDto.toDomain() = Vacancy(
-    id = id.toInt(),
+    id = id,
     name = name,
     company = employer.name ?: "",
     currency = salary.currency ?: "",
