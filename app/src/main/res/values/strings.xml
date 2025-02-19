@@ -64,4 +64,6 @@
     <string name="dev4">Марковцев Станислав Вадимович</string>
     <string name="dev5">Филиппова Светлана Владимировна</string>
     <string name="dev6">Шахов Сергей Геннадьевич</string>
+    <!-- шаблон для обьединение заголовка вакансии и региона -->
+    <string name="vacancy_name_and_location">%s, %s</string>
 </resources>
