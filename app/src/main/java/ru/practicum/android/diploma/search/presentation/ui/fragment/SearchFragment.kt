@@ -32,7 +32,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private val adapter = VacancyAdapter { vacancy ->
         if (clickDebounce()) {
-            // Обрабаботка клика по вакансии должна быть ТУТ
+            // !!! Обрабаботка клика по вакансии должна быть ТУТ !!!
         }
     }
     private var isClickAllowed = true
@@ -43,7 +43,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         setupClearButtonClickListener()
         setEditTextActionListener()
         setRecyclerView()
-
     }
 
 
@@ -99,7 +98,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    // добавила инициализацию поиска по клику на кнопку на клавиатуре, чтобы не заставлять юзера ждать 2 сек
+    // поиск по кнопке на системной клавиатуре, чтобы не заставлять юзера ждать 2 сек
     private fun setEditTextActionListener() {
         binding.edittextSearch.apply {
             setOnEditorActionListener { _, actionId, _ ->
@@ -132,6 +131,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         Log.d("DEBUG", "SearchScreenState = $state")
     }
 
+    // обработка разных типов ошибок
     private fun placeholderManager(state: Error) {
         when (state) {
             is NetworkError -> TODO()
@@ -140,6 +140,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
+    // отображение сообщения "Найдено $count вакансий"
     private fun showFoundCount(count: Int) {
         //TODO
     }
