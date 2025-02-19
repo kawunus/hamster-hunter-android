@@ -49,8 +49,7 @@
         android:contentDescription="@string/reset"
         app:layout_constraintBottom_toBottomOf="@id/edittext_search"
         app:layout_constraintEnd_toEndOf="@id/edittext_search"
-        app:layout_constraintTop_toTopOf="@id/edittext_search"
-         />
+        app:layout_constraintTop_toTopOf="@id/edittext_search" />
 
     <TextView
         android:id="@+id/notification_text"
