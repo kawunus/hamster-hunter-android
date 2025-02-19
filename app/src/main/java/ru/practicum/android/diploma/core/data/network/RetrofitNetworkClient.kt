@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.core.data.network
 
 import android.content.Context
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.BuildConfig
@@ -15,18 +16,23 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
+        Log.d("DEBUG", "Вызов doRequest в RetrofitNetworkClient")
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
+
         return withContext(Dispatchers.IO) {
             val userAgent = USER_AGENT
             val token = "Bearer $TOKEN"
 
             try {
                 val response = when (dto) {
-                    is VacanciesSearchRequest -> hHApiService.search(
-                        userAgent = userAgent, token = token, body = dto,
-                    )
+                    is VacanciesSearchRequest -> {
+                        Log.d("DEBUG", "Вызываю hHApiService.search в RetrofitNetworkClient")
+                        hHApiService.search(
+                            userAgent = userAgent, body = dto, //временно убрала token = token для тестов без токена
+                        )
+                    }
 
                     is VacancyByIdRequest -> hHApiService.getVacancyById(
                         userAgent = userAgent,
@@ -36,7 +42,9 @@ class RetrofitNetworkClient(
 
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
+
                 response.apply { resultCode = HTTP_SUCCESS }
+
             } catch (e: Throwable) {
                 Response().apply { resultCode = 500 }
             }

@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -24,7 +25,10 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         SEARCH_DEBOUNCE_DELAY,
         viewModelScope,
         useLastParam = true
-    ) { expression -> startSearch(expression) }
+    ) { expression ->
+        startSearch(expression)
+        Log.d("DEBUG", "Выполняю trackSearchDebounce в VM Search")
+    }
 
     fun searchWithDebounce(changedText: String) {
         val actualSearchResults = getActualSearchResults(changedText)
@@ -39,9 +43,9 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     }
 
     fun startSearch(expression: String) {
-        searchState.postValue(SearchScreenState.Loading)
-
         viewModelScope.launch {
+            searchState.postValue(SearchScreenState.Loading)
+            Log.d("DEBUG", "Выполняю startSearch в VM Search")
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
                 .catch { throwable ->
@@ -52,16 +56,14 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
                     }
                 }
                 .collectLatest { data ->
-                    processSearchResult(data)
+                    searchState.value = SearchScreenState.SearchResults(
+                        pagingData = data
+                    )
+                    Log.d("DEBUG", "VM, PagingData: ${data.toString()}")
                 }
         }
     }
 
-    private fun processSearchResult(pagingData: PagingData<Vacancy>) {
-        searchState.value = SearchScreenState.SearchResults(
-            pagingData = pagingData
-        )
-    }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {
         if ((latestSearchText == changedText) && (searchState.value is

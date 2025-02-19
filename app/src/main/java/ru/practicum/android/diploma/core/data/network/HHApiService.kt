@@ -13,7 +13,7 @@ interface HHApiService {
     @GET("vacancies")
     suspend fun search(
         @Header("User-Agent") userAgent: String, // Header parameter для авторизации
-        @Header("Authorization") token: String,  // access_token для авторизации
+//        @Header("Authorization") token: String,  // access_token для авторизации
         @Body body: VacanciesSearchRequest
     ): VacanciesSearchResponse
 

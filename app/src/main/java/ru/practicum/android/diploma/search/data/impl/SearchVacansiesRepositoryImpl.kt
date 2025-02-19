@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.data.impl
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,6 +14,7 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 class VacanciesSearchRepositoryImpl : VacanciesSearchRepository {
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
+        Log.d("DEBUG", "Вызов searchVacancies в VacanciesSearchRepositoryImpl")
         //тут так же нужно будет проверять установленные фильтры и передавать соответствующие значения в VacanciesSearchRequest, пока поставила их просто null
         val searchRequest = VacanciesSearchRequest(
             text = expression,

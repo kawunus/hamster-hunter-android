@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.ui.fragment
 
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -119,6 +120,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             is SearchScreenState.Error -> placeholderManager(OTHER_ERROR, state.message)
             //добавила обработку и других ошибок, помимо отсутствия интернета. На всякий случай. Можно будет выводить сообщение об ошибке. Как миниум, на время отладки нам будет удобно.
         }
+        Log.d("DEBUG", "SearchScreenState = $state")
     }
 
     private fun hideProgressBar(state: SearchScreenState) {

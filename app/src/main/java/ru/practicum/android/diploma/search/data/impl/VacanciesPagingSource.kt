@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.data.impl
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.practicum.android.diploma.core.data.network.NetworkClient
@@ -17,9 +18,12 @@ class VacanciesPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
         return try {
+            Log.d("DEBUG", "стартую load в VacanciesPagingSource")
             val page = params.key ?: 0
             val updatedRequest = searchRequest.copy(page = page)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
+            Log.d("DEBUG", "Response в VacanciesPagingSource: $response")
+
 
             when (response.resultCode) {
                 200 -> {
