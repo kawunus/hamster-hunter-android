@@ -5,14 +5,15 @@ import androidx.paging.PagingState
 import ru.practicum.android.diploma.core.network.NetworkClient
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchResponse
-import ru.practicum.android.diploma.search.data.dto.VacancyShortDto
+import ru.practicum.android.diploma.search.data.mapper.toDomain
+import ru.practicum.android.diploma.search.presentation.model.Vacancy
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
     private val searchRequest: VacanciesSearchRequest
-) : PagingSource<Int, VacancyShortDto>() {
+) : PagingSource<Int, Vacancy>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, VacancyShortDto> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
         return try {
             val page = params.key ?: 0
             val updatedRequest = searchRequest.copy(page = page)
@@ -20,7 +21,7 @@ class VacanciesPagingSource(
 
             // Успешная загрузка
             LoadResult.Page(
-                data = response.items,
+                data = response.items.map { it.toDomain() },
                 prevKey = if (page == 0) null else page - 1, // Предыдущая страница
                 nextKey = if (page >= response.pages - 1) null else page + 1 // Следующая страница
             )
@@ -30,7 +31,7 @@ class VacanciesPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, VacancyShortDto>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.core.network.dto.Response
 
 data class VacanciesSearchResponse(
     val found: Int, // Общее количество найденных элементов
-    val items: List<VacancyShortDto>, // Список найденных вакансийэлементов
+    val items: List<VacancyDto>, // Список найденных вакансийэлементов
     val page: Int, // Текущая страница
     val pages: Int, // Общее количество страниц
 ) : Response()
@@ -22,6 +22,11 @@ data class Salary(
     val gross: Boolean?,
     val to: Int?
 )
+
+data class Area(
+    val name: String?,
+)
+
 
 data class LogoUrls(
     @SerializedName("`90`")

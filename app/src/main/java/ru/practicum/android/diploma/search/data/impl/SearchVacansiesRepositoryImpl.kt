@@ -6,14 +6,13 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.getKoin
-import ru.practicum.android.diploma.core.network.NetworkClient
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
-import ru.practicum.android.diploma.search.data.dto.VacancyShortDto
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
+import ru.practicum.android.diploma.search.presentation.model.Vacancy
 
-class VacanciesSearchRepositoryImpl(private val networkClient: NetworkClient) : VacanciesSearchRepository {
+class VacanciesSearchRepositoryImpl : VacanciesSearchRepository {
 
-    override fun searchVacancies(expression: String): Flow<PagingData<VacancyShortDto>> {   //TODO изменить возвращаемый тип на Domain-модель
+    override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {   //TODO изменить возвращаемый тип на Domain-модель
         //тут так же нужно будет проверять установленные фильтры и передавать соответствующие значения в VacanciesSearchRequest, пока поставила их просто null
         val searchRequest = VacanciesSearchRequest(
             text = expression,
