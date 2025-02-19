@@ -28,7 +28,7 @@ data class Area(
 )
 
 data class LogoUrls(
-    @SerializedName("`90`")
+    @SerializedName("90")
     val logoUrl90: String?,
 )
 
