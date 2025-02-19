@@ -11,8 +11,8 @@
     <TextView
         android:id="@+id/team"
         style="@style/HeadToolBarStyle"
-        android:minHeight="@dimen/dp64"
         android:layout_width="match_parent"
+        android:minHeight="@dimen/dp64"
         android:text="@string/text_team"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

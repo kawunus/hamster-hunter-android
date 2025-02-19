@@ -39,7 +39,7 @@
     </style>
 
     <!--стили больших кнопок, по умолчанию enabled:false -->
-    <style name="ApplyButtonStyle" >
+    <style name="ApplyButtonStyle">
         <!-- незабудьте во время верстки layout_marginHorizontal dp16 -->
         <item name="android:background">@drawable/notification_shape</item>
         <item name="android:paddingTop">@dimen/dp20</item>
