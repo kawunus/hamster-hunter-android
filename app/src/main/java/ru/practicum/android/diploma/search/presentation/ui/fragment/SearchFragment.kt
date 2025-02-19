@@ -51,6 +51,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             renderScreen(state)
             hideProgressBar(state)
         }
+        viewModel.getFoundCount().observe(viewLifecycleOwner) { foundCount ->
+            showFoundCount(foundCount)
+        }
     }
 
     // настройка отслеживания изменений текста
@@ -139,6 +142,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             //добавила обработку и других ошибок, помимо отсутствия интернета. На всякий случай. Можно будет выводить сообщение об ошибке. Как миниум, на время отладки нам будет удобно.
         }
         Log.d("DEBUG", "SearchScreenState = $state")
+    }
+
+    private fun showFoundCount(count: Int) {
+        //TODO
     }
 
     private fun hideProgressBar(state: SearchScreenState) {

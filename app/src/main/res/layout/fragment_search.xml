@@ -91,7 +91,7 @@
         android:layout_height="@dimen/dp224"
         android:scaleType="centerInside"
         android:src="@drawable/placeholder_search_fragment"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

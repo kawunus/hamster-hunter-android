@@ -6,12 +6,14 @@ import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-class VacanciesSearchInteractorImpl(private val repository: VacanciesSearchRepository) : VacanciesSearchInteractor {
+class VacanciesSearchInteractorImpl(
+    private val repository: VacanciesSearchRepository,
+
+    ) : VacanciesSearchInteractor {
+    override val foundCount: Flow<Int?> = repository.foundCount
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
         return repository.searchVacancies(expression)
     }
 
-    override suspend fun testSearch(expression: String): List<Vacancy> {
-        return repository.testSearch(expression)
-    }
+
 }

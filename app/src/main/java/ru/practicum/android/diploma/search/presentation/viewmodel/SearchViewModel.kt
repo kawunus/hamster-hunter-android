@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
-import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
 import ru.practicum.android.diploma.core.domain.exception.NoInternetException
@@ -21,13 +22,15 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     private var searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Empty)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
 
+    private val _foundCount = MutableLiveData<Int>()
+    fun getFoundCount(): LiveData<Int> = _foundCount
+
     private val trackSearchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY,
         viewModelScope,
         useLastParam = true
     ) { expression ->
         startSearch(expression)
-        Log.d("DEBUG", "Выполняю trackSearchDebounce в VM Search")
     }
 
     fun searchWithDebounce(changedText: String) {
@@ -45,7 +48,6 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     fun startSearch(expression: String) {
         viewModelScope.launch {
             searchState.postValue(SearchScreenState.Loading)
-            Log.d("DEBUG", "Выполняю startSearch в VM Search")
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
                 .catch { throwable ->
@@ -59,13 +61,14 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
                     searchState.value = SearchScreenState.SearchResults(
                         pagingData = data
                     )
-                    Log.d("DEBUG", "VM, PagingData: ${data.toString()}")
+                }
+
+            interactor.foundCount
+                .filterNotNull()
+                .collect { count ->
+                    _foundCount.value = count
                 }
         }
-    }
-
-    suspend fun testSearch(expression: String): List<Vacancy> {
-        return interactor.testSearch(expression)
     }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {

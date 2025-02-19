@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.search.data.impl
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import kotlinx.coroutines.flow.MutableStateFlow
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
 import ru.practicum.android.diploma.core.domain.exception.NoInternetException
@@ -13,7 +14,8 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
-    private val searchRequest: VacanciesSearchRequest
+    private val searchRequest: VacanciesSearchRequest,
+    private val foundCount: MutableStateFlow<Int?>
 ) : PagingSource<Int, Vacancy>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
@@ -24,12 +26,14 @@ class VacanciesPagingSource(
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
             Log.d("DEBUG", "Response в VacanciesPagingSource: $response")
 
+            foundCount.value = response.found
 
             when (response.resultCode) {
                 200 -> {
                     if (response.items.isEmpty()) {
                         LoadResult.Error(EmptyResultException()) // Ошибка "Ничего не найдено"
                     } else {
+
                         LoadResult.Page(
                             data = response.items.map { it.toDomain() },
                             prevKey = if (page == 0) null else page - 1,

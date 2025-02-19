@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.di
 
 import android.content.Context
 import androidx.room.Room
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -39,8 +40,8 @@ val dataModule = module {
         )
     }
 
-    factory { (searchRequest: VacanciesSearchRequest) ->
-        VacanciesPagingSource(get(), searchRequest) //
+    factory { (searchRequest: VacanciesSearchRequest, foundCount: MutableStateFlow<Int?>) ->
+        VacanciesPagingSource(networkClient = get(), searchRequest = searchRequest, foundCount = foundCount)
     }
 
 }

@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 interface VacanciesSearchRepository {
+    val foundCount: Flow<Int?>
     fun searchVacancies(expression: String): Flow<PagingData<Vacancy>>
-    suspend fun testSearch(expression: String): List<Vacancy>
+
 }
