@@ -109,7 +109,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun setRecyclerView() {
         binding.recycler.apply {
-            adapter = adapter
+            adapter = this@SearchFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }

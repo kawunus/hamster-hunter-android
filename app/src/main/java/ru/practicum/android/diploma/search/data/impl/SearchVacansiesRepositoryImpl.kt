@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 class VacanciesSearchRepositoryImpl(private val networkClient: NetworkClient) : VacanciesSearchRepository {
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
-        Log.d("DEBUG", "Вызов searchVacancies в VacanciesSearchRepositoryImpl")
         //тут так же нужно будет проверять установленные фильтры и передавать соответствующие значения в VacanciesSearchRequest, пока поставила их просто null
         val searchRequest = VacanciesSearchRequest(
             text = expression,
@@ -33,7 +32,7 @@ class VacanciesSearchRepositoryImpl(private val networkClient: NetworkClient) : 
                 enablePlaceholders = false // Отключение плейсхолдеров
             ),
             pagingSourceFactory = {
-                getKoin().get<VacanciesPagingSource> { parametersOf(searchRequest) } // Получаем VacanciesPagingSource через Koin
+                getKoin().get<VacanciesPagingSource> { parametersOf(searchRequest) }
             }
         ).flow
 
@@ -49,7 +48,6 @@ class VacanciesSearchRepositoryImpl(private val networkClient: NetworkClient) : 
         )
         val response = networkClient.doRequest(searchRequest)
         if (response is VacanciesSearchResponse) {
-
             val vacancies = response.items.map { it.toDomain() }
             Log.d("DEBUG", "Вызов testSearch в VacanciesSearchRepositoryImpl, результат: $vacancies")
             return vacancies
