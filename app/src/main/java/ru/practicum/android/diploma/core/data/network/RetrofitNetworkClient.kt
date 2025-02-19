@@ -30,13 +30,13 @@ class RetrofitNetworkClient(
                     is VacanciesSearchRequest -> {
                         Log.d("DEBUG", "Вызываю hHApiService.search в RetrofitNetworkClient")
                         hHApiService.search(
-                            userAgent = userAgent, body = dto, //временно убрала token = token для тестов без токена
+                            userAgent = userAgent,
+                            text = dto.text, //временно убрала token = token для тестов без токена
                         )
                     }
 
                     is VacancyByIdRequest -> hHApiService.getVacancyById(
                         userAgent = userAgent,
-                        token = token,
                         vacancyId = dto.id,
                     )
 
@@ -46,6 +46,7 @@ class RetrofitNetworkClient(
                 response.apply { resultCode = HTTP_SUCCESS }
 
             } catch (e: Throwable) {
+                Log.d("DEBUG", "Ошибка в методе doRequest в NetworkClient: ${e.message}")
                 Response().apply { resultCode = 500 }
             }
         }

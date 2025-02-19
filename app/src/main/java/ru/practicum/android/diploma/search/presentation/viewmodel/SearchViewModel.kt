@@ -64,6 +64,9 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         }
     }
 
+    suspend fun testSearch(expression: String): List<Vacancy> {
+        return interactor.testSearch(expression)
+    }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {
         if ((latestSearchText == changedText) && (searchState.value is

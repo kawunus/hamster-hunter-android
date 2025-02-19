@@ -10,4 +10,8 @@ class VacanciesSearchInteractorImpl(private val repository: VacanciesSearchRepos
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
         return repository.searchVacancies(expression)
     }
+
+    override suspend fun testSearch(expression: String): List<Vacancy> {
+        return repository.testSearch(expression)
+    }
 }

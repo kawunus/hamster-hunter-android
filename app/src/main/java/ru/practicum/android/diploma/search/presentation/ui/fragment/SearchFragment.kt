@@ -5,7 +5,10 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -41,6 +44,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     }
 
+
     override fun subscribe() {
         viewModel.getSearchState().observe(viewLifecycleOwner)
         { state ->
@@ -55,6 +59,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             beforeTextChanged = { _, _, _, _ -> },
             onTextChanged = { text, start, before, count ->
                 updateClearButtonIcon(text)
+
                 if (!text.isNullOrEmpty()) viewModel.searchWithDebounce(text.toString())
             },
             afterTextChanged = { _ -> }
@@ -103,10 +108,22 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun setRecyclerView() {
-        binding.recycler.adapter = adapter
+        binding.recycler.apply {
+            adapter = adapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     private fun renderScreen(state: SearchScreenState) {
+        lifecycleScope.launch {
+            delay(10000)
+            adapter.loadStateFlow
+                .map { pagingData -> adapter.itemCount }
+                .collectLatest { count ->
+                    Log.d("DEBUG", "Загружено вакансий: $count")
+                }
+        }
+
         when (state) {
             is SearchScreenState.Empty -> placeholderManager(EMPTY)
             is SearchScreenState.Loading -> showProgressBar()
@@ -115,6 +132,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             is SearchScreenState.SearchResults -> {
                 showSearchResults()
                 adapter.submitData(lifecycle, state.pagingData)
+
             }
 
             is SearchScreenState.Error -> placeholderManager(OTHER_ERROR, state.message)
