@@ -12,6 +12,7 @@
         android:id="@+id/job_search"
         style="@style/HeadToolBarStyle"
         android:layout_width="wrap_content"
+        android:minHeight="@dimen/dp64"
         android:paddingStart="@dimen/dp16"
         android:text="@string/job_search"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,11 +22,11 @@
         android:id="@+id/button_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp20"
         android:layout_marginEnd="@dimen/dp8"
         android:background="?attr/colorPrimary"
         android:paddingHorizontal="@dimen/dp12"
         android:src="@drawable/ic_filter_off"
-        android:layout_marginTop="@dimen/dp20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="?attr/colorOnPrimary" />
@@ -34,6 +35,7 @@
         android:id="@+id/edittext_search"
         style="@style/EditSearchTextStyle"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp12"
         android:hint="@string/enter_your_request"
         app:layout_constraintTop_toBottomOf="@id/job_search" />
@@ -41,81 +43,83 @@
     <ImageButton
         android:id="@+id/button_clear"
         style="@style/EditSearchClearButton"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:layout_marginEnd="@dimen/dp4"
         android:contentDescription="@string/reset"
         app:layout_constraintBottom_toBottomOf="@id/edittext_search"
         app:layout_constraintEnd_toEndOf="@id/edittext_search"
-        app:layout_constraintTop_toTopOf="@id/edittext_search"
-        android:src ="@drawable/ic_search" />
+        app:layout_constraintTop_toTopOf="@id/edittext_search" />
 
     <TextView
         android:id="@+id/notification_text"
         style="@style/BlueNotificationStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp12"
         android:text="@string/text_team"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edittext_search"
-        android:layout_marginTop="@dimen/dp12"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/edittext_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notification_text"
-        android:layout_marginTop="@dimen/dp8"/>
+        app:layout_constraintTop_toBottomOf="@id/notification_text" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="@dimen/dp36"
         android:layout_height="@dimen/dp36"
         android:indeterminateTint="@color/blue"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/placeholderMain"
         android:layout_width="@dimen/dp328"
-        android:layout_height="@dimen/dp223"
-        android:src="@drawable/placeholder_search_fragment"
+        android:layout_height="@dimen/dp224"
         android:scaleType="centerInside"
+        android:src="@drawable/placeholder_search_fragment"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_search"
-        android:visibility="visible"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/networkErrorImage"
         android:layout_width="@dimen/dp328"
-        android:layout_height="@dimen/dp223"
+        android:layout_height="@dimen/dp224"
         android:src="@drawable/placeholder_network_error"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_search"
-        tools:ignore="ContentDescription"
-        android:visibility="gone"/>
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/error_text"
         style="@style/Medium22TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dp46"
         android:layout_marginTop="@dimen/dp16"
+        android:paddingHorizontal="@dimen/dp46"
         android:text="@string/error_no_internet"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/networkErrorImage"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/networkErrorImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

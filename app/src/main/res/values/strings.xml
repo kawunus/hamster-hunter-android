@@ -7,18 +7,14 @@
     <!--поиск-->
     <string name="job_search">Поиск вакансий</string>
     <string name="enter_your_request">Введите запрос</string>
-    <string name="no_job_found">Таких вакансий нет</string>
-    <plurals name="found">
-        <item quantity="one">Найдена </item>
-        <item quantity="other">Найдено </item>
-    </plurals>
-    <plurals name="jobs">
-        <item quantity="zero">нет вакансий</item>
-        <item quantity="one">%1$d вакансия</item>
-        <item quantity="two">%1$d вакансии</item>
-        <item quantity="few">%1$d вакансии</item>
-        <item quantity="many">%1$d вакансий</item>
-        <item quantity="other">%1$d вакансий</item>
+    <!-- пример использования resources.getQuantityString(R.plurals.numberOfSongsAvailable, count, count)-->
+    <plurals name="found_jobs_plural">
+        <item quantity="zero">Таких вакансий нет</item>
+        <item quantity="one">Найдена %1$d вакансия</item>
+        <item quantity="two">Найдено %1$d вакансии</item>
+        <item quantity="few">Найдено %1$d вакансии</item>
+        <item quantity="many">Найдено %1$d вакансий</item>
+        <item quantity="other">Найдено %1$d вакансий</item>
     </plurals>
     <!--фильтрация-->
     <string name="filtering_settings">Настройки фильтрации</string>
@@ -49,6 +45,7 @@
     <string name="gel"> ლ</string>
     <string name="kgt"> с</string>
     <!--вакансии -->
+    <string name="job">Вакансия</string>
     <string name="from_title">От </string>
     <string name="from">от </string>
     <string name="to_title">До </string>

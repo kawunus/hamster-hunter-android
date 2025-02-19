@@ -12,7 +12,9 @@
         <item name="android:textSize">@dimen/sp16</item>
     </style>
 
-    <style name="Medium16Style" parent="Regular16TextStyle">
+    <style name="Medium16Style">
+        <item name="android:textSize">@dimen/sp16</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="fontWeight">500</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
@@ -21,28 +23,25 @@
         <item name="android:textSize">@dimen/sp22</item>
     </style>
 
-    <style name="Bold32TextStyle" parent="Medium22TextStyle">
+    <style name="Bold32TextStyle">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/sp32</item>
         <item name="fontWeight">700</item>
-        <item name="fontFamily">@font/ys_display_bold</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
     </style>
-
 
     <!--стиль для нотификации результата поиска -->
     <style name="BlueNotificationStyle" parent="Regular16TextStyle">
         <item name="android:background">@drawable/notification_shape</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
         <item name="android:paddingVertical">@dimen/dp4</item>
         <item name="android:paddingHorizontal">@dimen/dp12</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
     <!--стили больших кнопок, по умолчанию enabled:false -->
-    <style name="ApplyButtonStyle" parent="Medium16Style">
+    <style name="ApplyButtonStyle">
+        <!-- незабудьте во время верстки layout_marginHorizontal dp16 -->
         <item name="android:background">@drawable/notification_shape</item>
-        <item name="android:layout_width">@dimen/zero</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/dp20</item>
         <item name="android:paddingBottom">@dimen/dp20</item>
         <item name="android:paddingStart">@dimen/dp8</item>
@@ -51,26 +50,24 @@
         <item name="textAllCaps">false</item>
         <item name="android:gravity">center</item>
         <item name="android:enabled">false</item>
-        <!--спорный момент, в фигме 17, решил что опечатка и поставил 16 -->
-        <item name="android:layout_marginStart">@dimen/dp16</item>
-        <item name="android:layout_marginEnd">@dimen/dp16</item>
-        <item name="android:text">@string/apply
-        </item> <!--поменять на @string/select в случае если текст "выбрать" в лэйауте-->
+        <!--поменять на @string/select в случае если текст "выбрать" в лэйауте-->
+        <item name="android:text">@string/apply</item>
+        <item name="fontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/sp16</item>
     </style>
 
     <style name="ResetButtonStyle" parent="ApplyButtonStyle">
+        <!-- незабудьте во время верстки layout_marginHorizontal dp16 -->
         <item name="android:textColor">@color/red</item>
         <item name="android:background">@color/transparent</item>
         <item name="android:text">@string/reset</item>
     </style>
 
-    <style name="EditSearchTextStyle" parent="Regular16TextStyle">
+    <style name="EditSearchTextStyle">
+        <!-- незабудьте во время верстки layout_marginHorizontal dp16 -->
         <item name="android:singleLine">true</item>
-        <item name="android:layout_width">@dimen/zero</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginHorizontal">@dimen/dp16</item>
         <item name="android:paddingStart">@dimen/dp16</item>
-        <!-- место для вспомогательной кнопки х/search -->
         <item name="android:paddingEnd">@dimen/dp48</item>
         <item name="android:paddingTop">@dimen/dp18</item>
         <item name="android:paddingBottom">@dimen/dp18</item>
@@ -79,20 +76,21 @@
         <item name="android:textColorHint">?attr/customColorEditTextHint</item>
         <item name="android:inputType">text</item>
         <item name="android:textCursorDrawable">@drawable/cursor_edit_text</item>
+        <item name="android:textSize">@dimen/sp16</item>
+        <item name="fontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
     <style name="EditSearchClearButton">
-        <!-- изменение enabled из fragment сменит картинку автоматически-->
-
-        <item name="android:layout_width">@dimen/dp40</item>
-        <item name="android:layout_height">@dimen/dp40</item>
-        <item name="android:layout_marginEnd">@dimen/dp4</item>
         <item name="android:background">@color/transparent</item>
         <item name="android:paddingEnd">@dimen/zero</item>
+        <!--все еще рекомендую поставить @drawable/edit_text_clear_button, он будет менять внешность при изменеии enabled из фрагмента, но он не работает при изменении enabled из лейаута -->
+        <item name="android:src">@drawable/ic_search</item>
     </style>
 
     <style name="EditSalaryStyle" parent="EditSearchTextStyle">
         <!--paddingTop кастомный для текста "Ожидаемая зарплата"-->
+        <!-- незабудьте во время верстки layout_marginHorizontal dp16 -->
         <item name="android:paddingTop">@dimen/dp24</item>
         <item name="android:paddingBottom">@dimen/dp8</item>
         <item name="android:inputType">number</item>
@@ -101,22 +99,14 @@
 
     <style name="EditSalarySecondHint" parent="Regular12TextStyle">
         <!--во фрагменте вводим проверку на состояние фокуса родительского эдиттекст, если под фокусом ставим @color/blue, если нет проверяем наличие значения ->ставим @color/black, иначе ?attr/customColorEditTextHint -->
+        <!--пришлось убрать android:layout_marginTop="@dimen/dp8" android:layout_marginStart="@dimen/dp16" не забудьте добавить в лейауте-->
         <item name="android:textColor">?attr/customColorEditTextHint</item>
-        <item name="android:layout_width">@dimen/zero</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/dp8</item>
-        <item name="android:layout_marginStart">@dimen/dp16</item>
         <item name="android:text">@string/expected_salary</item>
     </style>
     <!--Для кнопок выбора региона-->
     <style name="TransparentButtonStyle" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/zero</item>
-        <item name="android:layout_marginBottom">@dimen/zero</item>
         <item name="android:paddingStart">@dimen/dp16</item>
         <item name="paddingEnd">@dimen/dp18</item>
-        <item name="minHeight">@dimen/dp48</item>
         <item name="icon">@drawable/ic_arrow_forward</item>
         <item name="iconGravity">end</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
@@ -128,23 +118,12 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
-    <style name="EmployerPicStyle">
-        <!--Обрезание самого src выполнить во фрагменте через Glide или аналог -->
-        <item name="android:scaleType">center</item>
-        <item name="android:layout_width">@dimen/dp48</item>
-        <item name="android:layout_height">@dimen/dp48</item>
-        <item name="android:background">"@drawable/shape_employer_icon"</item>
-    </style>
-
     <style name="HeadToolBarStyle" parent="Medium22TextStyle">
         <item name="android:gravity">center_vertical</item>
-        <item name="android:layout_height">@dimen/dp64</item>
     </style>
 
     <style name="BottomNavStyle" parent="Widget.Design.BottomNavigationView">
-        <item name="backgroundTint">@color/white</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp56</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
         <item name="itemIconTint">@color/bottom_navigation_color</item>
         <item name="itemTextColor">@color/bottom_navigation_color</item>
     </style>
@@ -160,9 +139,7 @@
         <item name="android:textSize">@dimen/sp16</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:layout_marginTop">@dimen/dp16</item>
         <item name="fontWeight">500</item>
     </style>
-
 
 </resources>
