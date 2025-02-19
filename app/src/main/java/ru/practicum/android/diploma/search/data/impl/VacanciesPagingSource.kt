@@ -27,6 +27,10 @@ class VacanciesPagingSource(
             Log.d("DEBUG", "Response в VacanciesPagingSource: $response")
 
             foundCount.value = response.found
+            Log.d(
+                "DEBUG foundCount",
+                "ViewModel startSearch-> Всего вакансий найдено: ${response.found}(инфо из response)"
+            )
 
             when (response.resultCode) {
                 200 -> {

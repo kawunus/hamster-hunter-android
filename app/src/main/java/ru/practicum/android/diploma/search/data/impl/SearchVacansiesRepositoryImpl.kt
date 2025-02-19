@@ -26,6 +26,8 @@ class VacanciesSearchRepositoryImpl() : VacanciesSearchRepository {
             onlyWithSalary = null
         )
 
+
+
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,

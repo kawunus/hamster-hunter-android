@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -19,7 +20,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel() {
     private var latestSearchText = ""
-    private var searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Empty)
+    private var searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
 
     private val _foundCount = MutableLiveData<Int>()
@@ -54,7 +55,10 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
                     when (throwable) {
                         is EmptyResultException -> searchState.value = SearchScreenState.NothingFound
                         is NoInternetException -> searchState.value = SearchScreenState.NetworkError
-                        else -> searchState.value = SearchScreenState.Error(throwable.message ?: "Неизвестная ошибка")
+                        else -> {
+                            searchState.value = SearchScreenState.ServerError
+                            Log.d("DEBUG", "ServerError: ${throwable.message}")
+                        }
                     }
                 }
                 .collectLatest { data ->
@@ -67,6 +71,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
                 .filterNotNull()
                 .collect { count ->
                     _foundCount.value = count
+                    Log.d("DEBUG foundCount", "ViewModel startSearch-> Всего вакансий найдено: $count")
                 }
         }
     }
@@ -88,10 +93,11 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 }
 
 sealed interface SearchScreenState {
+    data object Default : SearchScreenState
     data object Loading : SearchScreenState
-    data object Empty : SearchScreenState
-    data object NothingFound : SearchScreenState
-    data object NetworkError : SearchScreenState
-    data class Error(var message: String) : SearchScreenState
+    open class Error : SearchScreenState
+    data object ServerError : Error()
+    data object NothingFound : Error()
+    data object NetworkError : Error()
     data class SearchResults(var pagingData: PagingData<Vacancy>) : SearchScreenState
 }

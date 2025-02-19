@@ -5,22 +5,24 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyAdapter
-import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.EMPTY
-import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.HIDDEN
-import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.NOTHING_FOUND
-import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.NO_NETWORK
-import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.OTHER_ERROR
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Default
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Error
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Loading
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.NetworkError
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.NothingFound
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.SearchResults
+import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
@@ -51,8 +53,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             renderScreen(state)
             hideProgressBar(state)
         }
+
         viewModel.getFoundCount().observe(viewLifecycleOwner) { foundCount ->
-            showFoundCount(foundCount)
+            showFoundCount(foundCount)     // информация из репозитория пока не передаётся сюда нормально, но обрабатывать значение лайвдаты уже можно. Скоро всё починю.
+            Log.d("DEBUG foundCount", "Fragment observe -> Всего вакансий найдено: $foundCount")
         }
     }
 
@@ -118,30 +122,22 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun renderScreen(state: SearchScreenState) {
-        lifecycleScope.launch {
-            delay(10000)
-            adapter.loadStateFlow
-                .map { pagingData -> adapter.itemCount }
-                .collectLatest { count ->
-                    Log.d("DEBUG", "Загружено вакансий: $count")
-                }
-        }
-
         when (state) {
-            is SearchScreenState.Empty -> placeholderManager(EMPTY)
-            is SearchScreenState.Loading -> showProgressBar()
-            is SearchScreenState.NetworkError -> placeholderManager(NO_NETWORK)
-            is SearchScreenState.NothingFound -> placeholderManager(NOTHING_FOUND)
-            is SearchScreenState.SearchResults -> {
-                showSearchResults()
-                adapter.submitData(lifecycle, state.pagingData)
+            is Default -> TODO()
+            is Loading -> showProgressBar()
+            is Error -> placeholderManager(state)
+            is SearchResults -> showSearchResults(state.pagingData)
 
-            }
-
-            is SearchScreenState.Error -> placeholderManager(OTHER_ERROR, state.message)
-            //добавила обработку и других ошибок, помимо отсутствия интернета. На всякий случай. Можно будет выводить сообщение об ошибке. Как миниум, на время отладки нам будет удобно.
         }
         Log.d("DEBUG", "SearchScreenState = $state")
+    }
+
+    private fun placeholderManager(state: Error) {
+        when (state) {
+            is NetworkError -> TODO()
+            is NothingFound -> TODO()
+            is ServerError -> TODO()
+        }
     }
 
     private fun showFoundCount(count: Int) {
@@ -149,38 +145,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun hideProgressBar(state: SearchScreenState) {
-        if (state != SearchScreenState.Loading) {
+        if (state != Loading) {
             //TODO
         }
     }
 
     private fun showProgressBar() {
         //TODO
-        placeholderManager(HIDDEN)
     }
 
-    private fun placeholderManager(status: PlaceholderStatus, message: String? = null) {
-        when (status) {
-            EMPTY -> binding.placeholderMain.isVisible = true
-            NOTHING_FOUND -> TODO()
-            NO_NETWORK -> {
-                with(binding) {
-                    networkErrorImage.isVisible = true
-                    errorText.isVisible = true
-                }
-            }
-
-            HIDDEN -> with(binding) {
-                networkErrorImage.isVisible = false
-                errorText.isVisible = false
-            }
-
-            OTHER_ERROR -> TODO()
-        }
-    }
-
-    private fun showSearchResults() {
+    private fun showSearchResults(pagingData: PagingData<Vacancy>) {
         binding.recycler.isVisible = true
+        adapter.submitData(lifecycle, pagingData)
     }
 
     private fun clickDebounce(): Boolean {
@@ -198,12 +174,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
 
-        enum class PlaceholderStatus {
-            EMPTY,
-            OTHER_ERROR,
-            NOTHING_FOUND,
-            NO_NETWORK,
-            HIDDEN
-        }
     }
 }
