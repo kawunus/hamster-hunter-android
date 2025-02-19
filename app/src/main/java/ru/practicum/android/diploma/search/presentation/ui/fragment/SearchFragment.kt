@@ -40,7 +40,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
-
         viewModel.getSearchState().observe(viewLifecycleOwner)
         { state ->
             renderScreen(state)
@@ -86,6 +85,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
+    // добавила инициализацию поиска по клику на кнопку на клавиатуре, чтобы не заставлять юзера ждать 2 сек
     private fun setEditTextActionListener() {
         binding.edittextSearch.apply {
             setOnEditorActionListener { _, actionId, _ ->
@@ -117,7 +117,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun hideProgressBar(state: SearchScreenState) {
         if (state != SearchScreenState.Loading) {
-            //TODO рятать
+            //TODO
         }
     }
 
@@ -161,7 +161,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private companion object {
-        private const val INPUT_DEF = ""
         private const val CLICK_DEBOUNCE_DELAY = 1000L
 
         enum class PlaceholderStatus {
