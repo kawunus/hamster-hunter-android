@@ -3,10 +3,10 @@ package ru.practicum.android.diploma.search.presentation.ui.fragment
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewMode
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
 ) {
-    override val viewModel: SearchViewModel by viewModels()
+    override val viewModel: SearchViewModel by viewModel<SearchViewModel>()
 
     private val adapter = VacancyAdapter { vacancy ->
         if (clickDebounce()) {
