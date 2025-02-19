@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class VacanciesSearchRepositoryImpl : VacanciesSearchRepository {
 
-    override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {   //TODO изменить возвращаемый тип на Domain-модель
+    override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
         //тут так же нужно будет проверять установленные фильтры и передавать соответствующие значения в VacanciesSearchRequest, пока поставила их просто null
         val searchRequest = VacanciesSearchRequest(
             text = expression,

@@ -2,7 +2,9 @@ package ru.practicum.android.diploma.search.data.impl
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import ru.practicum.android.diploma.core.network.NetworkClient
+import ru.practicum.android.diploma.core.data.network.NetworkClient
+import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
+import ru.practicum.android.diploma.core.domain.exception.NoInternetException
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.data.mapper.toDomain
@@ -19,17 +21,27 @@ class VacanciesPagingSource(
             val updatedRequest = searchRequest.copy(page = page)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
 
-            // Успешная загрузка
-            LoadResult.Page(
-                data = response.items.map { it.toDomain() },
-                prevKey = if (page == 0) null else page - 1, // Предыдущая страница
-                nextKey = if (page >= response.pages - 1) null else page + 1 // Следующая страница
-            )
+            when (response.resultCode) {
+                200 -> {
+                    if (response.items.isEmpty()) {
+                        LoadResult.Error(EmptyResultException()) // Ошибка "Ничего не найдено"
+                    } else {
+                        LoadResult.Page(
+                            data = response.items.map { it.toDomain() },
+                            prevKey = if (page == 0) null else page - 1,
+                            nextKey = if (page >= response.pages - 1) null else page + 1
+                        )
+                    }
+                }
+
+                -1 -> LoadResult.Error(NoInternetException()) // Ошибка "Нет интернета"
+                else -> LoadResult.Error(Exception("Ошибка сервера: ${response.resultCode}"))
+            }
         } catch (e: Exception) {
-            // Обработка ошибок
             LoadResult.Error(e)
         }
     }
+
 
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -38,3 +50,5 @@ class VacanciesPagingSource(
         }
     }
 }
+
+

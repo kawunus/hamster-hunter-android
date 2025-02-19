@@ -7,9 +7,9 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.core.data.database.AppDatabase
-import ru.practicum.android.diploma.core.network.HHApiService
-import ru.practicum.android.diploma.core.network.NetworkClient
-import ru.practicum.android.diploma.core.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.core.data.network.HHApiService
+import ru.practicum.android.diploma.core.data.network.NetworkClient
+import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.impl.VacanciesPagingSource
 

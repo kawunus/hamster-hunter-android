@@ -4,7 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
+import ru.practicum.android.diploma.core.domain.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.model.Vacancy
@@ -21,7 +26,6 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         useLastParam = true
     ) { expression -> startSearch(expression) }
 
-
     fun searchWithDebounce(changedText: String) {
         val actualSearchResults = getActualSearchResults(changedText)
         if (actualSearchResults != null) {
@@ -29,7 +33,6 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             return
         } else trackSearchDebounce.invoke(changedText)
     }
-
 
     fun cancelSearchDebounce() {
         trackSearchDebounce.cancel()
@@ -39,14 +42,25 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         searchState.postValue(SearchScreenState.Loading)
 
         viewModelScope.launch {
-            interactor
-                .searchVacancies(expression).collect { data -> processSearchResult(data) }
+            interactor.searchVacancies(expression)
+                .cachedIn(viewModelScope)
+                .catch { throwable ->
+                    when (throwable) {
+                        is EmptyResultException -> searchState.value = SearchScreenState.NothingFound
+                        is NoInternetException -> searchState.value = SearchScreenState.NetworkError
+                        else -> searchState.value = SearchScreenState.Error(throwable.message ?: "Неизвестная ошибка")
+                    }
+                }
+                .collectLatest { data ->
+                    processSearchResult(data)
+                }
         }
     }
 
-
     private fun processSearchResult(pagingData: PagingData<Vacancy>) {
-        //TODO
+        searchState.value = SearchScreenState.SearchResults(
+            pagingData = pagingData
+        )
     }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {
@@ -60,11 +74,9 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         }
     }
 
-
     private companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
-
 }
 
 sealed interface SearchScreenState {
@@ -72,5 +84,6 @@ sealed interface SearchScreenState {
     data object Empty : SearchScreenState
     data object NothingFound : SearchScreenState
     data object NetworkError : SearchScreenState
+    data class Error(var message: String) : SearchScreenState
     data class SearchResults(var pagingData: PagingData<Vacancy>) : SearchScreenState
 }

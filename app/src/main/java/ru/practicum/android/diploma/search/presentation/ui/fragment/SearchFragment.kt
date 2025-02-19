@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragme
 import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.HIDDEN
 import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.NOTHING_FOUND
 import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.NO_NETWORK
+import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragment.Companion.PlaceholderStatus.OTHER_ERROR
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 
@@ -110,8 +111,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             is SearchScreenState.Loading -> showProgressBar()
             is SearchScreenState.NetworkError -> placeholderManager(NO_NETWORK)
             is SearchScreenState.NothingFound -> placeholderManager(NOTHING_FOUND)
-            is SearchScreenState.SearchResults -> showSearchResults()
+            is SearchScreenState.SearchResults -> {
+                showSearchResults()
+                adapter.submitData(lifecycle, state.pagingData)
+            }
 
+            is SearchScreenState.Error -> placeholderManager(OTHER_ERROR, state.message)
+            //добавила обработку и других ошибок, помимо отсутствия интернета. На всякий случай. Можно будет выводить сообщение об ошибке. Как миниум, на время отладки нам будет удобно.
         }
     }
 
@@ -126,7 +132,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         placeholderManager(HIDDEN)
     }
 
-    private fun placeholderManager(status: PlaceholderStatus) {
+    private fun placeholderManager(status: PlaceholderStatus, message: String? = null) {
         when (status) {
             EMPTY -> binding.placeholderMain.isVisible = true
             NOTHING_FOUND -> TODO()
@@ -141,6 +147,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 networkErrorImage.isVisible = false
                 errorText.isVisible = false
             }
+
+            OTHER_ERROR -> TODO()
         }
     }
 
@@ -165,6 +173,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
         enum class PlaceholderStatus {
             EMPTY,
+            OTHER_ERROR,
             NOTHING_FOUND,
             NO_NETWORK,
             HIDDEN

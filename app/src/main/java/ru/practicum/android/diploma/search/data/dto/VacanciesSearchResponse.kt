@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.search.data.dto
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.core.network.dto.Response
+import ru.practicum.android.diploma.core.data.network.dto.Response
 
 data class VacanciesSearchResponse(
     val found: Int, // Общее количество найденных элементов
