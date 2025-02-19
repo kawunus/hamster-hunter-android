@@ -14,8 +14,8 @@
         android:layout_width="wrap_content"
         android:minHeight="@dimen/dp64"
         android:layout_height="@dimen/zero"
-        android:paddingStart="16dp"
         android:text="@string/job_search"
+        android:paddingStart="@dimen/dp16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp12"
+        android:layout_marginHorizontal="@dimen/dp16"
         android:hint="@string/enter_your_request"
         app:layout_constraintTop_toBottomOf="@id/job_search" />
 
