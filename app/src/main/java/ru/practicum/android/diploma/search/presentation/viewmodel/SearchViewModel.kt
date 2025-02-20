@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
@@ -49,6 +50,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     fun startSearch(expression: String) {
         viewModelScope.launch {
             searchState.postValue(SearchScreenState.Loading)
+            delay(1000)
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
                 .catch { throwable ->
@@ -95,7 +97,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 sealed interface SearchScreenState {
     data object Default : SearchScreenState
     data object Loading : SearchScreenState
-    open class Error : SearchScreenState
+    sealed class Error : SearchScreenState
     data object ServerError : Error()
     data object NothingFound : Error()
     data object NetworkError : Error()

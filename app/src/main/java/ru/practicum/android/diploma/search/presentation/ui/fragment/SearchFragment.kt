@@ -122,7 +122,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun renderScreen(state: SearchScreenState) {
         when (state) {
-            is Default -> TODO()
+            is Default -> {}    //TODO
             is Loading -> showProgressBar()
             is Error -> placeholderManager(state)
             is SearchResults -> showSearchResults(state.pagingData)
@@ -134,9 +134,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     // обработка разных типов ошибок
     private fun placeholderManager(state: Error) {
         when (state) {
-            is NetworkError -> TODO()
-            is NothingFound -> TODO()
-            is ServerError -> TODO()
+            is NetworkError -> {}   //TODO
+            is NothingFound -> {}   //TODO
+            is ServerError -> {}    //TODO
         }
     }
 
@@ -147,11 +147,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun hideProgressBar(state: SearchScreenState) {
         if (state != Loading) {
-            //TODO
+            binding.progressBar.isVisible = false
         }
     }
 
     private fun showProgressBar() {
+        binding.progressBar.isVisible = true
         //TODO
     }
 
