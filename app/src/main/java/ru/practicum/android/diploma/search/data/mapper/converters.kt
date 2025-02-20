@@ -19,7 +19,7 @@ fun VacancyDto.toDomain(): Vacancy {
             area.name ?: ""
         } else "",
         icon = if (employer?.logoUrls != null) {
-            employer.logoUrls.logoUrl90 ?: ""
+            employer.logoUrls.logoUrl ?: ""
         } else ""
     )
 }
