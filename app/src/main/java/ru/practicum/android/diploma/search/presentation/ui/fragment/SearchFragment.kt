@@ -128,13 +128,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun renderScreen(state: SearchScreenState) {
         Log.d("DEBUG", "SearchScreenState = $state")
-        if (state is Error) placeholderContentManager(state)
-        if (state is SearchResults) showSearchResults(state.pagingData)
-        progressBarVisibilityManager(isLoading = state is Loading)
+
+        // Общие настройки видимости
         placeholderVisibilityManager(isError = state is Error)
         notificationVisibilityManager(needToBeVisible = state is SearchResults || state is NothingFound)
         defaultScreenVisibilityManager(needToBeVisible = state is Default)
         recyclerVisibilityManager(needToBeVisible = state is SearchResults)
+        progressBarVisibilityManager(isLoading = state is Loading)
+
+        // Уникальная логика для каждого состояния
+        when (state) {
+            is Error -> placeholderContentManager(state)
+            is SearchResults -> showSearchResults(state.pagingData)
+            else -> Unit // Ничего не делаем для остальных состояний
+        }
     }
 
     // обработка разных типов ошибок
@@ -172,7 +179,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun notificationVisibilityManager(needToBeVisible: Boolean) {
-        if (!needToBeVisible) binding.notificationText.isVisible = false
+        if (!needToBeVisible) {
+            binding.notificationText.isVisible = false
+        }
     }
 
     private fun defaultScreenVisibilityManager(needToBeVisible: Boolean) {
