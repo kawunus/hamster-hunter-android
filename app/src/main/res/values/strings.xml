@@ -7,15 +7,16 @@
     <!--поиск-->
     <string name="job_search">Поиск вакансий</string>
     <string name="enter_your_request">Введите запрос</string>
-    <!-- пример использования resources.getQuantityString(R.plurals.numberOfSongsAvailable, count, count)-->
+    <string name="no_such_jobs">Таких вакансий нет</string>
+    <!-- пример использования resources.getQuantityString(R.plurals.found_jobs_plural, count, count)-->
     <plurals name="found_jobs_plural">
-        <item quantity="zero">Таких вакансий нет</item>
         <item quantity="one">Найдена %1$d вакансия</item>
         <item quantity="two">Найдено %1$d вакансии</item>
         <item quantity="few">Найдено %1$d вакансии</item>
         <item quantity="many">Найдено %1$d вакансий</item>
         <item quantity="other">Найдено %1$d вакансий</item>
     </plurals>
+
     <!--фильтрация-->
     <string name="filtering_settings">Настройки фильтрации</string>
     <string name="job_location">Место работы</string>
@@ -61,6 +62,7 @@
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_server">Ошибка сервера</string>
     <string name="error_job_not_found_or_deleted">Вакансия не найдена или удалена</string>
+    <string name="error_nothing_found">Не удалось получить список вакансий</string>
     <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
     <string name="dev1">Аксенов Александр Сергеевич</string>
