@@ -6,6 +6,4 @@ data class VacancyDto(
     val salary: Salary?, // Зарплата
     val employer: Employer?, // Информация о компании-работодателе
     val area: Area? // Регион
-
-
 )

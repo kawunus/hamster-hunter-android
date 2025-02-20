@@ -117,5 +117,5 @@ sealed interface SearchScreenState {
     data object ServerError : Error()
     data object NothingFound : Error()
     data object NetworkError : Error()
-    data class SearchResults(var pagingData: PagingData<Vacancy>) : SearchScreenState
+    data class SearchResults(val pagingData: PagingData<Vacancy>) : SearchScreenState
 }

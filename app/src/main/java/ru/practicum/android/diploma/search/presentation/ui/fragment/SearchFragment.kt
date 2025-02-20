@@ -46,11 +46,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         setRecyclerView()
     }
 
-
     override fun subscribe() {
         with(viewModel) {
-            getSearchState().observe(viewLifecycleOwner)
-            { state ->
+            getSearchState().observe(viewLifecycleOwner) { state ->
                 renderScreen(state)
             }
 
@@ -109,16 +107,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun setEditTextActionListener() {
         binding.edittextSearch.apply {
             setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if (text.isNotEmpty()) {
-                        viewModel.cancelSearchDebounce()
-                        viewModel.startSearch(text.toString())
-                    }
+                if (actionId == EditorInfo.IME_ACTION_DONE && text.isNotEmpty()) {
+                    viewModel.cancelSearchDebounce()
+                    viewModel.startSearch(text.toString())
                 }
                 false
             }
         }
     }
+
 
     private fun setRecyclerView() {
         binding.recycler.apply {
@@ -163,7 +160,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             }
         }
     }
-
 
     // отображение сообщения "Найдено $count вакансий"
     private fun showFoundCount(count: Int) {

@@ -5,7 +5,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 data class DebounceResult<T>(
     val cancel: () -> Unit,
     val invoke: (T) -> Unit

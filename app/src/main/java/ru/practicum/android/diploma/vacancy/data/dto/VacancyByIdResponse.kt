@@ -9,7 +9,6 @@ data class VacancyByIdResponse(
     val name: String, // Название вакансии
     val salary: Salary, // Зарплата
     val employer: Employer, // Информация о компании-работодателе
-    //TODO ...
-
+    // нужно расширить нужными вам данными
 ) : Response()
 

@@ -16,45 +16,38 @@ class RetrofitNetworkClient(
     private val hHApiService: HHApiService,
 ) : NetworkClient {
 
+
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
+        val token = "Bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
 
         return withContext(Dispatchers.IO) {
-            val userAgent = USER_AGENT
-            val token = "Bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
-
             try {
                 val response = when (dto) {
-                    is VacanciesSearchRequest -> {
-                        hHApiService.search(
-                            userAgent = userAgent,
-                            text = dto.text,
-                        )
-                    }
+                    is VacanciesSearchRequest -> hHApiService.search(
+                        userAgent = USER_AGENT,
+                        text = dto.text,
+                    )
 
                     is VacancyByIdRequest -> hHApiService.getVacancyById(
-                        userAgent = userAgent,
+                        userAgent = USER_AGENT,
                         vacancyId = dto.id,
                     )
 
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
-
                 response.apply { resultCode = HTTP_SUCCESS }
-
             } catch (e: HttpException) {
-                // Обработка HTTP-ошибок (например, 404, 500)
-                Log.d("DEBUG", "Ошибка HTTP в методе doRequest: ${e.message}")
-                Response().apply { resultCode = HTTP_SERVER_ERROR }
-
-            } catch (e: Exception) {
-                // Обработка других исключений (например, ошибки парсинга)
-                Log.d("DEBUG", "Неизвестная ошибка в методе doRequest: ${e.message}")
+                logError("HTTP", e)
                 Response().apply { resultCode = HTTP_SERVER_ERROR }
             }
         }
+    }
+
+    private fun logError(errorType: String, e: Exception) {
+        Log.d("DEBUG", "$errorType ошибка в методе doRequest: ${e.message}")
     }
 
     private fun isConnected(): Boolean {
