@@ -116,7 +116,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-
     private fun setRecyclerView() {
         binding.recycler.apply {
             adapter = this@SearchFragment.adapter
@@ -125,7 +124,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         adapter.addLoadStateListener { loadStates ->
             viewModel.setNextPageLoading(loadStates.append is LoadState.Loading)
         }
-
     }
 
     private fun renderScreen(state: SearchScreenState) {
