@@ -121,8 +121,23 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             adapter = this@SearchFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
-        adapter.addLoadStateListener { loadStates ->
-            viewModel.setNextPageLoading(loadStates.append is LoadState.Loading)
+        setLoadStateListener()
+    }
+
+    private fun setLoadStateListener() {
+        adapter.addLoadStateListener { loadState ->
+            viewModel.setNextPageLoading(loadState.append is LoadState.Loading)
+
+            val errorState = when {
+                loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+                loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                else -> null
+            }
+
+            errorState?.let { error ->
+                viewModel.setErrorState(error)
+            }
         }
     }
 

@@ -53,6 +53,15 @@
         app:layout_constraintEnd_toEndOf="@id/edittext_search"
         app:layout_constraintTop_toTopOf="@id/edittext_search" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edittext_search" />
+
     <TextView
         android:id="@+id/notification_text"
         style="@style/BlueNotificationStyle"
@@ -64,15 +73,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edittext_search"
         tools:text="[Найдено 100500 вакансий]" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notification_text" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -124,7 +124,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp16"
             android:paddingHorizontal="@dimen/dp46"
-            android:text="@string/error_no_internet" />
+            tools:text="[Не удалось получить список вакансий]" />
 
     </LinearLayout>
 

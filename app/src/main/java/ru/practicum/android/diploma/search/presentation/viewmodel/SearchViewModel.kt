@@ -1,13 +1,12 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
@@ -61,25 +60,14 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             launch { getCount() }
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
-                .catch { throwable ->
-                    processError(throwable)
-                }
+//                .catch { throwable ->
+//                    processError(throwable)
+//                }
                 .collectLatest { data ->
                     searchState.value = SearchScreenState.SearchResults(
                         pagingData = data
                     )
                 }
-        }
-    }
-
-    private fun processError(throwable: Throwable) {
-        when (throwable) {
-            is EmptyResultException -> searchState.value = SearchScreenState.NothingFound
-            is NoInternetException -> searchState.value = SearchScreenState.NetworkError
-            else -> {
-                searchState.value = SearchScreenState.ServerError
-                Log.d("DEBUG", "ServerError: ${throwable.message}")
-            }
         }
     }
 
@@ -93,6 +81,15 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
     fun setNextPageLoading(isLoading: Boolean) {
         _isNextPageLoading.value = isLoading
+    }
+
+    fun setErrorState(error: LoadState.Error) {
+        searchState.value =
+            when (error.error) {
+                is EmptyResultException -> SearchScreenState.NothingFound
+                is NoInternetException -> SearchScreenState.NetworkError
+                else -> SearchScreenState.ServerError
+            }
     }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {

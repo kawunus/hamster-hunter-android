@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.data.network
 
+import android.content.Context
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,19 +12,25 @@ import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.data.mapper.toDomain
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.util.NetworkMonitor
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
+    private val context: Context,
     private val searchRequest: VacanciesSearchRequest,
     private val foundCount: MutableSharedFlow<Int?>
 ) : PagingSource<Int, Vacancy>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
+        // Проверяем наличие подключения до выполнения запроса
+        if (!isConnected()) {
+            return LoadResult.Error(NoInternetException())
+        }
+
         return try {
             val currentPage = params.key ?: 0
             val updatedRequest = searchRequest.copy(page = currentPage)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
-
             // Обновляем значение foundCount
             foundCount.emit(response.found)
 
@@ -40,7 +47,7 @@ class VacanciesPagingSource(
                     }
                 }
 
-                -1 -> LoadResult.Error(NoInternetException()) // Ошибка "Нет интернета"
+                -1 -> LoadResult.Error(NoInternetException()) // Альтернативная обработка ошибки "Нет интернета"
                 else -> LoadResult.Error(Exception("Ошибка сервера: ${response.resultCode}"))
             }
         } catch (e: HttpException) {
@@ -55,9 +62,11 @@ class VacanciesPagingSource(
         }
     }
 
+    private fun isConnected(): Boolean {
+        return NetworkMonitor.isNetworkAvailable(context)
+    }
+
     companion object {
-        private const val HTTP_BAD_REQUEST = 400
-        private const val HTTP_SERVER_ERROR = 500
         private const val HTTP_SUCCESS = 200
 
     }

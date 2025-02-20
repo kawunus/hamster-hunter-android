@@ -42,7 +42,12 @@ val dataModule = module {
 
 // VacanciesPagingSource
     factory { (searchRequest: VacanciesSearchRequest, foundCount: MutableSharedFlow<Int?>) ->
-        VacanciesPagingSource(networkClient = get(), searchRequest = searchRequest, foundCount = foundCount)
+        VacanciesPagingSource(
+            networkClient = get(),
+            searchRequest = searchRequest,
+            foundCount = foundCount,
+            context = get()
+        )
     }
 
 }
