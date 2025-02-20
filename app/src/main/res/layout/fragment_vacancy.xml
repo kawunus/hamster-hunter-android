@@ -86,11 +86,13 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/errorImg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/placeholder_job_deleted_error" />
 
         <TextView
+            android:id="@+id/errorText"
             style="@style/Medium22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,7 +141,7 @@
                 style="@style/Bold32TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Хомяк" />
+                tools:text="Loading" />
 
             <TextView
                 android:id="@+id/salary"
@@ -147,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp4"
-                android:text="менее 0 $, платят едой" />
+                tools:text="Loading" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -162,6 +164,7 @@
                     android:layout_width="@dimen/dp48"
                     android:layout_height="@dimen/dp48"
                     android:layout_gravity="center"
+                    android:contentDescription=""
                     android:src="@drawable/placeholder_32px"
                     app:cornerRadius="@dimen/dp12"
                     app:layout_constraintStart_toStartOf="parent"
@@ -173,12 +176,12 @@
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp16"
-                    android:text="BIG MONEY Firm"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@id/employerImg"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Loading" />
 
                 <TextView
                     android:id="@+id/employerLocation"
@@ -186,12 +189,12 @@
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp16"
-                    android:text="money Land"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@id/employerImg"
-                    app:layout_constraintTop_toBottomOf="@id/employerName" />
+                    app:layout_constraintTop_toBottomOf="@id/employerName"
+                    tools:text="Loading" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -207,7 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp4"
-                android:text="От 1 мес опыта" />
+                tools:text="Loading" />
 
             <TextView
                 android:id="@+id/employmentFormAndWorkFormat"
@@ -215,7 +218,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp8"
-                android:text="Полная занятость, Без графика" />
+                tools:text="Loading" />
 
             <TextView
                 style="@style/Medium22TextStyle"
@@ -230,14 +233,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp16"
-                android:text="спать на работе, мешать коту" />
+                tools:text="Loading" />
 
             <TextView
                 style="@style/Medium22TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp24"
-                android:text="TODO---key skills" />
+                android:text="@string/key_skills" />
 
             <TextView
                 android:id="@+id/keySkills"
@@ -245,12 +248,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp16"
-                android:text="крутить педали, быть хомяком
-                \n\n\n\n\n\n\n\n\n
-                \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
-                \n\n\n\n\n\n\n\n\n\n\n
-                \n\n\n\n\n\n\n\n\n\n\n\n\n\n
-                тест_прокурутки" />
+                tools:text="Loading" />
 
         </LinearLayout>
     </ScrollView>
