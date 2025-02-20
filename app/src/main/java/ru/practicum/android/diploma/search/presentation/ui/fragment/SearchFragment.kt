@@ -39,6 +39,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var isClickAllowed = true
 
     override fun initViews() {
+        // init views
         isClickAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
@@ -47,6 +48,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
+        // subscribe on viewModel
         with(viewModel) {
             getSearchState().observe(viewLifecycleOwner) { state ->
                 renderScreen(state)
