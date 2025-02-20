@@ -53,26 +53,29 @@
         app:layout_constraintEnd_toEndOf="@id/edittext_search"
         app:layout_constraintTop_toTopOf="@id/edittext_search" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="46dp"
+        android:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edittext_search" />
+
     <TextView
         android:id="@+id/notification_text"
         style="@style/BlueNotificationStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp12"
-        android:visibility="gone"
+        android:paddingHorizontal="@dimen/dp12"
+        android:paddingVertical="@dimen/dp4"
+        android:layout_gravity="center|top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edittext_search"
         tools:text="[Найдено 100500 вакансий]" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notification_text" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -103,7 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,9 +125,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:layout_marginTop="@dimen/dp16"
             android:paddingHorizontal="@dimen/dp46"
-            android:text="@string/error_no_internet" />
+            android:text="@string/error_nothing_found" />
 
     </LinearLayout>
 
