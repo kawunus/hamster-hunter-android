@@ -1,7 +1,7 @@
-package ru.practicum.android.diploma.search.presentation.model
+package ru.practicum.android.diploma.search.domain.model
 
 data class Vacancy(
-    val id: Int,
+    val id: String,
     val name: String,
     val company: String,
     val currency: String,
