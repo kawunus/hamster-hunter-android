@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ru.practicum.android.diploma.favorites.data.entity.FavoriteVacancyEntity
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 @Dao
 interface FavoriteVacancyDao {

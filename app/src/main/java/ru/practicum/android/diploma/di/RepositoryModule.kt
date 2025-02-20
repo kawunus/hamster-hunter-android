@@ -7,7 +7,6 @@ import ru.practicum.android.diploma.favorites.data.impl.FavoriteVacancyRepositor
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
 import ru.practicum.android.diploma.search.data.impl.VacanciesSearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
-import kotlin.math.sin
 
 val repositoryModule = module {
     factoryOf(::VacanciesSearchRepositoryImpl) { bind<VacanciesSearchRepository>() }
