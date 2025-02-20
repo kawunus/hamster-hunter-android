@@ -8,5 +8,3 @@ data class VacanciesSearchResponse(
     val page: Int, // Текущая страница
     val pages: Int, // Общее количество страниц
 ) : Response()
-
-
