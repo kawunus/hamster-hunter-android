@@ -20,7 +20,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel() {
     private var latestSearchText = ""
-    private var searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
+    private val searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
 
     private val _foundCount = MutableLiveData<Int>()
@@ -57,26 +57,29 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             delay(SEARCH_DEBOUNCE_DELAY)
             // временно добавила задержку для упрощения тестирования progressbar.
             // УДАЛИТЬ ПОСЛЕ ОТЛАДКИ!!!
-            // Запускаем getCount параллельно, оно подхватит только новые значения
-            launch { getCount() }
 
+            launch { getCount() }
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
                 .catch { throwable ->
-                    when (throwable) {
-                        is EmptyResultException -> searchState.value = SearchScreenState.NothingFound
-                        is NoInternetException -> searchState.value = SearchScreenState.NetworkError
-                        else -> {
-                            searchState.value = SearchScreenState.ServerError
-                            Log.d("DEBUG", "ServerError: ${throwable.message}")
-                        }
-                    }
+                    processError(throwable)
                 }
                 .collectLatest { data ->
                     searchState.value = SearchScreenState.SearchResults(
                         pagingData = data
                     )
                 }
+        }
+    }
+
+    private fun processError(throwable: Throwable) {
+        when (throwable) {
+            is EmptyResultException -> searchState.value = SearchScreenState.NothingFound
+            is NoInternetException -> searchState.value = SearchScreenState.NetworkError
+            else -> {
+                searchState.value = SearchScreenState.ServerError
+                Log.d("DEBUG", "ServerError: ${throwable.message}")
+            }
         }
     }
 
@@ -110,12 +113,4 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     }
 }
 
-sealed interface SearchScreenState {
-    data object Default : SearchScreenState
-    data object Loading : SearchScreenState
-    sealed class Error : SearchScreenState
-    data object ServerError : Error()
-    data object NothingFound : Error()
-    data object NetworkError : Error()
-    data class SearchResults(val pagingData: PagingData<Vacancy>) : SearchScreenState
-}
+

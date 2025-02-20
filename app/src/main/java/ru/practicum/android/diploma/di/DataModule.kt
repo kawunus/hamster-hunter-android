@@ -13,6 +13,8 @@ import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
+import ru.practicum.android.diploma.util.Constants.HH_DATABASE_NAME
+import ru.practicum.android.diploma.util.Constants.HH_SHARED_PREFS_NAME
 
 val dataModule = module {
 
@@ -26,11 +28,11 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "hamster_hunter_database.db").build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, HH_DATABASE_NAME).build()
     }
 
     single {
-        androidContext().getSharedPreferences("hamster_hunter_shared_preferences", Context.MODE_PRIVATE)
+        androidContext().getSharedPreferences(HH_SHARED_PREFS_NAME, Context.MODE_PRIVATE)
     }
 
     single<NetworkClient> {
@@ -45,3 +47,4 @@ val dataModule = module {
     }
 
 }
+
