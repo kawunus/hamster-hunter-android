@@ -3,16 +3,16 @@ package ru.practicum.android.diploma.favorites.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.practicum.android.diploma.search.data.dto.Area
-import ru.practicum.android.diploma.search.data.dto.Employer
-import ru.practicum.android.diploma.search.data.dto.Salary
 
 @Entity(tableName = "favorite_vacancies")
 data class FavoriteVacancyEntity(
-    @PrimaryKey @ColumnInfo(name = "id") val id: String?,
-    @ColumnInfo(name = "vacancy_name") val name: String?,
-    @ColumnInfo(name = "salary") val salary: Salary?,
-    @ColumnInfo(name = "employer") val employer: Employer?,
-    @ColumnInfo(name = "area") val area: Area?,
+    @PrimaryKey val id: String,
+    val name: String,
+    val company: String,
+    val currency: String,
+    @ColumnInfo(name = "salary_from") val salaryFrom: Int?,
+    @ColumnInfo(name = "salary_to") val salaryTo: Int?,
+    val area: String,
+    val icon: String,
     @ColumnInfo(name = "added_at") val addedAt: Long
 )
