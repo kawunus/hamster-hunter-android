@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
@@ -43,13 +44,18 @@ class RetrofitNetworkClient(
 
                 response.apply { resultCode = HTTP_SUCCESS }
 
-            } catch (e: Throwable) {
-                Log.d("DEBUG", "Ошибка в методе doRequest в NetworkClient: ${e.message}")
-                Response().apply { resultCode = 500 }
+            } catch (e: HttpException) {
+                // Обработка HTTP-ошибок (например, 404, 500)
+                Log.d("DEBUG", "Ошибка HTTP в методе doRequest: ${e.message}")
+                Response().apply { resultCode = HTTP_SERVER_ERROR }
+
+            } catch (e: Exception) {
+                // Обработка других исключений (например, ошибки парсинга)
+                Log.d("DEBUG", "Неизвестная ошибка в методе doRequest: ${e.message}")
+                Response().apply { resultCode = HTTP_SERVER_ERROR }
             }
         }
     }
-
 
     private fun isConnected(): Boolean {
         return NetworkMonitor.isNetworkAvailable(context)
@@ -57,6 +63,7 @@ class RetrofitNetworkClient(
 
     companion object {
         private const val HTTP_BAD_REQUEST = 400
+        private const val HTTP_SERVER_ERROR = 500
         private const val HTTP_SUCCESS = 200
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
         const val USER_AGENT = "HamsterHunter/1.0 (s.rubinets@gmail.com)"

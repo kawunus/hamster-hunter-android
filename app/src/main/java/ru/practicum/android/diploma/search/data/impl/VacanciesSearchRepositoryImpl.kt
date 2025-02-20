@@ -13,13 +13,13 @@ import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-class VacanciesSearchRepositoryImpl() : VacanciesSearchRepository {
+class VacanciesSearchRepositoryImpl : VacanciesSearchRepository {
 
     private val _foundCount = MutableSharedFlow<Int?>(replay = 0)
     override val foundCount: SharedFlow<Int?> get() = _foundCount
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
-        //тут так же нужно будет проверять установленные фильтры и передавать соответствующие значения в VacanciesSearchRequest, пока поставила их просто null
+        // тут так же нужно будет проверять установленные фильтры и передавать соответствующие значения в VacanciesSearchRequest, пока поставила их просто null
         val searchRequest = VacanciesSearchRequest(
             text = expression,
             page = 0,

@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.search.data.network
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
+import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
 import ru.practicum.android.diploma.core.domain.exception.NoInternetException
@@ -27,11 +28,10 @@ class VacanciesPagingSource(
             foundCount.emit(response.found)
 
             when (response.resultCode) {
-                200 -> {
+                HTTP_SUCCESS -> {
                     if (response.items.isEmpty()) {
                         LoadResult.Error(EmptyResultException()) // Ошибка "Ничего не найдено"
                     } else {
-
                         LoadResult.Page(
                             data = response.items.map { it.toDomain() },
                             prevKey = if (currentPage == 0) null else currentPage - 1,
@@ -43,10 +43,12 @@ class VacanciesPagingSource(
                 -1 -> LoadResult.Error(NoInternetException()) // Ошибка "Нет интернета"
                 else -> LoadResult.Error(Exception("Ошибка сервера: ${response.resultCode}"))
             }
+        } catch (e: HttpException) {
+            LoadResult.Error(e)
+
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
-
     }
 
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
@@ -55,6 +57,11 @@ class VacanciesPagingSource(
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
+
+    companion object {
+        private const val HTTP_BAD_REQUEST = 400
+        private const val HTTP_SERVER_ERROR = 500
+        private const val HTTP_SUCCESS = 200
+
+    }
 }
-
-

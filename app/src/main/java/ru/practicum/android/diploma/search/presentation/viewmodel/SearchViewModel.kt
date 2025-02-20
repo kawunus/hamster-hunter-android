@@ -42,7 +42,9 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         if (actualSearchResults != null) {
             searchState.postValue(SearchScreenState.SearchResults(actualSearchResults))
             return
-        } else trackSearchDebounce.invoke(changedText)
+        } else {
+            trackSearchDebounce.invoke(changedText)
+        }
     }
 
     fun cancelSearchDebounce() {
@@ -52,8 +54,9 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     fun startSearch(expression: String) {
         viewModelScope.launch {
             searchState.postValue(SearchScreenState.Loading)
-            delay(1000) // временно добавила задержку для упрощения тестирования progressbar. TODO: УДАЛИТЬ ПОСЛЕ ОТЛАДКИ!!!
-
+            delay(SEARCH_DEBOUNCE_DELAY)
+            // временно добавила задержку для упрощения тестирования progressbar.
+            // УДАЛИТЬ ПОСЛЕ ОТЛАДКИ!!!
             // Запускаем getCount параллельно, оно подхватит только новые значения
             launch { getCount() }
 
@@ -90,9 +93,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {
-        if ((latestSearchText == changedText) && (searchState.value is
-                SearchScreenState.SearchResults)
-        ) {
+        if (latestSearchText == changedText && searchState.value is SearchScreenState.SearchResults) {
             return (searchState.value as SearchScreenState.SearchResults).pagingData
         } else {
             latestSearchText = changedText
