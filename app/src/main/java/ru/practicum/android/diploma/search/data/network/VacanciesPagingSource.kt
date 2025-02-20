@@ -1,9 +1,8 @@
-package ru.practicum.android.diploma.search.data.impl
+package ru.practicum.android.diploma.search.data.network
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
 import ru.practicum.android.diploma.core.domain.exception.NoInternetException
@@ -15,22 +14,17 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
     private val searchRequest: VacanciesSearchRequest,
-    private val foundCount: MutableStateFlow<Int?>
+    private val foundCount: MutableSharedFlow<Int?>
 ) : PagingSource<Int, Vacancy>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
         return try {
-            Log.d("DEBUG", "стартую load в VacanciesPagingSource")
             val page = params.key ?: 0
             val updatedRequest = searchRequest.copy(page = page)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
-            Log.d("DEBUG", "Response в VacanciesPagingSource: $response")
 
-            foundCount.value = response.found
-            Log.d(
-                "DEBUG foundCount",
-                "ViewModel startSearch-> Всего вакансий найдено: ${response.found}(инфо из response)"
-            )
+            // Обновляем значение foundCount
+            foundCount.emit(response.found)
 
             when (response.resultCode) {
                 200 -> {
@@ -53,7 +47,6 @@ class VacanciesPagingSource(
             LoadResult.Error(e)
         }
     }
-
 
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
         return state.anchorPosition?.let { anchorPosition ->

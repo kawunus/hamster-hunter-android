@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
-
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +22,6 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     private var latestSearchText = ""
     private var searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
-
     private val _foundCount = MutableLiveData<Int>()
     fun getFoundCount(): LiveData<Int> = _foundCount
 
@@ -50,7 +48,11 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     fun startSearch(expression: String) {
         viewModelScope.launch {
             searchState.postValue(SearchScreenState.Loading)
-            delay(1000)
+            delay(1000) // временно добавила задержку для упрощения тестирования progressbar. TODO: УДАЛИТЬ ПОСЛЕ ОТЛАДКИ!!!
+
+            // Запускаем getCount параллельно, оно подхватит только новые значения
+            launch { getCount() }
+
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
                 .catch { throwable ->
@@ -68,14 +70,15 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
                         pagingData = data
                     )
                 }
-
-            interactor.foundCount
-                .filterNotNull()
-                .collect { count ->
-                    _foundCount.value = count
-                    Log.d("DEBUG foundCount", "ViewModel startSearch-> Всего вакансий найдено: $count")
-                }
         }
+    }
+
+    private suspend fun getCount() {
+        interactor.foundCount
+            .filterNotNull()
+            .collect { count ->
+                _foundCount.value = count
+            }
     }
 
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {

@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.di
 
 import android.content.Context
 import androidx.room.Room
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.core.data.network.HHApiService
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
-import ru.practicum.android.diploma.search.data.impl.VacanciesPagingSource
+import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
 
 val dataModule = module {
 
@@ -40,7 +40,7 @@ val dataModule = module {
         )
     }
 
-    factory { (searchRequest: VacanciesSearchRequest, foundCount: MutableStateFlow<Int?>) ->
+    factory { (searchRequest: VacanciesSearchRequest, foundCount: MutableSharedFlow<Int?>) ->
         VacanciesPagingSource(networkClient = get(), searchRequest = searchRequest, foundCount = foundCount)
     }
 
