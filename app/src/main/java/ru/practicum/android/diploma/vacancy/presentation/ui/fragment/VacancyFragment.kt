@@ -143,7 +143,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
                 "\n" +
                 "\n" +
                 "\n" +
-                "\n", "тест прокрутки"
+                "\n",
+            "тест прокрутки"
         )
     }
 }
