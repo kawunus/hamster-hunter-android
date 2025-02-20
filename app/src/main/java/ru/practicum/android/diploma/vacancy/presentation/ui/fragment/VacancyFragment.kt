@@ -24,27 +24,35 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     }
 
     override fun subscribe() {
-        //todo
     }
+
     private fun bindButtons() {
         binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
-        //todo share/like
     }
 
     private fun testValues(idString: String) {
         when (TESTTYPE) {
             0 -> {
                 renderError(true)
+                binding.progressBar.isVisible = false
                 changeErrorMessage(true)
             }
 
             1 -> {
                 renderError(true)
+                binding.progressBar.isVisible = false
                 changeErrorMessage(false)
+            }
+
+            2 -> {
+                renderError(false)
+                binding.jobInfo.isVisible = false
+                binding.progressBar.isVisible = true
             }
 
             else -> {
                 renderError(false)
+                binding.progressBar.isVisible = false
                 renderTestInfo(idString)
             }
         }
@@ -64,13 +72,13 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             EMPLJOBFORMAT2TEST
         )
         binding.jobDescription.text = DESCRIPTIONTEST
-        //загружаю ключевые скиллы
+        // загружаю ключевые скиллы
         var keySkills = ""
         for (i in testArray) {
             keySkills += getString(R.string.key_skill_separator, i)
         }
         binding.keySkills.text = keySkills
-        //загружаю иконку
+        // загружаю иконку
         Glide.with(this.requireContext())
             .load(IMGTEST)
             .placeholder(R.drawable.placeholder_32px)
@@ -94,7 +102,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     }
 
     companion object {
-        const val TESTTYPE = 2 //2 и более -без ошибок, 1-ошибка вакансия удалена или нет в базе, 0 -ошибка сервера
+        const val TESTTYPE =
+            3 // 3 и более -без ошибок, 2 - загрузка 1-ошибка вакансия удалена или нет в базе, 0 -ошибка сервера
         const val NAMETEST = "Хомяк ID"
         const val IMGTEST = "https://hh.ru/employer-logo/289027.png"
         const val EMPLNAMETEST = "ХомякПромПрог"
@@ -104,7 +113,9 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         const val EMPLJOBFORMAT2TEST = "Без графика"
         const val DESCRIPTIONTEST = "стать программистом"
         val testArray = arrayOf(
-            "крутить педали", "быть хомяком", "внизу проверка прокрутки\n" +
+            "крутить педали",
+            "быть хомяком",
+            "внизу проверка прокрутки\n" +
                 "\n" +
                 "\n" +
                 "\n" +
