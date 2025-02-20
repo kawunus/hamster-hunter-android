@@ -22,6 +22,7 @@
     <dimen name="dp56">56dp</dimen>
     <dimen name="dp60">60dp</dimen>
     <dimen name="dp64">64dp</dimen>
+    <dimen name="dp171">171dp</dimen>
     <dimen name="dp224">224dp</dimen>
     <dimen name="dp328">328dp</dimen>
 </resources>

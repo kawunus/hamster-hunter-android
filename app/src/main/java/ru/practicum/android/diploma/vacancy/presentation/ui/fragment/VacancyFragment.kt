@@ -24,27 +24,35 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     }
 
     override fun subscribe() {
-        //todo
     }
+
     private fun bindButtons() {
         binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
-        //todo share/like
     }
 
     private fun testValues(idString: String) {
         when (TESTTYPE) {
             0 -> {
                 renderError(true)
+                binding.progressBar.isVisible = false
                 changeErrorMessage(true)
             }
 
             1 -> {
                 renderError(true)
+                binding.progressBar.isVisible = false
                 changeErrorMessage(false)
+            }
+
+            2 -> {
+                renderError(false)
+                binding.jobInfo.isVisible = false
+                binding.progressBar.isVisible = true
             }
 
             else -> {
                 renderError(false)
+                binding.progressBar.isVisible = false
                 renderTestInfo(idString)
             }
         }
@@ -94,7 +102,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     }
 
     companion object {
-        const val TESTTYPE = 2 //2 и более -без ошибок, 1-ошибка вакансия удалена или нет в базе, 0 -ошибка сервера
+        const val TESTTYPE =
+            3 //3 и более -без ошибок, 2 - загрузка 1-ошибка вакансия удалена или нет в базе, 0 -ошибка сервера
         const val NAMETEST = "Хомяк ID"
         const val IMGTEST = "https://hh.ru/employer-logo/289027.png"
         const val EMPLNAMETEST = "ХомякПромПрог"
