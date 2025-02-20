@@ -16,7 +16,6 @@ class RetrofitNetworkClient(
     private val hHApiService: HHApiService,
 ) : NetworkClient {
 
-
     override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }

@@ -10,4 +10,4 @@ data class VacanciesSearchRequest(
     val professionalRole: String?,
     @SerializedName("only_with_salary")
     val onlyWithSalary: Boolean?,
-    )
+)
