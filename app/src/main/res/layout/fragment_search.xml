@@ -9,7 +9,7 @@
     tools:context=".search.presentation.ui.fragment.SearchFragment">
 
     <TextView
-        android:id="@+id/job_search"
+        android:id="@+id/tv_job_search"
         style="@style/HeadToolBarStyle"
         android:layout_width="wrap_content"
         android:minHeight="@dimen/dp64"
@@ -40,7 +40,7 @@
         android:layout_marginTop="@dimen/dp12"
         android:layout_marginHorizontal="@dimen/dp16"
         android:hint="@string/enter_your_request"
-        app:layout_constraintTop_toBottomOf="@id/job_search" />
+        app:layout_constraintTop_toBottomOf="@id/tv_job_search" />
 
     <ImageButton
         android:id="@+id/button_clear"
@@ -75,7 +75,7 @@
         app:layout_constraintTop_toBottomOf="@id/notification_text" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progress_bar"
         android:layout_width="@dimen/dp36"
         android:layout_height="@dimen/dp36"
         android:indeterminateTint="@color/blue"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/placeholderMain"
+        android:id="@+id/iv_placeholder_main"
         android:layout_width="@dimen/dp328"
         android:layout_height="@dimen/dp224"
         android:scaleType="centerInside"
@@ -99,7 +99,7 @@
         tools:ignore="ContentDescription" />
 
     <LinearLayout
-        android:id="@+id/error_container"
+        android:id="@+id/ll_error_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -110,14 +110,14 @@
         app:layout_constraintTop_toBottomOf="@+id/edittext_search">
 
         <ImageView
-            android:id="@+id/networkErrorImage"
+            android:id="@+id/iv_error_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp224"
             android:src="@drawable/placeholder_network_error"
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/error_text"
+            android:id="@+id/tv_error_text"
             style="@style/Medium22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
