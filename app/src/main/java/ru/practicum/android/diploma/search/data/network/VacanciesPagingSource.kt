@@ -19,8 +19,8 @@ class VacanciesPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
         return try {
-            val page = params.key ?: 0
-            val updatedRequest = searchRequest.copy(page = page)
+            val currentPage = params.key ?: 0
+            val updatedRequest = searchRequest.copy(page = currentPage)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
 
             // Обновляем значение foundCount
@@ -34,8 +34,8 @@ class VacanciesPagingSource(
 
                         LoadResult.Page(
                             data = response.items.map { it.toDomain() },
-                            prevKey = if (page == 0) null else page - 1,
-                            nextKey = if (page >= response.pages - 1) null else page + 1
+                            prevKey = if (currentPage == 0) null else currentPage - 1,
+                            nextKey = if (currentPage >= response.pages - 1) null else currentPage + 1
                         )
                     }
                 }
@@ -46,6 +46,7 @@ class VacanciesPagingSource(
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
+
     }
 
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {

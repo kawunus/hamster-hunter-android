@@ -30,8 +30,9 @@ class VacanciesSearchRepositoryImpl() : VacanciesSearchRepository {
 
         return Pager(
             config = PagingConfig(
+                enablePlaceholders = false, // Отключение плейсхолдеров
                 pageSize = PAGE_SIZE,
-                enablePlaceholders = false // Отключение плейсхолдеров
+                prefetchDistance = PAGE_SIZE / 2
             ),
             pagingSourceFactory = {
                 getKoin().get<VacanciesPagingSource> { parametersOf(searchRequest, _foundCount) }

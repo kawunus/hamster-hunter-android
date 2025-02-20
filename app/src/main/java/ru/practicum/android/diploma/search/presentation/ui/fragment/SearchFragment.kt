@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.delay
@@ -47,15 +48,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
 
     override fun subscribe() {
-        viewModel.getSearchState().observe(viewLifecycleOwner)
-        { state ->
-            renderScreen(state)
-            hideProgressBar(state)
-        }
+        with(viewModel) {
+            getSearchState().observe(viewLifecycleOwner)
+            { state ->
+                renderScreen(state)
+            }
 
-        viewModel.getFoundCount().observe(viewLifecycleOwner) { foundCount ->
-            showFoundCount(foundCount)     // информация из репозитория пока не передаётся сюда нормально, но обрабатывать значение лайвдаты уже можно. Скоро всё починю.
-            Log.d("DEBUG foundCount", "Fragment observe -> Всего вакансий найдено: $foundCount")
+            getFoundCount().observe(viewLifecycleOwner) { foundCount ->
+                showFoundCount(foundCount)
+                Log.d("DEBUG foundCount", "Fragment observe -> Всего вакансий найдено: $foundCount")
+            }
+
+            getIsNextPageLoading().observe(viewLifecycleOwner) { isLoading ->
+                progressBarVisibilityManager(isLoading)
+            }
         }
     }
 
@@ -88,6 +94,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         binding.buttonClear.setOnClickListener {
             handleClearButtonClick()
             viewModel.cancelSearchDebounce()
+            viewModel.setDefaultScreen()
         }
     }
 
@@ -118,46 +125,80 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             adapter = this@SearchFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+        adapter.addLoadStateListener { loadStates ->
+            viewModel.setNextPageLoading(loadStates.append is LoadState.Loading)
+        }
+
     }
 
     private fun renderScreen(state: SearchScreenState) {
-        when (state) {
-            is Default -> {}    //TODO
-            is Loading -> showProgressBar()
-            is Error -> placeholderManager(state)
-            is SearchResults -> showSearchResults(state.pagingData)
-
-        }
         Log.d("DEBUG", "SearchScreenState = $state")
+        if (state is Error) placeholderContentManager(state)
+        if (state is SearchResults) showSearchResults(state.pagingData)
+        progressBarVisibilityManager(isLoading = state is Loading)
+        placeholderVisibilityManager(isError = state is Error)
+        notificationVisibilityManager(needToBeVisible = state is SearchResults || state is NothingFound)
+        defaultScreenVisibilityManager(needToBeVisible = state is Default)
+        recyclerVisibilityManager(needToBeVisible = state is SearchResults)
     }
 
     // обработка разных типов ошибок
-    private fun placeholderManager(state: Error) {
-        when (state) {
-            is NetworkError -> {}   //TODO
-            is NothingFound -> {}   //TODO
-            is ServerError -> {}    //TODO
+    private fun placeholderContentManager(state: Error) {
+        binding.apply {
+            when (state) {
+                is NetworkError -> {
+                    ivErrorImage.setImageResource(R.drawable.placeholder_network_error)
+                    tvErrorText.text = getString(R.string.error_no_internet)
+                }
+
+                is NothingFound -> {
+                    ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
+                    tvErrorText.text = getString(R.string.error_nothing_found)
+                }
+
+                is ServerError -> {
+                    ivErrorImage.setImageResource(R.drawable.placeholder_server_error_search)
+                    tvErrorText.text = getString(R.string.error_server)
+                }
+            }
         }
     }
+
 
     // отображение сообщения "Найдено $count вакансий"
     private fun showFoundCount(count: Int) {
-        //TODO
-    }
-
-    private fun hideProgressBar(state: SearchScreenState) {
-        if (state != Loading) {
-            binding.progressBar.isVisible = false
+        binding.notificationText.apply {
+            text = if (count == 0) {
+                getString(R.string.no_such_jobs)
+            } else {
+                resources.getQuantityString(R.plurals.found_jobs_plural, count, count)
+            }
+            isVisible = true
         }
     }
 
-    private fun showProgressBar() {
-        binding.progressBar.isVisible = true
-        //TODO
+    private fun notificationVisibilityManager(needToBeVisible: Boolean) {
+        if (!needToBeVisible) binding.notificationText.isVisible = false
+    }
+
+    private fun defaultScreenVisibilityManager(needToBeVisible: Boolean) {
+        binding.ivPlaceholderMain.isVisible = needToBeVisible
+    }
+
+    private fun recyclerVisibilityManager(needToBeVisible: Boolean) {
+        binding.recycler.isVisible = needToBeVisible
+    }
+
+    private fun placeholderVisibilityManager(isError: Boolean) {
+        binding.llErrorContainer.isVisible = isError
+    }
+
+    private fun progressBarVisibilityManager(isLoading: Boolean) {
+        binding.progressBar.isVisible = isLoading
+
     }
 
     private fun showSearchResults(pagingData: PagingData<Vacancy>) {
-        binding.recycler.isVisible = true
         adapter.submitData(lifecycle, pagingData)
     }
 
@@ -175,6 +216,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-
     }
 }

@@ -16,22 +16,20 @@ class RetrofitNetworkClient(
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
-        Log.d("DEBUG", "Вызов doRequest в RetrofitNetworkClient")
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
 
         return withContext(Dispatchers.IO) {
             val userAgent = USER_AGENT
-            val token = "Bearer $TOKEN"
+            val token = "Bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
 
             try {
                 val response = when (dto) {
                     is VacanciesSearchRequest -> {
-                        Log.d("DEBUG", "Вызываю hHApiService.search в RetrofitNetworkClient")
                         hHApiService.search(
                             userAgent = userAgent,
-                            text = dto.text, //временно убрала token = token для тестов без токена
+                            text = dto.text,
                         )
                     }
 

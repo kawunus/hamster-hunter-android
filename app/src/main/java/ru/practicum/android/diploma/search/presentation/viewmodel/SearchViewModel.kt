@@ -22,8 +22,12 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     private var latestSearchText = ""
     private var searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
+
     private val _foundCount = MutableLiveData<Int>()
     fun getFoundCount(): LiveData<Int> = _foundCount
+
+    private val _isNextPageLoading = MutableLiveData(false)
+    fun getIsNextPageLoading(): LiveData<Boolean> = _isNextPageLoading
 
     private val trackSearchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY,
@@ -81,6 +85,10 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             }
     }
 
+    fun setNextPageLoading(isLoading: Boolean) {
+        _isNextPageLoading.value = isLoading
+    }
+
     private fun getActualSearchResults(changedText: String): PagingData<Vacancy>? {
         if ((latestSearchText == changedText) && (searchState.value is
                 SearchScreenState.SearchResults)
@@ -90,6 +98,10 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             latestSearchText = changedText
             return null
         }
+    }
+
+    fun setDefaultScreen() {
+        searchState.value = SearchScreenState.Default
     }
 
     private companion object {
