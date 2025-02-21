@@ -25,7 +25,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
 
     private val adapter = VacancyAdapter { vacancy ->
         if (clickDebounce()) {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id))
+            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(vacancy.id))
         }
     }
 
@@ -94,6 +94,11 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
             }
         }
         return current
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getData()
     }
 
     private companion object {
