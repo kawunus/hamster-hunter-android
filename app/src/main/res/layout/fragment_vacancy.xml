@@ -31,7 +31,6 @@
         android:paddingStart="@dimen/zero"
         android:text="@string/job"
         app:icon="@drawable/ic_arrow_back"
-
         app:iconGravity="textStart"
         app:iconPadding="@dimen/dp16"
         app:iconSize="@dimen/dp24"
@@ -100,8 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="@dimen/sp32"
-            android:paddingStart="@dimen/sp32"
+            android:paddingHorizontal="@dimen/sp32"
             android:paddingTop="@dimen/dp16"
             android:text="@string/error_job_not_found_or_deleted" />
 
@@ -177,7 +175,7 @@
                     style="@style/Medium22TextStyle"
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp16"
+                    android:layout_marginStart="@dimen/dp8"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -190,7 +188,7 @@
                     style="@style/Regular16TextStyle"
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp16"
+                    android:layout_marginStart="@dimen/dp8"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
