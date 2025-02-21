@@ -44,9 +44,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             viewModel.likeButtonControl(
                 vacancy = Vacancy(
                     id = args.vacancyId!!,
-                    name = getString(
-                        R.string.vacancy_name_and_location, NAMETEST, args.vacancyId
-                    ),
+                    name = "Тестировщик",
                     salaryTo = null,
                     salaryFrom = 0,
                     company = "Yandex",

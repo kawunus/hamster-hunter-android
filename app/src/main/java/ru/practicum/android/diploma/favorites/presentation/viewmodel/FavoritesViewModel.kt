@@ -26,7 +26,9 @@ class FavoritesViewModel(private val favoriteVacancyInteractor: FavoriteVacancyI
     private fun processResult(vacanciesList: List<Vacancy>) {
         if (vacanciesList.isEmpty()) {
             renderState(FavoritesState.Empty)
-        } else renderState(FavoritesState.Content(vacanciesList))
+        } else {
+            renderState(FavoritesState.Content(vacanciesList))
+        }
     }
 
     private fun renderState(state: FavoritesState) {

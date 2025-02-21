@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.favorites.presentation.ui.fragment
 
-import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
+import androidx.core.view.isVisible
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
@@ -14,7 +14,6 @@ import ru.practicum.android.diploma.favorites.presentation.model.FavoritesState
 import ru.practicum.android.diploma.favorites.presentation.ui.adapter.VacancyAdapter
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavoritesViewModel
 import ru.practicum.android.diploma.search.domain.model.Vacancy
-import ru.practicum.android.diploma.search.presentation.ui.fragment.SearchFragmentDirections
 
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewModel>(
     inflate = FragmentFavoritesBinding::inflate
@@ -25,7 +24,10 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
 
     private val adapter = VacancyAdapter { vacancy ->
         if (clickDebounce()) {
-            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(vacancy.id))
+            findNavController().navigate(
+                FavoritesFragmentDirections
+                    .actionFavoritesFragmentToVacancyFragment(vacancy.id)
+            )
         }
     }
 
