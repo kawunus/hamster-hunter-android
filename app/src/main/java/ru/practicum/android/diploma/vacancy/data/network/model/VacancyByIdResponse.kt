@@ -13,6 +13,6 @@ data class VacancyByIdResponse(
     val employment: Employment,
     @SerializedName("work_format") val workFormat: WorkFormat,
     val description: String,
-    @SerializedName("key_skills") val keySkills: String
+    @SerializedName("key_skills") val keySkills: List<String>
 ) : Response()
 
