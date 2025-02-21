@@ -5,16 +5,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.formatSalary
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
 
 class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     inflate = FragmentVacancyBinding::inflate
 ) {
-    override val viewModel: VacancyViewModel by viewModels()
+    override val viewModel: VacancyViewModel by inject()
 
     override fun initViews() {
         bindButtons()
@@ -23,11 +25,37 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         testValues(vacancyId.toString())
     }
 
-    override fun subscribe() {
+    override fun subscribe() = with(binding) {
+        viewModel.observeIsFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
+            if (isFavorite) {
+                buttonLike.setImageResource(R.drawable.ic_favorites_on)
+            } else {
+                buttonLike.setImageResource(R.drawable.ic_favorites_off)
+            }
+        }
     }
 
-    private fun bindButtons() {
-        binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
+    private fun bindButtons() = with(binding) {
+        buttonBack.setOnClickListener { findNavController().navigateUp() }
+
+        // Потом необходимо убрать navArgs отсюда
+        val args by navArgs<VacancyFragmentArgs>()
+        buttonLike.setOnClickListener {
+            viewModel.likeButtonControl(
+                vacancy = Vacancy(
+                    id = args.vacancyId!!,
+                    name = getString(
+                        R.string.vacancy_name_and_location, NAMETEST, args.vacancyId
+                    ),
+                    salaryTo = null,
+                    salaryFrom = 0,
+                    company = "Yandex",
+                    area = "Москва",
+                    currency = "BYN",
+                    icon = ""
+                )
+            )
+        }
     }
 
     private fun testValues(idString: String) {
