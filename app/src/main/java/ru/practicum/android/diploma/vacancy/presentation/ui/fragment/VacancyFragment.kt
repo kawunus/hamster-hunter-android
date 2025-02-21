@@ -1,11 +1,10 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import org.koin.android.ext.android.inject
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -16,7 +15,7 @@ import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewMo
 class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     inflate = FragmentVacancyBinding::inflate
 ) {
-    override val viewModel: VacancyViewModel by inject()
+    override val viewModel: VacancyViewModel by viewModel()
 
     override fun initViews() {
         bindButtons()
