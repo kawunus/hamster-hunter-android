@@ -22,6 +22,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         val args by navArgs<VacancyFragmentArgs>()
         val vacancyId by lazy { args.vacancyId }
         testValues(vacancyId.toString())
+        viewModel.initIsVacancyInFavorite(vacancyId ?: "")
     }
 
     override fun subscribe() = with(binding) {

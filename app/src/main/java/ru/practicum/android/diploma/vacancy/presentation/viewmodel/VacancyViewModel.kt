@@ -34,4 +34,10 @@ class VacancyViewModel(private val favoriteVacancyInteractor: FavoriteVacancyInt
             isFavoriteLiveData.value = favoriteVacancyInteractor.isVacancyInFavorites(vacancy.id)
         }
     }
+
+    fun initIsVacancyInFavorite(vacancyId: String) {
+        viewModelScope.launch {
+            isFavoriteLiveData.value = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
+        }
+    }
 }
