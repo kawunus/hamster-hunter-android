@@ -22,8 +22,8 @@ class FavoriteVacancyRepositoryImpl(
         favoriteVacancyDao.addVacancyToFavorites(convertVacancyToVacancyEntity(vacancy))
     }
 
-    override suspend fun deleteVacancyFromFavorites(vacancy: Vacancy) {
-        favoriteVacancyDao.deleteVacancyFromFavorites(convertVacancyToVacancyEntity(vacancy))
+    override suspend fun deleteVacancyFromFavorites(vacancyId: String) {
+        favoriteVacancyDao.deleteVacancyFromFavorites(vacancyId)
     }
 
     override suspend fun isVacancyInFavorites(vacancyId: String): Boolean {

@@ -9,7 +9,7 @@ interface FavoriteVacancyRepository {
 
     suspend fun addVacancyToFavorites(vacancy: Vacancy)
 
-    suspend fun deleteVacancyFromFavorites(vacancy: Vacancy)
+    suspend fun deleteVacancyFromFavorites(vacancyId: String)
 
     suspend fun isVacancyInFavorites(vacancyId: String): Boolean
 }
