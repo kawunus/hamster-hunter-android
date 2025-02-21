@@ -10,9 +10,12 @@ data class VacancyByIdResponse(
     val employer: Employer,
     val area: Area,
     val experience: Experience,
+    @SerializedName("employment_form")
     val employment: Employment,
-    @SerializedName("work_format") val workFormat: WorkFormat,
+    @SerializedName("work_format")
+    val workFormat: WorkFormat,
     val description: String,
-    @SerializedName("key_skills") val keySkills: List<String>
+    @SerializedName("key_skills")
+    val keySkills: List<KeySkills>
 ) : Response()
 
