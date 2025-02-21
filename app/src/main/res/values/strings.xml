@@ -54,6 +54,7 @@
     <string name="no_salary_info">Зарплата не указана</string>
     <string name="required_experience">Требуемый опыт</string>
     <string name="job_description">Описание вакансии</string>
+    <string name="key_skills">Ключевые навыки</string>
     <!--кнопки-->
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
@@ -62,7 +63,8 @@
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_server">Ошибка сервера</string>
     <string name="error_job_not_found_or_deleted">Вакансия не найдена или удалена</string>
-    <string name="error_nothing_found">Не удалось получить список вакансий</string>
+    <string name="error_nothing_found_place">Не удалось получить\nсписок вакансий</string>
+    <string name="error_nothing_found">Не удалось получить\nсписок</string>
     <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
     <string name="dev1">Аксенов Александр Сергеевич</string>

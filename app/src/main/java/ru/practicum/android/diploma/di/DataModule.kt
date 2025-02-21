@@ -50,4 +50,8 @@ val dataModule = module {
         )
     }
 
+// FavoriteVacancyDao
+    single {
+        get<AppDatabase>().favoriteVacancyDao()
+    }
 }
