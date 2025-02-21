@@ -9,14 +9,14 @@
     tools:context=".search.presentation.ui.fragment.SearchFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/leftBorder"
+        android:id="@+id/left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="@dimen/dp16" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/rightBorder"
+        android:id="@+id/right_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -37,7 +37,7 @@
         app:iconSize="@dimen/dp24"
         app:iconTint="?attr/colorOnPrimary"
         app:layout_constraintEnd_toStartOf="@id/button_share"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintStart_toStartOf="@id/left_border"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
@@ -64,6 +64,7 @@
         android:background="?attr/colorPrimary"
         android:paddingHorizontal="@dimen/dp12"
         android:paddingVertical="@dimen/dp12"
+        android:contentDescription="@null"
         android:src="@drawable/ic_sharing"
         app:layout_constraintEnd_toStartOf="@id/button_like"
         app:layout_constraintTop_toTopOf="parent"
@@ -76,8 +77,8 @@
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border"
         app:layout_constraintTop_toBottomOf="@id/button_back">
 
         <View
@@ -86,13 +87,14 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:id="@+id/errorImg"
+            android:id="@+id/error_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@null"
             android:src="@drawable/placeholder_job_deleted_error" />
 
         <TextView
-            android:id="@+id/errorText"
+            android:id="@+id/error_text"
             style="@style/Medium22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,7 +124,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/jobInfo"
+        android:id="@+id/job_info"
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero"
         android:layout_marginHorizontal="@dimen/dp16"
@@ -160,18 +162,18 @@
                 android:paddingVertical="@dimen/dp16">
 
                 <ImageView
-                    android:id="@+id/employerImg"
+                    android:id="@+id/employer_img"
                     android:layout_width="@dimen/dp48"
                     android:layout_height="@dimen/dp48"
                     android:layout_gravity="center"
-                    android:contentDescription=""
+                    android:contentDescription="@null"
                     android:src="@drawable/placeholder_32px"
                     app:cornerRadius="@dimen/dp12"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/employerName"
+                    android:id="@+id/employer_name"
                     style="@style/Medium22TextStyle"
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
@@ -179,12 +181,12 @@
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@id/employerImg"
+                    app:layout_constraintStart_toEndOf="@id/employer_img"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Loading" />
 
                 <TextView
-                    android:id="@+id/employerLocation"
+                    android:id="@+id/employer_location"
                     style="@style/Regular16TextStyle"
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
@@ -192,8 +194,8 @@
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@id/employerImg"
-                    app:layout_constraintTop_toBottomOf="@id/employerName"
+                    app:layout_constraintStart_toEndOf="@id/employer_img"
+                    app:layout_constraintTop_toBottomOf="@id/employer_name"
                     tools:text="Loading" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -213,7 +215,7 @@
                 tools:text="Loading" />
 
             <TextView
-                android:id="@+id/employmentFormAndWorkFormat"
+                android:id="@+id/employment_form_and_work_format"
                 style="@style/Regular16TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -243,7 +245,7 @@
                 android:text="@string/key_skills" />
 
             <TextView
-                android:id="@+id/keySkills"
+                android:id="@+id/key_skills"
                 style="@style/Regular16TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
