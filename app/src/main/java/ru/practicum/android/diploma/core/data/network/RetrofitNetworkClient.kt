@@ -20,7 +20,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        val token = "Bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
+        val token = "bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
 
         return withContext(Dispatchers.IO) {
             try {
