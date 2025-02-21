@@ -12,5 +12,5 @@ import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
 val repositoryModule = module {
     factoryOf(::VacanciesSearchRepositoryImpl) { bind<VacanciesSearchRepository>() }
 
-    singleOf(::FavoriteVacancyRepositoryImpl) {bind<FavoriteVacancyRepository>()}
+    singleOf(::FavoriteVacancyRepositoryImpl) { bind<FavoriteVacancyRepository>() }
 }

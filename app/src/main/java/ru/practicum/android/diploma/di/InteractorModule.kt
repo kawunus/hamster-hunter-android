@@ -12,6 +12,5 @@ import ru.practicum.android.diploma.search.domain.impl.VacanciesSearchInteractor
 val interactorModule = module {
     factoryOf(::VacanciesSearchInteractorImpl) { bind<VacanciesSearchInteractor>() }
 
-
     singleOf(::FavoriteVacancyInteractorImpl) { bind<FavoriteVacancyInteractor>() }
 }
