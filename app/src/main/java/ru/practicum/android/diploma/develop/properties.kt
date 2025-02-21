@@ -1,3 +1,0 @@
-package ru.practicum.android.diploma.develop
-
-val hhAccessToken= "APPLH9L47VS57C37LGO65L8Q7APTTIRM4IA1LGLJQDBA7EFRG87682O3HKK0809N"
