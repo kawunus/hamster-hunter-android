@@ -45,4 +45,8 @@ val dataModule = module {
         VacanciesPagingSource(networkClient = get(), searchRequest = searchRequest, foundCount = foundCount)
     }
 
+// FavoriteVacancyDao
+    single {
+        get<AppDatabase>().favoriteVacancyDao()
+    }
 }
