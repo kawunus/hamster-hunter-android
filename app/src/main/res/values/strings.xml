@@ -55,6 +55,7 @@
     <string name="required_experience">Требуемый опыт</string>
     <string name="job_description">Описание вакансии</string>
     <string name="key_skills">Ключевые навыки</string>
+    <string name="key_skill_separator">"   •    %s\n"</string>
     <!--кнопки-->
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
