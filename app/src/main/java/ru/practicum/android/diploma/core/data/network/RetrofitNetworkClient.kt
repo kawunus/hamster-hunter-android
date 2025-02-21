@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.util.NetworkMonitor
-import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdRequest
+import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 
 class RetrofitNetworkClient(
     private val context: Context,
