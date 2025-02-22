@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.presentation.ui.fragment
 
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.core.data.network.exception.EmptyResultException
+import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
@@ -132,18 +135,31 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun setLoadStateListener() {
         adapter.addLoadStateListener { loadState ->
+            when {
+                loadState.refresh is LoadState.Error -> { // ошибки при первичной загрузке контента
+                    viewModel.setErrorScreenState(loadState.refresh as LoadState.Error)
+                }
 
-            val errorState = when {
-                loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
-                loadState.append is LoadState.Error -> loadState.append as LoadState.Error
-                loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
-                else -> null
-            }
-
-            errorState?.let { error ->
-                viewModel.setErrorState(error)
+                loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> { // ошибки при загрузке страниц
+                    showPagingError(
+                        (loadState.append as? LoadState.Error) ?: (loadState.prepend as LoadState.Error)
+                    )
+                }
             }
         }
+    }
+
+    private fun showPagingError(error: LoadState.Error) {
+        val message = when (error.error) {
+            is EmptyResultException -> getString(R.string.error_nothing_found)
+            is NoInternetException -> getString(R.string.error_no_internet)
+            else -> getString(R.string.error_server)
+        }
+        showToastShort(message)
+    }
+
+    private fun showToastShort(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
     private fun renderScreen(state: SearchScreenState) {

@@ -7,8 +7,8 @@ import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.NetworkClient
-import ru.practicum.android.diploma.core.domain.exception.EmptyResultException
-import ru.practicum.android.diploma.core.domain.exception.NoInternetException
+import ru.practicum.android.diploma.core.data.network.exception.EmptyResultException
+import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.search.data.mapper.toDomain
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
@@ -23,8 +23,7 @@ class VacanciesPagingSource(
 ) : PagingSource<Int, Vacancy>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
-        // Проверяем наличие подключения до выполнения запроса
-        if (!isConnected()) {
+        if (!isConnected()) { // Проверяем наличие подключения до выполнения запроса
             return LoadResult.Error(NoInternetException())
         }
 
@@ -32,8 +31,8 @@ class VacanciesPagingSource(
             val currentPage = params.key ?: 0
             val updatedRequest = searchRequest.copy(page = currentPage)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
-            // Обновляем значение foundCount
-            foundCount.emit(response.found)
+
+            foundCount.emit(response.found) // Обновляем значение foundCount
 
             when (response.resultCode) {
                 HTTP_SUCCESS -> {
