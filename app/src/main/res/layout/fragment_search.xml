@@ -57,12 +57,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/zero"
         android:clipToPadding="false"
         android:paddingTop="46dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edittext_search"
+        app:layout_constraintBottom_toTopOf="@id/progress_bar"
         tools:itemCount="5"
         tools:listitem="@layout/vacancy_item" />
 
