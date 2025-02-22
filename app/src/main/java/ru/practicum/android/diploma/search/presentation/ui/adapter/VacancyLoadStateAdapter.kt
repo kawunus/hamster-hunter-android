@@ -12,7 +12,7 @@ class VacancyLoadStateAdapter : LoadStateAdapter<VacancyLoadStateAdapter.LoadSta
 
     inner class LoadStateViewHolder(private val binding: ItemLoadStateBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
+        // отображает progressBar как нижний элемент списка, когда загружается слудающая страница
         fun bind(loadState: LoadState) {
             binding.progressBar.isVisible = loadState is LoadState.Loading
         }
