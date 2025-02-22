@@ -131,14 +131,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun setLoadStateListener() {
         adapter.addLoadStateListener { loadState ->
             when {
-                loadState.refresh is LoadState.Error -> { // ошибки при первичной загрузке контента
+                // ошибки при первичной загрузке контента
+                loadState.refresh is LoadState.Error -> {
                     viewModel.setErrorScreenState(loadState.refresh as LoadState.Error)
                 }
-
-                loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> { // ошибки при загрузке страниц
-                    showPagingError(
-                        (loadState.append as? LoadState.Error) ?: (loadState.prepend as LoadState.Error)
-                    )
+                // ошибки при загрузке страниц
+                loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
+                    showPagingError(loadState.append as? LoadState.Error ?: loadState.prepend as LoadState.Error)
                 }
             }
         }

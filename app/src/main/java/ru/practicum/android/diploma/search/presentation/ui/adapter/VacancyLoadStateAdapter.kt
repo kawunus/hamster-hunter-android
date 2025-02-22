@@ -6,7 +6,6 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-
 import ru.practicum.android.diploma.databinding.ItemLoadStateBinding
 
 class VacancyLoadStateAdapter : LoadStateAdapter<VacancyLoadStateAdapter.LoadStateViewHolder>() {
