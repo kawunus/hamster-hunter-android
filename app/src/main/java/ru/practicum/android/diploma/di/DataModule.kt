@@ -13,8 +13,8 @@ import ru.practicum.android.diploma.core.data.database.AppDatabase
 import ru.practicum.android.diploma.core.data.network.HHApiService
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
-import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
+import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.util.Constants.HH_BASE_URL
 import ru.practicum.android.diploma.util.Constants.HH_DATABASE_NAME
 import ru.practicum.android.diploma.util.Constants.HH_SHARED_PREFS_NAME

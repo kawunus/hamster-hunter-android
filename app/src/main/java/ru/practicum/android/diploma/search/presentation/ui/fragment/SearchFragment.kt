@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyAdapter
+import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Default
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Error
@@ -37,6 +38,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id))
         }
     }
+    val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
 
     override fun initViews() {
@@ -60,9 +62,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 Log.d("DEBUG foundCount", "Fragment observe -> Всего вакансий найдено: $foundCount")
             }
 
-            getIsNextPageLoading().observe(viewLifecycleOwner) { isLoading ->
-                progressBarVisibilityManager(isLoading)
-            }
+//            getIsNextPageLoading().observe(viewLifecycleOwner) { isLoading ->
+//                progressBarVisibilityManager(isLoading)
+//            }
         }
     }
 
@@ -121,7 +123,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun setRecyclerView() {
         binding.recycler.apply {
-            adapter = this@SearchFragment.adapter
+            adapter = this@SearchFragment.adapter.withLoadStateFooter(footer = loadStateAdapter)
             layoutManager = LinearLayoutManager(requireContext())
         }
         setLoadStateListener()
