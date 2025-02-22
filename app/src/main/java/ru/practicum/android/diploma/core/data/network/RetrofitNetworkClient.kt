@@ -28,6 +28,7 @@ class RetrofitNetworkClient(
                     is VacanciesSearchRequest -> hHApiService.search(
                         userAgent = USER_AGENT,
                         text = dto.text,
+                        page = dto.page
                     )
 
                     is VacancyByIdRequest -> hHApiService.getVacancyById(

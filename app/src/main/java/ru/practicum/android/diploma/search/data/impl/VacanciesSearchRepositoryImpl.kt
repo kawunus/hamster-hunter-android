@@ -18,10 +18,10 @@ class VacanciesSearchRepositoryImpl(private val pagingSourceFactory: VacancyPagi
     override val foundCount: SharedFlow<Int?> get() = _foundCount
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
-        val searchRequest = VacanciesSearchRequest(
+        val searchRequest: VacanciesSearchRequest = VacanciesSearchRequest(
             text = expression,
-            page = 0,
             area = null,
+            page = 0,
             professionalRole = null,
             onlyWithSalary = null
         )
@@ -35,17 +35,6 @@ class VacanciesSearchRepositoryImpl(private val pagingSourceFactory: VacancyPagi
             pagingSourceFactory = { pagingSourceFactory.create(searchRequest, _foundCount) }
         ).flow
     }
-
-//        return Pager(
-//            config = PagingConfig(
-//                enablePlaceholders = true, // Отключение плейсхолдеров
-//                pageSize = PAGE_SIZE,
-//                prefetchDistance = PAGE_SIZE / 2
-//            ),
-//            pagingSourceFactory = {
-//                getKoin().get<VacanciesPagingSource> { parametersOf(searchRequest, _foundCount) }
-//            }
-//        ).flow
 
     companion object {
         const val PAGE_SIZE = 20

@@ -11,7 +11,8 @@ interface HHApiService {
     @GET("vacancies")
     suspend fun search(
         @Header("User-Agent") userAgent: String, // Header parameter для авторизации
-        @Query("text") text: String
+        @Query("text") text: String,
+        @Query("page") page: Int
     ): VacanciesSearchResponse
 
     @GET("vacancies/{vacancy_id}")
