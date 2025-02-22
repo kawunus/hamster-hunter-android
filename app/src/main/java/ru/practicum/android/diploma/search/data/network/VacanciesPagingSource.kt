@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,19 +31,11 @@ class VacanciesPagingSource(
             val updatedRequest = searchRequest.copy(page = currentPage)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
 
-            Log.d("PagingSource DEBUG", "Loading updatedRequest, page: ${updatedRequest.page}")
-            Log.d("PagingSource DEBUG", "Response items size: ${response.items.size}")
-            Log.d("PagingSource DEBUG", "First item id: ${response.items.firstOrNull()?.id}")
-
             foundCount.emit(response.found) // Обновляем значение foundCount
 
             when (response.resultCode) {
                 HTTP_SUCCESS -> {
                     val data = response.items
-                    Log.d(
-                        "DEBUG PagingSource",
-                        "currentPage: $currentPage, nextKey: ${if (data.isEmpty() || currentPage >= response.pages - 1) null else currentPage + 1}"
-                    )
                     if (data.isEmpty()) {
                         LoadResult.Error(EmptyResultException()) // Ошибка "Ничего не найдено"
                     } else {

@@ -59,6 +59,7 @@ class RetrofitNetworkClient(
         private const val HTTP_SERVER_ERROR = 500
         private const val HTTP_SUCCESS = 200
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
-        const val USER_AGENT = "HamsterHunter/1.0 (s.rubinets@gmail.com)"
+        const val USER_AGENT =
+            "HamsterHunter/1.0 (s.rubinets@gmail.com)" // тут хотели мейл разработчика. Я пока свою указала, но наверно стоит указать ту, что была в заявке на токен
     }
 }

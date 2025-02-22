@@ -45,7 +45,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var isClickAllowed = true
 
     override fun initViews() {
-        // init views
+        // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
@@ -54,7 +54,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
-        // subscribe on viewModel
+        // подписка на данные от viewModel
         with(viewModel) {
             getSearchState().observe(viewLifecycleOwner) { state ->
                 renderScreen(state)
@@ -62,12 +62,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
             getFoundCount().observe(viewLifecycleOwner) { foundCount ->
                 showFoundCount(foundCount)
-                Log.d("DEBUG foundCount", "Fragment observe -> Всего вакансий найдено: $foundCount")
             }
 
-//            getIsNextPageLoading().observe(viewLifecycleOwner) { isLoading ->
-//                progressBarVisibilityManager(isLoading)
-//            }
         }
     }
 

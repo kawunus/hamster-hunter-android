@@ -6,19 +6,21 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import ru.practicum.android.diploma.search.data.VacancyPagingSourceFactory
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.getKoin
+import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-class VacanciesSearchRepositoryImpl(private val pagingSourceFactory: VacancyPagingSourceFactory) :
+class VacanciesSearchRepositoryImpl :
     VacanciesSearchRepository {
 
     private val _foundCount = MutableSharedFlow<Int?>(replay = 0)
     override val foundCount: SharedFlow<Int?> get() = _foundCount
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
-        val searchRequest: VacanciesSearchRequest = VacanciesSearchRequest(
+        val searchRequest = VacanciesSearchRequest(
             text = expression,
             area = null,
             page = 0,
@@ -28,11 +30,13 @@ class VacanciesSearchRepositoryImpl(private val pagingSourceFactory: VacancyPagi
 
         return Pager(
             config = PagingConfig(
-                enablePlaceholders = true,
+                enablePlaceholders = false, // Отключение плейсхолдеров
                 pageSize = PAGE_SIZE,
                 prefetchDistance = PAGE_SIZE / 2
             ),
-            pagingSourceFactory = { pagingSourceFactory.create(searchRequest, _foundCount) }
+            pagingSourceFactory = {
+                getKoin().get<VacanciesPagingSource> { parametersOf(searchRequest, _foundCount) }
+            }
         ).flow
     }
 
