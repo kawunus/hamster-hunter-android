@@ -27,6 +27,7 @@ import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenSt
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.SearchResults
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
+import ru.practicum.android.diploma.util.formatNumber
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
@@ -131,7 +132,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun setLoadStateListener() {
         adapter.addLoadStateListener { loadState ->
-            viewModel.setNextPageLoading(loadState.append is LoadState.Loading)
 
             val errorState = when {
                 loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
@@ -192,7 +192,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             text = if (count == 0) {
                 getString(R.string.no_such_jobs)
             } else {
-                resources.getQuantityString(R.plurals.found_jobs_plural, count, count)
+                resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
             }
             isVisible = true
         }

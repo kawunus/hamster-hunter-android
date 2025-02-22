@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.core.data.database.AppDatabase
 import ru.practicum.android.diploma.core.data.network.HHApiService
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.search.data.VacancyPagingSourceFactory
 import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.util.Constants.HH_BASE_URL
@@ -49,6 +50,8 @@ val dataModule = module {
             context = get()
         )
     }
+
+    factory { VacancyPagingSourceFactory(getKoin()) }
 
 // FavoriteVacancyDao
     single {

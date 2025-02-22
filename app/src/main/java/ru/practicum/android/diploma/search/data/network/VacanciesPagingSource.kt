@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,13 +37,18 @@ class VacanciesPagingSource(
 
             when (response.resultCode) {
                 HTTP_SUCCESS -> {
-                    if (response.items.isEmpty()) {
+                    val data = response.items
+                    Log.d(
+                        "PagingSource",
+                        "currentPage: $currentPage, nextKey: ${if (data.isEmpty() || currentPage >= response.pages - 1) null else currentPage + 1}"
+                    )
+                    if (data.isEmpty()) {
                         LoadResult.Error(EmptyResultException()) // Ошибка "Ничего не найдено"
                     } else {
                         LoadResult.Page(
-                            data = response.items.map { it.toDomain() },
+                            data = data.map { it.toDomain() },
                             prevKey = if (currentPage == 0) null else currentPage - 1,
-                            nextKey = if (currentPage >= response.pages - 1) null else currentPage + 1
+                            nextKey = if (data.isEmpty() || currentPage >= response.pages - 1) null else currentPage + 1
                         )
                     }
                 }
@@ -57,8 +63,8 @@ class VacanciesPagingSource(
 
     override fun getRefreshKey(state: PagingState<Int, Vacancy>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.nextKey?.minus(1) ?: anchorPage?.prevKey?.plus(1)
         }
     }
 

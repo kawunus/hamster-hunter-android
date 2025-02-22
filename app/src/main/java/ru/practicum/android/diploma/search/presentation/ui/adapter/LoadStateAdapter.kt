@@ -27,5 +27,6 @@ class VacancyLoadStateAdapter : LoadStateAdapter<VacancyLoadStateAdapter.LoadSta
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
         holder.bind(loadState)
     }
+
 }
 
