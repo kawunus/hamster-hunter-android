@@ -14,7 +14,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.core.data.network.exception.EmptyResultException
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -151,15 +150,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun showPagingError(error: LoadState.Error) {
         val message = when (error.error) {
-            is EmptyResultException -> getString(R.string.error_nothing_found)
-            is NoInternetException -> getString(R.string.error_no_internet)
-            else -> getString(R.string.error_server)
+            is NoInternetException -> getString(R.string.error_toast_no_internet)
+            else -> getString(R.string.error_toast_server)
         }
-        showToastShort(message)
+        showToast(message)
     }
 
-    private fun showToastShort(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    private fun showToast(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
     private fun renderScreen(state: SearchScreenState) {
