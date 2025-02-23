@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.util.NetworkMonitor
@@ -20,7 +21,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        val token = "bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
+        val token = context.getString(R.string.bearer_token, TOKEN)
 
         return withContext(Dispatchers.IO) {
             try {

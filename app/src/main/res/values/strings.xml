@@ -78,4 +78,6 @@
     <string name="dev6">Шахов Сергей Геннадьевич</string>
     <!-- шаблон для обьединение заголовка вакансии и региона -->
     <string name="vacancy_name_and_location">%s, %s</string>
+    <!-- шаблон для подстановки токена API типа Bearer-->
+    <string name="bearer_token">Bearer %s</string>
 </resources>
