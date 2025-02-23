@@ -8,9 +8,13 @@ import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteract
 import ru.practicum.android.diploma.favorites.domain.impl.FavoriteVacancyInteractorImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.impl.VacanciesSearchInteractorImpl
+import ru.practicum.android.diploma.sharing.domain.api.SharingInteractor
+import ru.practicum.android.diploma.sharing.domain.impl.SharingInteractorImpl
 
 val interactorModule = module {
     factoryOf(::VacanciesSearchInteractorImpl) { bind<VacanciesSearchInteractor>() }
 
     singleOf(::FavoriteVacancyInteractorImpl) { bind<FavoriteVacancyInteractor>() }
+
+    singleOf(::SharingInteractorImpl) { bind<SharingInteractor>() }
 }
