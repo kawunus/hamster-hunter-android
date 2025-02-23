@@ -77,4 +77,6 @@
     <string name="dev6">Шахов Сергей Геннадьевич</string>
     <!-- шаблон для обьединение заголовка вакансии и региона -->
     <string name="vacancy_name_and_location">%s, %s</string>
+    <string name="error_toast_no_internet">Проверьте подключение к интернету</string>
+    <string name="error_toast_server">Произошла ошибка</string>
 </resources>
