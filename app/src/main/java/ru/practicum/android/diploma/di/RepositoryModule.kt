@@ -8,9 +8,13 @@ import ru.practicum.android.diploma.favorites.data.impl.FavoriteVacancyRepositor
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
 import ru.practicum.android.diploma.search.data.impl.VacanciesSearchRepositoryImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
+import ru.practicum.android.diploma.sharing.data.repository.SharingRepositoryImpl
+import ru.practicum.android.diploma.sharing.domain.api.SharingRepository
 
 val repositoryModule = module {
     factoryOf(::VacanciesSearchRepositoryImpl) { bind<VacanciesSearchRepository>() }
 
     singleOf(::FavoriteVacancyRepositoryImpl) { bind<FavoriteVacancyRepository>() }
+
+    singleOf(::SharingRepositoryImpl) { bind<SharingRepository>() }
 }
