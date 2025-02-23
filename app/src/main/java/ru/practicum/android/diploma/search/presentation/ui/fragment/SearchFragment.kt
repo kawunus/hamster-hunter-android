@@ -18,8 +18,8 @@ import ru.practicum.android.diploma.core.data.network.exception.NoInternetExcept
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
-import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyAdapter
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
+import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPagingAdapter
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Default
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Error
@@ -36,7 +36,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 ) {
     override val viewModel: SearchViewModel by viewModel<SearchViewModel>()
 
-    private val adapter = VacancyAdapter { vacancy ->
+    private val adapter = VacancyPagingAdapter { vacancy ->
         if (clickDebounce()) {
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id))
         }

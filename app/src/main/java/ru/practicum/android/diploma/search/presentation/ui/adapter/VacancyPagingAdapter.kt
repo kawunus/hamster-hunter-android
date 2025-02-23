@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-class VacancyAdapter(
+class VacancyPagingAdapter(
     private val onVacancyClick: (Vacancy) -> Unit
 ) : PagingDataAdapter<Vacancy, VacancyViewHolder>(VacancyDiffCallback()) {
 
