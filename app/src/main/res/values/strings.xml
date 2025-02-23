@@ -66,8 +66,9 @@
     <string name="error_toast_no_internet">Проверьте подключение к интернету</string>
     <string name="error_toast_server">Произошла ошибка</string>
     <string name="error_job_not_found_or_deleted">Вакансия не найдена или удалена</string>
-    <string name="error_nothing_found">Не удалось получить\nсписок вакансий</string>
     <string name="error_nothing_found_place">Не удалось получить\nсписок</string>
+    <string name="error_nothing_found">Не удалось получить\nсписок вакансий</string>
+    <string name="error_favorites_is_empty">Список пуст</string>
     <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
     <string name="dev1">Аксенов Александр Сергеевич</string>
