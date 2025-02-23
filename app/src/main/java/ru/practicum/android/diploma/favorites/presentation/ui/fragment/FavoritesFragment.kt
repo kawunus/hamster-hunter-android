@@ -82,7 +82,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
         }
     }
 
-
     private fun initRecyclerView() {
         binding.recyclerView.apply {
             adapter = this@FavoritesFragment.adapter
@@ -118,5 +117,4 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     private fun View.hide() {
         isVisible = false
     }
-
 }

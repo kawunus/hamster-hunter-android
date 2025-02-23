@@ -30,7 +30,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             val iconRes = if (isFavorite) {
                 R.drawable.ic_favorites_on
             } else {
-               R.drawable.ic_favorites_off
+                R.drawable.ic_favorites_off
             }
             buttonLike.setImageResource(iconRes)
         }
@@ -95,8 +95,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         binding.employerLocation.text = EMPLAREATEST
         binding.experience.text = EXPTEST
         binding.employmentFormAndWorkFormat.text = getString(
-            R.string.vacancy_name_and_location, EMPLJOBFORMAT1TEST,
-            EMPLJOBFORMAT2TEST
+            R.string.vacancy_name_and_location, EMPLJOBFORMAT1TEST, EMPLJOBFORMAT2TEST
         )
         binding.jobDescription.text = DESCRIPTIONTEST
         // загружаю ключевые скиллы
@@ -106,10 +105,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
         binding.keySkills.text = keySkills
         // загружаю иконку
-        Glide.with(this.requireContext())
-            .load(IMGTEST)
-            .placeholder(R.drawable.placeholder_32px)
-            .fitCenter()
+        Glide.with(this.requireContext()).load(IMGTEST).placeholder(R.drawable.placeholder_32px).fitCenter()
             .into(binding.employerImg)
     }
 
@@ -142,35 +138,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         val testArray = arrayOf(
             "крутить педали",
             "быть хомяком",
-            "внизу проверка прокрутки\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n",
+            "внизу проверка прокрутки\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n",
             "тест прокрутки"
         )
     }
