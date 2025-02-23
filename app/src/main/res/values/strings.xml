@@ -10,11 +10,11 @@
     <string name="no_such_jobs">Таких вакансий нет</string>
     <!-- пример использования resources.getQuantityString(R.plurals.found_jobs_plural, count, count)-->
     <plurals name="found_jobs_plural">
-        <item quantity="one">Найдена %1$s вакансия</item>
-        <item quantity="two">Найдено %1$s вакансии</item>
-        <item quantity="few">Найдено %1$s вакансии</item>
-        <item quantity="many">Найдено %1$s вакансий</item>
-        <item quantity="other">Найдено %1$s вакансий</item>
+        <item quantity="one">Найдена %1$d вакансия</item>
+        <item quantity="two">Найдено %1$d вакансии</item>
+        <item quantity="few">Найдено %1$d вакансии</item>
+        <item quantity="many">Найдено %1$d вакансий</item>
+        <item quantity="other">Найдено %1$d вакансий</item>
     </plurals>
 
     <!--фильтрация-->
@@ -63,11 +63,9 @@
     <!--error-->
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_server">Ошибка сервера</string>
-    <string name="error_toast_no_internet">Проверьте подключение к интернету</string>
-    <string name="error_toast_server">Произошла ошибка</string>
     <string name="error_job_not_found_or_deleted">Вакансия не найдена или удалена</string>
-    <string name="error_nothing_found_place">Не удалось получить\nсписок</string>
-    <string name="error_nothing_found">Не удалось получить\nсписок вакансий</string>
+    <string name="error_nothing_found_place">Не удалось получить\nсписок вакансий</string>
+    <string name="error_nothing_found">Не удалось получить\nсписок</string>
     <string name="error_favorites_is_empty">Список пуст</string>
     <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
@@ -79,6 +77,4 @@
     <string name="dev6">Шахов Сергей Геннадьевич</string>
     <!-- шаблон для обьединение заголовка вакансии и региона -->
     <string name="vacancy_name_and_location">%s, %s</string>
-    <!-- шаблон для подстановки токена API типа Bearer-->
-    <string name="bearer_token">Bearer %s</string>
 </resources>

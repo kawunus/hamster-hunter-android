@@ -1,33 +1,60 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.formatSalary
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
 
 class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     inflate = FragmentVacancyBinding::inflate
 ) {
-    override val viewModel: VacancyViewModel by viewModels()
+    override val viewModel: VacancyViewModel by viewModel()
 
     override fun initViews() {
         bindButtons()
         val args by navArgs<VacancyFragmentArgs>()
         val vacancyId by lazy { args.vacancyId }
         testValues(vacancyId.toString())
+        viewModel.initIsVacancyInFavorite(vacancyId ?: "")
     }
 
-    override fun subscribe() {
+    override fun subscribe() = with(binding) {
+        viewModel.observeIsFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
+            val iconRes = if (isFavorite) {
+                R.drawable.ic_favorites_on
+            } else {
+                R.drawable.ic_favorites_off
+            }
+            buttonLike.setImageResource(iconRes)
+        }
     }
 
-    private fun bindButtons() {
-        binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
+    private fun bindButtons() = with(binding) {
+        buttonBack.setOnClickListener { findNavController().navigateUp() }
+
+        // Потом необходимо убрать navArgs отсюда
+        val args by navArgs<VacancyFragmentArgs>()
+        buttonLike.setOnClickListener {
+            viewModel.likeButtonControl(
+                vacancy = Vacancy(
+                    id = args.vacancyId ?: "",
+                    name = "Тестировщик",
+                    salaryTo = null,
+                    salaryFrom = 0,
+                    company = "Yandex",
+                    area = "Москва",
+                    currency = "BYN",
+                    icon = ""
+                )
+            )
+        }
     }
 
     private fun testValues(idString: String) {
@@ -68,8 +95,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         binding.employerLocation.text = EMPLAREATEST
         binding.experience.text = EXPTEST
         binding.employmentFormAndWorkFormat.text = getString(
-            R.string.vacancy_name_and_location, EMPLJOBFORMAT1TEST,
-            EMPLJOBFORMAT2TEST
+            R.string.vacancy_name_and_location, EMPLJOBFORMAT1TEST, EMPLJOBFORMAT2TEST
         )
         binding.jobDescription.text = DESCRIPTIONTEST
         // загружаю ключевые скиллы
@@ -79,10 +105,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
         binding.keySkills.text = keySkills
         // загружаю иконку
-        Glide.with(this.requireContext())
-            .load(IMGTEST)
-            .placeholder(R.drawable.placeholder_32px)
-            .fitCenter()
+        Glide.with(this.requireContext()).load(IMGTEST).placeholder(R.drawable.placeholder_32px).fitCenter()
             .into(binding.employerImg)
     }
 
@@ -115,35 +138,10 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         val testArray = arrayOf(
             "крутить педали",
             "быть хомяком",
-            "внизу проверка прокрутки\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n",
+            "внизу проверка прокрутки\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n"
+                + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" +
+                "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n"
+                + "\n" + "\n" + "\n",
             "тест прокрутки"
         )
     }
