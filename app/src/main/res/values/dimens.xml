@@ -25,4 +25,5 @@
     <dimen name="dp171">171dp</dimen>
     <dimen name="dp224">224dp</dimen>
     <dimen name="dp328">328dp</dimen>
+    <dimen name="dp80">80dp</dimen>
 </resources>

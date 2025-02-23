@@ -1,6 +1,7 @@
-package ru.practicum.android.diploma.search.data.dto
+package ru.practicum.android.diploma.search.data.network.model
 
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.search.data.dto.VacancyDto
 
 data class VacanciesSearchResponse(
     val found: Int, // Общее количество найденных элементов

@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.presentation.ui.fragment
 
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -13,9 +14,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPagingAdapter
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Default
@@ -26,6 +29,7 @@ import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenSt
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.SearchResults
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
+import ru.practicum.android.diploma.util.formatNumber
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
@@ -37,10 +41,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id))
         }
     }
+    val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
 
     override fun initViews() {
-        // init views
+        // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
@@ -49,7 +54,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
-        // subscribe on viewModel
+        // подписка на данные от viewModel
         with(viewModel) {
             getSearchState().observe(viewLifecycleOwner) { state ->
                 renderScreen(state)
@@ -57,12 +62,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
             getFoundCount().observe(viewLifecycleOwner) { foundCount ->
                 showFoundCount(foundCount)
-                Log.d("DEBUG foundCount", "Fragment observe -> Всего вакансий найдено: $foundCount")
             }
 
-            getIsNextPageLoading().observe(viewLifecycleOwner) { isLoading ->
-                progressBarVisibilityManager(isLoading)
-            }
         }
     }
 
@@ -121,12 +122,37 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun setRecyclerView() {
         binding.recycler.apply {
-            adapter = this@SearchFragment.adapter
+            adapter = this@SearchFragment.adapter.withLoadStateFooter(footer = loadStateAdapter)
             layoutManager = LinearLayoutManager(requireContext())
         }
-        adapter.addLoadStateListener { loadStates ->
-            viewModel.setNextPageLoading(loadStates.append is LoadState.Loading)
+        setLoadStateListener()
+    }
+
+    private fun setLoadStateListener() {
+        adapter.addLoadStateListener { loadState ->
+            when {
+                // ошибки при первичной загрузке контента
+                loadState.refresh is LoadState.Error -> {
+                    viewModel.setErrorScreenState(loadState.refresh as LoadState.Error)
+                }
+                // ошибки при загрузке страниц
+                loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
+                    showPagingError(loadState.append as? LoadState.Error ?: loadState.prepend as LoadState.Error)
+                }
+            }
         }
+    }
+
+    private fun showPagingError(error: LoadState.Error) {
+        val message = when (error.error) {
+            is NoInternetException -> getString(R.string.error_toast_no_internet)
+            else -> getString(R.string.error_toast_server)
+        }
+        showToast(message)
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
     private fun renderScreen(state: SearchScreenState) {
@@ -175,7 +201,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             text = if (count == 0) {
                 getString(R.string.no_such_jobs)
             } else {
-                resources.getQuantityString(R.plurals.found_jobs_plural, count, count)
+                resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
             }
             isVisible = true
         }
