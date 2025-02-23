@@ -9,9 +9,9 @@ data class VacancyDetails(
     val salaryTo: Int?,
     val area: String,
     val icon: String,
-    val experience: String,//из obj со свойством name:String ->String
+    val experience: String, // из obj со свойством name:String ->String
     val employmentForm: String?,
-    val workFormat: String?,//array из obj со свойством name:String ->String
-    val description: String,//html
-    val keySkills: Array<String> //array из obj со свойством name:String
+    val workFormat: String?, // array из obj со свойством name:String ->String
+    val description: String, // html
+    val keySkills: Array<String> // array из obj со свойством name:String
 )

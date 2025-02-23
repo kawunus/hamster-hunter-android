@@ -24,10 +24,10 @@ class VacancyViewModel(
     fun observeVacancyDetailsState(): LiveData<VacancyDetailsState> = vacancyDetailsLiveData
 
     init {
-        if (vacancyId != "") {//значение по умолчанию в nav_graph.xml
+        if (vacancyId != "") { // значение по умолчанию в nav_graph.xml
             viewModelScope.launch {
-                delay(SERVERDELAYTEST)//имитация времени загрузки с сервера
-                //тут будет запрос на поиск вакансии согласно id "vacancyId"
+                delay(SERVERDELAYTEST) // имитация времени загрузки с сервера
+                // тут будет запрос на поиск вакансии согласно id "vacancyId"
                 when (TESTTYPE) {
                     0 -> {
                         vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
