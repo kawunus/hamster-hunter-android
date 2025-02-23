@@ -10,14 +10,14 @@ import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdResponse
 interface HHApiService {
     @GET("vacancies")
     suspend fun search(
-        @Header("User-Agent") userAgent: String, // Header parameter для авторизации
+        @Header("User-Agent") userAgent: String,
         @Query("text") text: String,
         @Query("page") page: Int
     ): VacanciesSearchResponse
 
     @GET("vacancies/{vacancy_id}")
-    fun getVacancyById(
-        @Header("User-Agent") userAgent: String, // Header parameter для авторизации
-        @Path("vacancy_id") vacancyId: String, // Path parameter
+    suspend fun getVacancyById(
+        @Header("User-Agent") userAgent: String,
+        @Path("vacancy_id") vacancyId: String,
     ): VacancyByIdResponse
 }
