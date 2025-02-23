@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.favorites.presentation.ui.fragment
 
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -52,32 +53,35 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     }
 
     private fun renderContent(vacanciesList: List<Vacancy>) = with(binding) {
-        errorMessageTextView.isVisible = false
-        placeholderImageView.isVisible = false
-        progressBar.isVisible = false
-        recyclerView.isVisible = true
+        errorMessageTextView.hide()
+        placeholderImageView.hide()
+        progressBar.hide()
+        recyclerView.show()
         adapter.saveData(vacanciesList)
     }
 
     private fun renderLoadingState() = with(binding) {
-        recyclerView.isVisible = false
-        errorMessageTextView.isVisible = false
-        placeholderImageView.isVisible = false
-        progressBar.isVisible = true
+        recyclerView.hide()
+        errorMessageTextView.hide()
+        placeholderImageView.hide()
+        progressBar.show()
     }
 
     private fun renderEmptyState() = with(binding) {
-        recyclerView.isVisible = false
-        progressBar.isVisible = false
+        recyclerView.hide()
+        progressBar.hide()
+
         errorMessageTextView.apply {
-            isVisible = true
+            show()
             text = getString(R.string.error_favorites_is_empty)
         }
+
         placeholderImageView.apply {
-            isVisible = true
+            show()
             setImageResource(R.drawable.placeholder_favorites_is_empty)
         }
     }
+
 
     private fun initRecyclerView() {
         binding.recyclerView.apply {
@@ -106,4 +110,13 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+
+    private fun View.show() {
+        isVisible = true
+    }
+
+    private fun View.hide() {
+        isVisible = false
+    }
+
 }

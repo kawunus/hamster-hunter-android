@@ -12,7 +12,5 @@ val viewModelModule = module {
 
     viewModelOf(::VacancyViewModel)
 
-    viewModel {
-        FavoritesViewModel(get())
-    }
+    viewModelOf(::FavoritesViewModel)
 }

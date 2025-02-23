@@ -27,11 +27,12 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     override fun subscribe() = with(binding) {
         viewModel.observeIsFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
-            if (isFavorite) {
-                buttonLike.setImageResource(R.drawable.ic_favorites_on)
+            val iconRes = if (isFavorite) {
+                R.drawable.ic_favorites_on
             } else {
-                buttonLike.setImageResource(R.drawable.ic_favorites_off)
+               R.drawable.ic_favorites_off
             }
+            buttonLike.setImageResource(iconRes)
         }
     }
 
@@ -43,7 +44,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         buttonLike.setOnClickListener {
             viewModel.likeButtonControl(
                 vacancy = Vacancy(
-                    id = args.vacancyId!!,
+                    id = args.vacancyId ?: "",
                     name = "Тестировщик",
                     salaryTo = null,
                     salaryFrom = 0,
