@@ -102,7 +102,7 @@ class VacancyViewModel(
             val previousState = vacancyDetailsLiveData.value
             if (previousState is VacancyDetailsState.VacancyLiked) {
                 favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancy.id)
-                //переделать, чтобы еще кроме id передать название, фирму, иконку, зарплату, адресс
+                // переделать, чтобы еще кроме id передать название, фирму, иконку, зарплату, адресс
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancy.id)
                 vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(previousState.details, newLikeStatus))
             }
