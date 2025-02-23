@@ -82,7 +82,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         binding.employmentFormAndWorkFormat.text = getString(
             R.string.vacancy_name_and_location, vacancyDetails.employmentForm, vacancyDetails.workFormat
         )
-        //надо будет поменять по выполнению таска 47
+        // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
         binding.jobDescription.text = vacancyDetails.description
         // загружаю ключевые скиллы
         var keySkills = ""
