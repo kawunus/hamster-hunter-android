@@ -80,4 +80,7 @@
     <string name="error_toast_no_internet">Проверьте подключение к интернету</string>
     <string name="error_toast_server">Произошла ошибка</string>
     <string name="bearer_token">Bearer %s</string>
+    <string name="search_screen">Экран поиска вакансий</string>
+    <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
+    <string name="content_description_filters">Фильтры</string>
 </resources>

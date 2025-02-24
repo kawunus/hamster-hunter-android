@@ -36,6 +36,9 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     }
 
     fun searchWithDebounce(changedText: String) {
+        // Показываем загрузку
+        searchState.postValue(SearchScreenState.Loading)
+        // Запускаем отложенное выполнения поиска
         searchDebounce.invoke(changedText)
     }
 
@@ -44,8 +47,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             // Очищаем старые данные
             pagingDataLiveData.postValue(PagingData.empty())
             foundCount.postValue(null)
-            // Показываем загрузку
-            searchState.postValue(SearchScreenState.Loading)
+
             // Загружаем общее количество найденных вакансий по запросу
             launch {
                 getCount()
