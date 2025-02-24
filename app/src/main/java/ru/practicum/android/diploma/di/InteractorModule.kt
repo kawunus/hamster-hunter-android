@@ -8,6 +8,8 @@ import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteract
 import ru.practicum.android.diploma.favorites.domain.impl.FavoriteVacancyInteractorImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.impl.VacanciesSearchInteractorImpl
+import ru.practicum.android.diploma.vacancy.domain.impl.GetVacancyUseCaseImpl
+import ru.practicum.android.diploma.vacancy.domain.usecase.GetVacancyUseCase
 import ru.practicum.android.diploma.sharing.domain.api.SharingInteractor
 import ru.practicum.android.diploma.sharing.domain.impl.SharingInteractorImpl
 

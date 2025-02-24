@@ -1,11 +1,13 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import androidx.core.view.isVisible
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -22,8 +24,16 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         parametersOf(args)
     }
 
+    override val viewModel: VacancyViewModel by viewModel()
+    private val args by navArgs<VacancyFragmentArgs>()
+    private val vacancyId by lazy { args.vacancyId }
     override fun initViews() {
+        vacancyId?.let { viewModel.getVacancy(it.toInt()) }
         bindButtons()
+        val args by navArgs<VacancyFragmentArgs>()
+        val vacancyId by lazy { args.vacancyId }
+        testValues(vacancyId.toString())
+        viewModel.initIsVacancyInFavorite(vacancyId ?: "")
     }
 
     override fun subscribe() = with(binding) {
@@ -39,6 +49,9 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
                 else -> {}
             }
+        }
+        viewModel.observeVacancy.observe(viewLifecycleOwner) {
+            Log.d("VacancyFragment", "Vacancy: $it")
         }
     }
 
