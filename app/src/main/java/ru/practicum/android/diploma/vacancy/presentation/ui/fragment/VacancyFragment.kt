@@ -29,35 +29,13 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     override fun subscribe() = with(binding) {
         viewModel.observeVacancyDetailsState().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is VacancyDetailsState.Loading -> {
-                    renderError(false)
-                    binding.jobInfo.isVisible = false
-                    binding.progressBar.isVisible = true
-                }
+                is VacancyDetailsState.Loading -> showLoading()
 
-                is VacancyDetailsState.NotFoundError -> {
-                    renderError(true)
-                    binding.progressBar.isVisible = false
-                    changeErrorMessage(false)
-                }
+                is VacancyDetailsState.NotFoundError -> showErrorNotFound()
 
-                is VacancyDetailsState.ServerError -> {
-                    renderError(true)
-                    binding.progressBar.isVisible = false
-                    changeErrorMessage(true)
-                }
+                is VacancyDetailsState.ServerError -> showErrorServer()
 
-                is VacancyDetailsState.VacancyLiked -> {
-                    renderError(false)
-                    binding.progressBar.isVisible = false
-                    renderVacancyInfo(state.details)
-                    val iconRes = if (state.isLiked) {
-                        R.drawable.ic_favorites_on
-                    } else {
-                        R.drawable.ic_favorites_off
-                    }
-                    buttonLike.setImageResource(iconRes)
-                }
+                is VacancyDetailsState.VacancyLiked -> showVacancyDetails(state)
 
                 else -> {}
             }
@@ -113,5 +91,35 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             binding.errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
             binding.errorText.text = getString(R.string.error_job_not_found_or_deleted)
         }
+    }
+
+    private fun showErrorServer() {
+        renderError(true)
+        binding.progressBar.isVisible = false
+        changeErrorMessage(true)
+    }
+
+    private fun showErrorNotFound() {
+        renderError(true)
+        binding.progressBar.isVisible = false
+        changeErrorMessage(false)
+    }
+
+    private fun showLoading() {
+        renderError(false)
+        binding.jobInfo.isVisible = false
+        binding.progressBar.isVisible = true
+    }
+
+    private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyLiked) {
+        renderError(false)
+        binding.progressBar.isVisible = false
+        renderVacancyInfo(vacancyDetailsState.details)
+        val iconRes = if (vacancyDetailsState.isLiked) {
+            R.drawable.ic_favorites_on
+        } else {
+            R.drawable.ic_favorites_off
+        }
+        binding.buttonLike.setImageResource(iconRes)
     }
 }
