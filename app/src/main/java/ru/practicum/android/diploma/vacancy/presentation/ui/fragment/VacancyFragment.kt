@@ -1,111 +1,80 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import androidx.core.view.isVisible
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.formatSalary
+import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
+import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
 
 class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     inflate = FragmentVacancyBinding::inflate
 ) {
-    override val viewModel: VacancyViewModel by viewModel()
+    override val viewModel: VacancyViewModel by viewModel {
+        val args by navArgs<VacancyFragmentArgs>()
+        parametersOf(args)
+    }
 
     override fun initViews() {
         bindButtons()
-        val args by navArgs<VacancyFragmentArgs>()
-        val vacancyId by lazy { args.vacancyId }
-        testValues(vacancyId.toString())
-        viewModel.initIsVacancyInFavorite(vacancyId ?: "")
     }
 
     override fun subscribe() = with(binding) {
-        viewModel.observeIsFavoriteState().observe(viewLifecycleOwner) { isFavorite ->
-            val iconRes = if (isFavorite) {
-                R.drawable.ic_favorites_on
-            } else {
-                R.drawable.ic_favorites_off
+        viewModel.observeVacancyDetailsState().observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is VacancyDetailsState.Loading -> showLoading()
+
+                is VacancyDetailsState.NotFoundError -> showErrorNotFound()
+
+                is VacancyDetailsState.ServerError -> showErrorServer()
+
+                is VacancyDetailsState.VacancyLiked -> showVacancyDetails(state)
+
+                else -> {}
             }
-            buttonLike.setImageResource(iconRes)
         }
     }
 
     private fun bindButtons() = with(binding) {
         buttonBack.setOnClickListener { findNavController().navigateUp() }
-
-        // Потом необходимо убрать navArgs отсюда
-        val args by navArgs<VacancyFragmentArgs>()
-        buttonLike.setOnClickListener {
-            viewModel.likeButtonControl(
-                vacancy = Vacancy(
-                    id = args.vacancyId ?: "",
-                    name = "Тестировщик",
-                    salaryTo = null,
-                    salaryFrom = 0,
-                    company = "Yandex",
-                    area = "Москва",
-                    currency = "BYN",
-                    icon = ""
-                )
-            )
-        }
+        buttonShare.setOnClickListener { viewModel.shareButtonControll() }
+        buttonLike.setOnClickListener { viewModel.likeButtonControl() }
     }
 
-    private fun testValues(idString: String) {
-        when (TESTTYPE) {
-            0 -> {
-                renderError(true)
-                binding.progressBar.isVisible = false
-                changeErrorMessage(true)
-            }
-
-            1 -> {
-                renderError(true)
-                binding.progressBar.isVisible = false
-                changeErrorMessage(false)
-            }
-
-            2 -> {
-                renderError(false)
-                binding.jobInfo.isVisible = false
-                binding.progressBar.isVisible = true
-            }
-
-            else -> {
-                renderError(false)
-                binding.progressBar.isVisible = false
-                renderTestInfo(idString)
-            }
-        }
-
-    }
-
-    private fun renderTestInfo(idString: String) {
+    private fun renderVacancyInfo(vacancyDetails: VacancyDetails) {
         binding.name.text = getString(
-            R.string.vacancy_name_and_location, NAMETEST, idString
+            R.string.vacancy_name_and_location, vacancyDetails.name, vacancyDetails.id
         )
-        binding.salary.text = formatSalary(0, null, "USD", requireContext())
-        binding.employerName.text = EMPLNAMETEST
-        binding.employerLocation.text = EMPLAREATEST
-        binding.experience.text = EXPTEST
+        binding.salary.text =
+            formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
+        binding.employerName.text = vacancyDetails.company
+        val displayArea = if (vacancyDetails.address?.trim().isNullOrEmpty()) {
+            vacancyDetails.area
+        } else {
+            vacancyDetails.address
+        }
+        binding.employerLocation.text = displayArea
+        binding.experience.text = vacancyDetails.experience
         binding.employmentFormAndWorkFormat.text = getString(
-            R.string.vacancy_name_and_location, EMPLJOBFORMAT1TEST, EMPLJOBFORMAT2TEST
+            R.string.vacancy_name_and_location, vacancyDetails.employmentForm, vacancyDetails.workFormat
         )
-        binding.jobDescription.text = DESCRIPTIONTEST
+        // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
+        binding.jobDescription.text = vacancyDetails.description
         // загружаю ключевые скиллы
         var keySkills = ""
-        for (i in testArray) {
+        for (i in vacancyDetails.keySkills) {
             keySkills += getString(R.string.key_skill_separator, i)
         }
         binding.keySkills.text = keySkills
         // загружаю иконку
-        Glide.with(this.requireContext()).load(IMGTEST).placeholder(R.drawable.placeholder_32px).fitCenter()
+        Glide.with(this.requireContext()).load(vacancyDetails.icon).placeholder(R.drawable.placeholder_32px).fitCenter()
             .into(binding.employerImg)
     }
 
@@ -124,25 +93,33 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
     }
 
-    companion object {
-        const val TESTTYPE =
-            3 // 3 и более -без ошибок, 2 - загрузка 1-ошибка вакансия удалена или нет в базе, 0 -ошибка сервера
-        const val NAMETEST = "Хомяк ID"
-        const val IMGTEST = "https://hh.ru/employer-logo/289027.png"
-        const val EMPLNAMETEST = "ХомякПромПрог"
-        const val EMPLAREATEST = "Рай Программистов"
-        const val EXPTEST = "От 1 мес опыта"
-        const val EMPLJOBFORMAT1TEST = "Полная занятость"
-        const val EMPLJOBFORMAT2TEST = "Без графика"
-        const val DESCRIPTIONTEST = "стать программистом"
-        val testArray = arrayOf(
-            "крутить педали",
-            "быть хомяком",
-            "внизу проверка прокрутки\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n"
-                + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" +
-                "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "\n"
-                + "\n" + "\n" + "\n",
-            "тест прокрутки"
-        )
+    private fun showErrorServer() {
+        renderError(true)
+        binding.progressBar.isVisible = false
+        changeErrorMessage(true)
+    }
+
+    private fun showErrorNotFound() {
+        renderError(true)
+        binding.progressBar.isVisible = false
+        changeErrorMessage(false)
+    }
+
+    private fun showLoading() {
+        renderError(false)
+        binding.jobInfo.isVisible = false
+        binding.progressBar.isVisible = true
+    }
+
+    private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyLiked) {
+        renderError(false)
+        binding.progressBar.isVisible = false
+        renderVacancyInfo(vacancyDetailsState.details)
+        val iconRes = if (vacancyDetailsState.isLiked) {
+            R.drawable.ic_favorites_on
+        } else {
+            R.drawable.ic_favorites_off
+        }
+        binding.buttonLike.setImageResource(iconRes)
     }
 }
