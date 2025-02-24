@@ -41,16 +41,18 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
     fun startSearch(expression: String) {
         viewModelScope.launch {
-            // Очистка старых данных
+            // Очищаем старые данные
             pagingDataLiveData.postValue(PagingData.empty())
             // Показываем загрузку
             searchState.postValue(SearchScreenState.Loading)
+            // Загружаем общее количество найденных вакансий по запросу
             launch {
                 getCount()
             }
+
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
-                .distinctUntilChanged() // Не обновлять данные, если они не изменились
+                .distinctUntilChanged() /// Игнорировать повторные значения
                 .collectLatest { data ->
                     pagingDataLiveData.postValue(data)
                     searchState.postValue(SearchScreenState.SearchResults)
@@ -61,6 +63,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     private suspend fun getCount() {
         interactor.foundCount
             .filterNotNull()
+            .distinctUntilChanged() // Игнорировать повторные значения
             .collectLatest { count ->
                 foundCount.postValue(count)
             }

@@ -31,7 +31,9 @@ class VacanciesPagingSource(
             val updatedRequest = searchRequest.copy(page = currentPage)
             val response = networkClient.doRequest(updatedRequest) as VacanciesSearchResponse
 
-            foundCount.emit(response.found) // Обновляем значение foundCount
+            if (currentPage == 0) {
+                foundCount.emit(response.found) // Обновляем значение foundCount только при загрузке первой страницы
+            }
 
             when (response.resultCode) {
                 HTTP_SUCCESS -> {
