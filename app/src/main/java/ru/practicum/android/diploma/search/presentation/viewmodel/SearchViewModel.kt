@@ -21,8 +21,8 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
     private val searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
 
-    private val foundCount = MutableLiveData<Int>()
-    fun getFoundCount(): LiveData<Int> = foundCount
+    private val foundCount = MutableLiveData<Int?>()
+    fun getFoundCount(): LiveData<Int?> = foundCount
 
     private val pagingDataLiveData = MutableLiveData<PagingData<Vacancy>>(PagingData.empty())
     fun getPagingDataLiveData(): LiveData<PagingData<Vacancy>> = pagingDataLiveData
@@ -43,6 +43,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         viewModelScope.launch {
             // Очищаем старые данные
             pagingDataLiveData.postValue(PagingData.empty())
+            foundCount.postValue(null)
             // Показываем загрузку
             searchState.postValue(SearchScreenState.Loading)
             // Загружаем общее количество найденных вакансий по запросу

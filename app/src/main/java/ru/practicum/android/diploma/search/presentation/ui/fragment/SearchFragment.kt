@@ -212,14 +212,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     // отображение сообщения "Найдено $count вакансий"
-    private fun showFoundCount(count: Int) {
+    private fun showFoundCount(count: Int?) {
         binding.notificationText.apply {
-            text = if (count == 0) {
-                getString(R.string.no_such_jobs)
+            if (count == null) {
+                isVisible = false
             } else {
-                resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
+                text = if (count == 0) {
+                    getString(R.string.no_such_jobs)
+                } else {
+                    resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
+                }
+                isVisible = true
             }
-            isVisible = true
         }
     }
 
