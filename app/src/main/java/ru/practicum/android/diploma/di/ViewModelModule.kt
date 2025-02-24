@@ -8,6 +8,8 @@ import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewMo
 
 val viewModelModule = module {
     viewModelOf(::SearchViewModel)
+
     viewModelOf(::VacancyViewModel)
+
     viewModelOf(::FavoritesViewModel)
 }

@@ -13,6 +13,8 @@ import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
 
 val repositoryModule = module {
     factoryOf(::VacanciesSearchRepositoryImpl) { bind<VacanciesSearchRepository>() }
+
     singleOf(::FavoriteVacancyRepositoryImpl) { bind<FavoriteVacancyRepository>() }
+
     factoryOf(::VacancyDetailsRepositoryImpl) { bind<VacancyDetailsRepository>() }
 }

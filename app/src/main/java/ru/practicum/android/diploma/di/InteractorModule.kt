@@ -17,5 +17,4 @@ val interactorModule = module {
     singleOf(::FavoriteVacancyInteractorImpl) { bind<FavoriteVacancyInteractor>() }
 
     singleOf(::VacancyDetailsInteractorImpl) { bind<VacancyDetailsInteractor>() }
-    //factoryOf(::GetVacancyUseCaseImpl){bind<GetVacancyUseCase>()}
 }

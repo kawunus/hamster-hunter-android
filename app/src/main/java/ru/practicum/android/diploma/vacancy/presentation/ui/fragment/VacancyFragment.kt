@@ -59,22 +59,25 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             if (vacancyDetails.city.isEmpty() || vacancyDetails.street.isEmpty() || vacancyDetails.building.isEmpty()) {
                 vacancyDetails.area
             } else {
-                vacancyDetails.city + Constants.PUNCTUATION + vacancyDetails.street + Constants.PUNCTUATION + vacancyDetails.building
+                vacancyDetails.city + Constants.PUNCTUATION +
+                    vacancyDetails.street + Constants.PUNCTUATION +
+                    vacancyDetails.building
             }
         binding.experience.text = vacancyDetails.experience
         var employmentOptions = ""
         employmentOptions = if (vacancyDetails.employment.isNotEmpty()) {
-            vacancyDetails.employment + if (vacancyDetails.workFormat.isNotEmpty()) Constants.PUNCTUATION else Constants.EMPTY_STRING
+            vacancyDetails.employment +
+                if (vacancyDetails.workFormat.isNotEmpty()) Constants.PUNCTUATION else Constants.EMPTY_STRING
         } else {
             employmentOptions
         }
         vacancyDetails.workFormat.forEachIndexed { index, s ->
             employmentOptions += s
-            if (index < (vacancyDetails.workFormat.size - 1)) employmentOptions += Constants.PUNCTUATION
+            if (index < vacancyDetails.workFormat.size - 1) employmentOptions += Constants.PUNCTUATION
         }
         binding.employmentFormAndWorkFormat.text = employmentOptions
         // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
-        //ЭТО ВРЕМЕННОЕ РЕШЕНИЕ! КАК ИСПРАЯТ УДАЛИТЬ ИМПОРТ Html !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // ЭТО ВРЕМЕННОЕ РЕШЕНИЕ! КАК ИСПРАЯТ УДАЛИТЬ ИМПОРТ Html !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         binding.jobDescription.text = Html.fromHtml(vacancyDetails.description, Html.FROM_HTML_MODE_LEGACY).toString()
         // загружаю ключевые скиллы
         var keySkills = ""
@@ -83,7 +86,10 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
         binding.keySkills.text = keySkills
         // загружаю иконку
-        Glide.with(this.requireContext()).load(vacancyDetails.icon).placeholder(R.drawable.placeholder_32px).fitCenter()
+        Glide.with(this.requireContext())
+            .load(vacancyDetails.icon)
+            .placeholder(R.drawable.placeholder_32px)
+            .fitCenter()
             .into(binding.employerImg)
     }
 

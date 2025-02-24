@@ -26,12 +26,14 @@ class VacancyViewModel(
             vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
             viewModelScope.launch {
                 vacancyDetailsInteractor.findVacancy(vacancyId).collect { foundData ->
-                    if (foundData != null) { //есть данные
+                    if (foundData != null) { // есть данные
                         initIsVacancyInFavorite(foundData)
-                    } else vacancyDetailsLiveData.postValue( //обобщенный сигнал ошибки
-                        VacancyDetailsState.ServerError
-                    )
-                    //ДОБАВИТЬ ПОСЛЕ 53 таски
+                    } else {
+                        vacancyDetailsLiveData.postValue( // обобщенный сигнал ошибки
+                            VacancyDetailsState.ServerError
+                        )
+                    }
+                    // ДОБАВИТЬ ПОСЛЕ 53 таски
                     /*
                     ошибка сервера -> {
                         vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
@@ -40,10 +42,11 @@ class VacancyViewModel(
                         favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId) // удаление из локальной базы, если его убрали в НН
                         vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
                     }
-                }*/
+                } */
                 }
-
             }
+        } else {
+            // инет пропал =)
         }
     }
 
