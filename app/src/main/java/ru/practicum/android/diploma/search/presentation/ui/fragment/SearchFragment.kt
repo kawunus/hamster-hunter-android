@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPagingAdapter
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
@@ -41,7 +40,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id))
         }
     }
-    val loadStateAdapter = VacancyLoadStateAdapter()
+    private val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
 
     override fun initViews() {
@@ -64,6 +63,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 showFoundCount(foundCount)
             }
 
+            getPagingDataLiveData().observe(viewLifecycleOwner) { pagingData ->
+                Log.d("DEBUG", "Сработала подписка на PagingDataLiveData, загружаю новые данные в adapter. }")
+                adapter.submitData(lifecycle, pagingData)
+                val items = adapter.snapshot().items.take(10)
+                Log.d("DEBUG", "В RecyclerView загружено ${items.size} элементов:")
+                items.forEachIndexed { index, vacancy ->
+                    Log.d("DEBUG", "Элемент $index: $vacancy")
+                }
+            }
         }
     }
 
@@ -74,7 +82,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             onTextChanged = { text, start, before, count ->
                 updateClearButtonIcon(text)
 
-                if (!text.isNullOrEmpty()) viewModel.searchWithDebounce(text.toString())
+                if (!text.isNullOrEmpty()) {
+                    viewModel.searchWithDebounce(text.toString())
+                }
             },
             afterTextChanged = { _ -> }
         )
@@ -112,8 +122,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         binding.edittextSearch.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE && text.isNotEmpty()) {
-                    viewModel.cancelSearchDebounce()
-                    viewModel.startSearch(text.toString())
+                    lifecycleScope.launch {
+                        viewModel.cancelSearchDebounce()
+                        clearAdapter()
+                        viewModel.startSearch(text.toString())
+                    }
                 }
                 false
             }
@@ -158,18 +171,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun renderScreen(state: SearchScreenState) {
         Log.d("DEBUG", "SearchScreenState = $state")
 
-        // Общие настройки видимости
         placeholderVisibilityManager(isError = state is Error)
         notificationVisibilityManager(needToBeVisible = state is SearchResults || state is NothingFound)
         defaultScreenVisibilityManager(needToBeVisible = state is Default)
         recyclerVisibilityManager(needToBeVisible = state is SearchResults)
         progressBarVisibilityManager(isLoading = state is Loading)
 
-        // Уникальная логика для каждого состояния
-        when (state) {
-            is Error -> placeholderContentManager(state)
-            is SearchResults -> showSearchResults(state.pagingData)
-            else -> Unit // Ничего не делаем для остальных состояний
+        if (state is Error) {
+            placeholderContentManager(state)
         }
     }
 
@@ -193,6 +202,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 }
             }
         }
+    }
+
+    private fun clearAdapter() {
+        adapter.submitData(lifecycle, PagingData.empty())
     }
 
     // отображение сообщения "Найдено $count вакансий"
@@ -228,10 +241,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun progressBarVisibilityManager(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
 
-    }
-
-    private fun showSearchResults(pagingData: PagingData<Vacancy>) {
-        adapter.submitData(lifecycle, pagingData)
     }
 
     private fun clickDebounce(): Boolean {
