@@ -52,7 +52,7 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
             interactor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
-                .distinctUntilChanged() /// Игнорировать повторные значения
+                .distinctUntilChanged() // Игнорировать повторные значения
                 .collectLatest { data ->
                     pagingDataLiveData.postValue(data)
                     searchState.postValue(SearchScreenState.SearchResults)
