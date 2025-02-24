@@ -34,6 +34,7 @@ class VacancyViewModel(
                     }
 
                     1 -> {
+                        // favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId) // удаление из локальной базы, если его убрали в НН
                         vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
                     }
 
