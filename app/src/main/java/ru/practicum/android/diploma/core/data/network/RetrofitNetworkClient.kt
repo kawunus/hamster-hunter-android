@@ -6,8 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
-import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
+import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdRequest
 
@@ -20,7 +21,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        val token = "Bearer $TOKEN" // понадобится для некоторых запросов, передавать в @Header
+        val token = context.getString(R.string.bearer_token, TOKEN)
 
         return withContext(Dispatchers.IO) {
             try {
@@ -28,6 +29,7 @@ class RetrofitNetworkClient(
                     is VacanciesSearchRequest -> hHApiService.search(
                         userAgent = USER_AGENT,
                         text = dto.text,
+                        page = dto.page
                     )
 
                     is VacancyByIdRequest -> hHApiService.getVacancyById(
@@ -58,6 +60,7 @@ class RetrofitNetworkClient(
         private const val HTTP_SERVER_ERROR = 500
         private const val HTTP_SUCCESS = 200
         const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
-        const val USER_AGENT = "HamsterHunter/1.0 (s.rubinets@gmail.com)"
+        const val USER_AGENT =
+            "HamsterHunter/1.0 (sergey_sh97@mail.ru)"
     }
 }
