@@ -5,7 +5,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
-import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdResponse
+import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
 
 interface HHApiService {
     @GET("vacancies")
@@ -18,6 +18,6 @@ interface HHApiService {
     @GET("vacancies/{vacancy_id}")
     suspend fun getVacancyById(
         @Header("User-Agent") userAgent: String,
-        @Path("vacancy_id") vacancyId: String,
+        @Path("vacancy_id") vacancyId: String
     ): VacancyByIdResponse
 }
