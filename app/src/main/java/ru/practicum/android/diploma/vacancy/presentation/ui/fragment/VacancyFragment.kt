@@ -3,10 +3,10 @@ package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import android.util.Log
 import androidx.core.view.isVisible
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -22,7 +22,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     private val vacancyId by lazy { args.vacancyId }
     
     override fun initViews() {
-        viewModel.getVacancy(vacancyId.toInt())
+        vacancyId?.let { viewModel.getVacancy(it.toInt()) }
         bindButtons()
         testValues(vacancyId.toString())
         viewModel.initIsVacancyInFavorite(vacancyId ?: "")
