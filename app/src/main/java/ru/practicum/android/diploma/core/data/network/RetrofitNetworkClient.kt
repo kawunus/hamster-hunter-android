@@ -44,19 +44,6 @@ class RetrofitNetworkClient(
         }
     }
 
-//    private suspend fun searchVacancies(request: VacanciesSearchRequest): VacanciesSearchResponse {
-//        val titleSearchField: String?
-//
-//        if (request.onlyInTitles == true) {
-//            val dictionaryResponse = hHApiService.getDictionaries(userAgent = USER_AGENT)
-//            titleSearchField = dictionaryResponse.vacancySearchFields.firstOrNull { it.id == "name" }?.id
-//        } else {
-//            titleSearchField = null
-//        }
-//
-//        return hHApiService.search(USER_AGENT, request.toQueryMap(titleSearchField))
-//    }
-
     private suspend fun searchVacancies(request: VacanciesSearchRequest): VacanciesSearchResponse {
         val titleSearchField = if (request.onlyInTitles == true) {
             hHApiService.getDictionaries(userAgent = USER_AGENT)
