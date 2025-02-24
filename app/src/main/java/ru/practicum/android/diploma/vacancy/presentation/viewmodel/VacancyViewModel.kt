@@ -8,8 +8,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.sharing.domain.api.SharingInteractor
+import ru.practicum.android.diploma.util.toFavoriteVacancy
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
 
@@ -68,16 +68,7 @@ class VacancyViewModel(
     fun likeButtonControl() {
         val previousState = vacancyDetailsLiveData.value
         if (previousState is VacancyDetailsState.VacancyLiked) {
-            val vacancy = Vacancy(
-                id = previousState.details.id,
-                name = previousState.details.name,
-                company = previousState.details.company,
-                currency = previousState.details.currency,
-                salaryFrom = previousState.details.salaryFrom,
-                salaryTo = previousState.details.salaryTo,
-                area = previousState.details.area,
-                icon = previousState.details.icon
-            )
+            val vacancy = previousState.details
             if (previousState.isLiked == true) {
                 deleteVacancyFromFavorites(vacancy)
             } else {
@@ -86,18 +77,18 @@ class VacancyViewModel(
         }
     }
 
-    private fun addVacancyToFavorites(vacancy: Vacancy) {
+    private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             val previousState = vacancyDetailsLiveData.value
             if (previousState is VacancyDetailsState.VacancyLiked) {
-                favoriteVacancyInteractor.addVacancyToFavorites(vacancy)
+                favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toFavoriteVacancy())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancy.id)
                 vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(previousState.details, newLikeStatus))
             }
         }
     }
 
-    private fun deleteVacancyFromFavorites(vacancy: Vacancy) {
+    private fun deleteVacancyFromFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             val previousState = vacancyDetailsLiveData.value
             if (previousState is VacancyDetailsState.VacancyLiked) {
