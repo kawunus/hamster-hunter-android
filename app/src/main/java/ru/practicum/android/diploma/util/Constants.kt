@@ -6,4 +6,5 @@ object Constants {
     const val HH_SHARED_PREFS_NAME = "hamster_hunter_shared_preferences"
     const val HH_BASE_URL = "https://api.hh.ru/"
     const val EMPTY_STRING = ""
+    const val PUNCTUATION = ", "
 }

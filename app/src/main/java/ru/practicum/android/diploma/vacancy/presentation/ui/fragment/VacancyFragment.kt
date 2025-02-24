@@ -1,16 +1,16 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
+import android.text.Html
 import androidx.core.view.isVisible
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
@@ -24,16 +24,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         parametersOf(args)
     }
 
-    override val viewModel: VacancyViewModel by viewModel()
-    private val args by navArgs<VacancyFragmentArgs>()
-    private val vacancyId by lazy { args.vacancyId }
     override fun initViews() {
-        vacancyId?.let { viewModel.getVacancy(it.toInt()) }
         bindButtons()
-        val args by navArgs<VacancyFragmentArgs>()
-        val vacancyId by lazy { args.vacancyId }
-        testValues(vacancyId.toString())
-        viewModel.initIsVacancyInFavorite(vacancyId ?: "")
     }
 
     override fun subscribe() = with(binding) {
@@ -50,9 +42,6 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
                 else -> {}
             }
         }
-        viewModel.observeVacancy.observe(viewLifecycleOwner) {
-            Log.d("VacancyFragment", "Vacancy: $it")
-        }
     }
 
     private fun bindButtons() = with(binding) {
@@ -62,24 +51,31 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     }
 
     private fun renderVacancyInfo(vacancyDetails: VacancyDetails) {
-        binding.name.text = getString(
-            R.string.vacancy_name_and_location, vacancyDetails.name, vacancyDetails.id
-        )
+        binding.name.text = vacancyDetails.name
         binding.salary.text =
             formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
-        binding.employerName.text = vacancyDetails.company
-        val displayArea = if (vacancyDetails.address?.trim().isNullOrEmpty()) {
-            vacancyDetails.area
-        } else {
-            vacancyDetails.address
-        }
-        binding.employerLocation.text = displayArea
+        binding.employerName.text = vacancyDetails.employer
+        binding.employerLocation.text =
+            if (vacancyDetails.city.isEmpty() || vacancyDetails.street.isEmpty() || vacancyDetails.building.isEmpty()) {
+                vacancyDetails.area
+            } else {
+                vacancyDetails.city + Constants.PUNCTUATION + vacancyDetails.street + Constants.PUNCTUATION + vacancyDetails.building
+            }
         binding.experience.text = vacancyDetails.experience
-        binding.employmentFormAndWorkFormat.text = getString(
-            R.string.vacancy_name_and_location, vacancyDetails.employmentForm, vacancyDetails.workFormat
-        )
+        var employmentOptions = ""
+        employmentOptions = if (vacancyDetails.employment.isNotEmpty()) {
+            vacancyDetails.employment + if (vacancyDetails.workFormat.isNotEmpty()) Constants.PUNCTUATION else Constants.EMPTY_STRING
+        } else {
+            employmentOptions
+        }
+        vacancyDetails.workFormat.forEachIndexed { index, s ->
+            employmentOptions += s
+            if (index < (vacancyDetails.workFormat.size - 1)) employmentOptions += Constants.PUNCTUATION
+        }
+        binding.employmentFormAndWorkFormat.text = employmentOptions
         // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
-        binding.jobDescription.text = vacancyDetails.description
+        //ЭТО ВРЕМЕННОЕ РЕШЕНИЕ! КАК ИСПРАЯТ УДАЛИТЬ ИМПОРТ Html !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        binding.jobDescription.text = Html.fromHtml(vacancyDetails.description, Html.FROM_HTML_MODE_LEGACY).toString()
         // загружаю ключевые скиллы
         var keySkills = ""
         for (i in vacancyDetails.keySkills) {

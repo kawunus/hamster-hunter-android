@@ -7,7 +7,7 @@ fun VacancyDetails.toFavoriteVacancy(): FavoriteVacancy {
     return FavoriteVacancy(
         id = this.id,
         name = this.name,
-        company = this.company,
+        company = this.employer,
         currency = this.currency,
         salaryFrom = this.salaryFrom,
         salaryTo = this.salaryTo,
