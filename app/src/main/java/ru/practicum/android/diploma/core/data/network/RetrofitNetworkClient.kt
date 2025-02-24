@@ -53,8 +53,8 @@ class RetrofitNetworkClient(
         } else {
             null
         }
-
-        return hHApiService.search(USER_AGENT, request.toQueryMap(titleSearchField))
+        val queryMap = VacanciesSearchRequest.toQueryMap(request, titleSearchField)
+        return hHApiService.search(USER_AGENT, queryMap)
     }
 
     private fun logError(errorType: String, e: Exception) {
