@@ -23,8 +23,8 @@ class VacanciesSearchRepositoryImpl :
         // Тут вместо null будем подставлять значения установленных фильтров, если они есть. Если нет - оставляем null.
         val searchRequest = VacanciesSearchRequest(
             text = expression,
-            area = null,
             page = 0,
+            area = null,
             professionalRole = null,
             onlyWithSalary = null,
             onlyInTitles = null
