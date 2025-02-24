@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPagingAdapter
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
@@ -64,14 +65,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             }
 
             getPagingDataLiveData().observe(viewLifecycleOwner) { pagingData ->
-                Log.d("DEBUG", "Сработала подписка на PagingDataLiveData, загружаю новые данные в adapter. }")
-                adapter.submitData(lifecycle, pagingData)
-                val items = adapter.snapshot().items.take(10)
-                Log.d("DEBUG", "В RecyclerView загружено ${items.size} элементов:")
-                items.forEachIndexed { index, vacancy ->
-                    Log.d("DEBUG", "Элемент $index: $vacancy")
-                }
+                refreshData(pagingData)
             }
+        }
+    }
+
+    private fun refreshData(pagingData: PagingData<Vacancy>) {
+        lifecycleScope.launch {
+            adapter.clear() // Принудительно очищаем адаптер кастномным методом
+            delay(200) // Небольшая задержка для корректного обновления UI
+            adapter.submitData(lifecycle, pagingData) // загружаем новые данные
         }
     }
 
@@ -170,7 +173,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private fun renderScreen(state: SearchScreenState) {
         Log.d("DEBUG", "SearchScreenState = $state")
-
         placeholderVisibilityManager(isError = state is Error)
         notificationVisibilityManager(needToBeVisible = state is SearchResults || state is NothingFound)
         defaultScreenVisibilityManager(needToBeVisible = state is Default)
@@ -180,6 +182,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         if (state is Error) {
             placeholderContentManager(state)
         }
+
     }
 
     // обработка разных типов ошибок
