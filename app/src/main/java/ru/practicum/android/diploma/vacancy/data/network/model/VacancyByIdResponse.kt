@@ -8,6 +8,7 @@ data class VacancyByIdResponse(
     val salary: Salary?,
     val employer: Employer?,
     val area: Area?,
+    val address: Address?,
     val experience: Experience?,
     @SerializedName("employment_form")
     val employment: Employment?,
@@ -15,5 +16,6 @@ data class VacancyByIdResponse(
     val workFormat: List<WorkFormat>?,
     val description: String?,
     @SerializedName("key_skills")
-    val keySkills: List<KeySkills>?
+    val keySkills: List<KeySkills>?,
+    val icon: String?
 ) : Response()
