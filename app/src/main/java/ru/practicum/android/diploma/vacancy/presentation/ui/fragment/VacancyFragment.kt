@@ -77,7 +77,12 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         binding.salary.text =
             formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
         binding.employerName.text = vacancyDetails.company
-        binding.employerLocation.text = vacancyDetails.area
+        val displayArea = if (vacancyDetails.address?.trim().isNullOrEmpty()) {
+            vacancyDetails.area
+        } else {
+            vacancyDetails.address
+        }
+        binding.employerLocation.text = displayArea
         binding.experience.text = vacancyDetails.experience
         binding.employmentFormAndWorkFormat.text = getString(
             R.string.vacancy_name_and_location, vacancyDetails.employmentForm, vacancyDetails.workFormat

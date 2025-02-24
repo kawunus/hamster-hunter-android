@@ -52,7 +52,8 @@ class VacancyViewModel(
                             employmentForm = EMPLJOBFORMAT1TEST,
                             workFormat = EMPLJOBFORMAT2TEST,
                             description = DESCRIPTIONTEST,
-                            keySkills = testArray
+                            keySkills = testArray,
+                            address = EMPLADDRESSTEST
                         )
                         initIsVacancyInFavorite(serversInfo)
                     }
@@ -114,6 +115,7 @@ class VacancyViewModel(
         const val IMGTEST = "https://hh.ru/employer-logo/289027.png"
         const val EMPLNAMETEST = "ХомякПромПрог"
         const val EMPLAREATEST = "Рай Программистов"
+        const val EMPLADDRESSTEST = "Ад Программистов"
         const val EXPTEST = "От 1 мес опыта"
         const val EMPLJOBFORMAT1TEST = "Полная занятость"
         const val EMPLJOBFORMAT2TEST = "Без графика"
