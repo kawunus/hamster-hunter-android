@@ -9,7 +9,10 @@ import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRespon
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.vacancy.mapper.Mapper.toVacancyDetails
 
-class VacancyDetailsRepositoryImpl(private val context: Context, private val networkClient: NetworkClient) :
+class VacancyDetailsRepositoryImpl(
+    private val context: Context,
+    private val networkClient: NetworkClient,
+) :
     VacancyDetailsRepository {
     override fun openUrlShare(shareUrl: String) {
         val shareIntent = Intent(Intent.ACTION_SEND)

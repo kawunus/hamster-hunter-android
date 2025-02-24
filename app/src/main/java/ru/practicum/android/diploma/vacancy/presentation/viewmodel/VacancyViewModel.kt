@@ -38,8 +38,8 @@ class VacancyViewModel(
                     ошибка сервера -> {
                         vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
                     }
-                    Нет записи в базах -> {
-                        favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId) // удаление из локальной базы, если его убрали в НН
+                    Нет записи в базах -> { // удаление из локальной базы, если его убрали в НН
+                        favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId)
                         vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
                     }
                 } */
