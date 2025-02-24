@@ -13,12 +13,12 @@ class GetVacancyRepositoryImpl(
     override suspend fun execute(vacancyId: Int): VacancyDetails? {
         val response = networkClient.doRequest(VacancyByIdRequest(vacancyId.toString()))
         return when (response.resultCode) {
-            SUCCESS -> (response as VacancyByIdResponse).toVacancyDetails()
+            SUCCESS_CODE -> (response as VacancyByIdResponse).toVacancyDetails()
             else -> null
         }
     }
 
     companion object {
-        const val SUCCESS = 200
+        const val SUCCESS_CODE = 200
     }
 }
