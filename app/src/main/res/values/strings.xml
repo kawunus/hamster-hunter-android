@@ -10,11 +10,11 @@
     <string name="no_such_jobs">Таких вакансий нет</string>
     <!-- пример использования resources.getQuantityString(R.plurals.found_jobs_plural, count, count)-->
     <plurals name="found_jobs_plural">
-        <item quantity="one">Найдена %1$d вакансия</item>
-        <item quantity="two">Найдено %1$d вакансии</item>
-        <item quantity="few">Найдено %1$d вакансии</item>
-        <item quantity="many">Найдено %1$d вакансий</item>
-        <item quantity="other">Найдено %1$d вакансий</item>
+        <item quantity="one">Найдена %1$s вакансия</item>
+        <item quantity="two">Найдено %1$s вакансии</item>
+        <item quantity="few">Найдено %1$s вакансии</item>
+        <item quantity="many">Найдено %1$s вакансий</item>
+        <item quantity="other">Найдено %1$s вакансий</item>
     </plurals>
 
     <!--фильтрация-->
@@ -77,4 +77,10 @@
     <string name="dev6">Шахов Сергей Геннадьевич</string>
     <!-- шаблон для обьединение заголовка вакансии и региона -->
     <string name="vacancy_name_and_location">%s, %s</string>
+    <string name="error_toast_no_internet">Проверьте подключение к интернету</string>
+    <string name="error_toast_server">Произошла ошибка</string>
+    <string name="bearer_token">Bearer %s</string>
+    <string name="search_screen">Экран поиска вакансий</string>
+    <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
+    <string name="content_description_filters">Фильтры</string>
 </resources>

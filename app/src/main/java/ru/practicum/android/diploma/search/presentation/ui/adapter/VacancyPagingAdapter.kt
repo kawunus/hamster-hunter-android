@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.search.presentation.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
@@ -18,6 +19,10 @@ class VacancyPagingAdapter(
 
     override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
+    }
+
+    suspend fun clear() {
+        submitData(PagingData.empty())
     }
 }
 
