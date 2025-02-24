@@ -19,7 +19,6 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     override val viewModel: VacancyViewModel by viewModel()
     private val args by navArgs<VacancyFragmentArgs>()
     private val vacancyId by lazy { args.vacancyId }
-    
     override fun initViews() {
         vacancyId?.let { viewModel.getVacancy(it.toInt()) }
         bindButtons()
