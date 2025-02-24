@@ -5,16 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
-import ru.practicum.android.diploma.vacancy.domain.usecase.GetVacancyUseCase
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
+import ru.practicum.android.diploma.vacancy.domain.usecase.GetVacancyUseCase
 
 class VacancyViewModel(
-  private val favoriteVacancyInteractor: FavoriteVacancyInteractor,
-  private val getVacancyUseCase: GetVacancyUseCase
+    private val favoriteVacancyInteractor: FavoriteVacancyInteractor,
+    private val getVacancyUseCase: GetVacancyUseCase
 ) : BaseViewModel() {
- 
+
     private val vacancyLiveData = MutableLiveData<VacancyDetails>()
     val observeVacancy: LiveData<VacancyDetails> = vacancyLiveData
     private val isFavoriteLiveData = MutableLiveData<Boolean>()

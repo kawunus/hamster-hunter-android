@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
-
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
