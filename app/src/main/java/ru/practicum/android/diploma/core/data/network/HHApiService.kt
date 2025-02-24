@@ -15,7 +15,7 @@ interface HHApiService {
     ): VacanciesSearchResponse
 
     @GET("vacancies/{vacancy_id}")
-    fun getVacancyById(
+    suspend fun getVacancyById(
         @Header("User-Agent") userAgent: String, // Header parameter для авторизации
         @Path("vacancy_id") vacancyId: String, // Path parameter
     ): VacancyByIdResponse
