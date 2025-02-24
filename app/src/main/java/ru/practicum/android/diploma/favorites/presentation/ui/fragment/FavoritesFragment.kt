@@ -11,10 +11,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
+import ru.practicum.android.diploma.favorites.domain.model.FavoriteVacancy
 import ru.practicum.android.diploma.favorites.presentation.model.FavoritesState
 import ru.practicum.android.diploma.favorites.presentation.ui.adapter.VacancyAdapter
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavoritesViewModel
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewModel>(
     inflate = FragmentFavoritesBinding::inflate
@@ -52,7 +52,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
         }
     }
 
-    private fun renderContent(vacanciesList: List<Vacancy>) = with(binding) {
+    private fun renderContent(vacanciesList: List<FavoriteVacancy>) = with(binding) {
         errorMessageTextView.hide()
         placeholderImageView.hide()
         progressBar.hide()

@@ -4,11 +4,12 @@ import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRespon
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 
 object Mapper {
-
     fun VacancyByIdResponse.toVacancyDetails() = VacancyDetails(
+        id = id.orEmpty(),
         name = name.orEmpty(),
-        salaryFrom = salary?.from.toString(),
-        salaryTo = salary?.to.toString(),
+        salaryFrom = salary?.from,
+        salaryTo = salary?.to,
+        currency = salary?.currency.orEmpty(),
         employer = employer?.name.orEmpty(),
         area = area?.name.orEmpty(),
         city = address?.city.orEmpty(),

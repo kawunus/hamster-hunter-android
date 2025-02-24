@@ -1,21 +1,21 @@
-package ru.practicum.android.diploma.search.presentation.ui.adapter
+package ru.practicum.android.diploma.favorites.presentation.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
-import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.favorites.domain.model.FavoriteVacancy
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.dpToPx
 import ru.practicum.android.diploma.util.formatSalary
 
-class VacancyViewHolder(
+class FavoriteVacancyViewHolder(
     private val binding: VacancyItemBinding,
-    private val onVacancyClick: (Vacancy) -> Unit
+    private val onVacancyClick: (FavoriteVacancy) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(vacancy: Vacancy) {
+    fun bind(vacancy: FavoriteVacancy) {
         with(binding) {
             vacancyNameAndLocation.text =
                 when (vacancy.area) {
