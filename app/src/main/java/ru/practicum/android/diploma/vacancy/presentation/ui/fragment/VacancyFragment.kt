@@ -1,10 +1,11 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
+import android.util.Log
 import androidx.core.view.isVisible
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -16,11 +17,11 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     inflate = FragmentVacancyBinding::inflate
 ) {
     override val viewModel: VacancyViewModel by viewModel()
-
+    private val args by navArgs<VacancyFragmentArgs>()
+    private val vacancyId by lazy { args.vacancyId }
     override fun initViews() {
+        vacancyId?.let { viewModel.getVacancy(it.toInt()) }
         bindButtons()
-        val args by navArgs<VacancyFragmentArgs>()
-        val vacancyId by lazy { args.vacancyId }
         testValues(vacancyId.toString())
         viewModel.initIsVacancyInFavorite(vacancyId ?: "")
     }
@@ -33,6 +34,9 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
                 R.drawable.ic_favorites_off
             }
             buttonLike.setImageResource(iconRes)
+        }
+        viewModel.observeVacancy.observe(viewLifecycleOwner) {
+            Log.d("VacancyFragment", "Vacancy: $it")
         }
     }
 
