@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dp64"
         android:paddingStart="@dimen/zero"
+        android:paddingEnd="@dimen/zero"
         android:text="@string/job"
         app:icon="@drawable/ic_arrow_back"
         app:iconGravity="textStart"
@@ -236,6 +237,7 @@
                 tools:text="Loading" />
 
             <TextView
+                android:id="@+id/key_skills_title"
                 style="@style/Medium22TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

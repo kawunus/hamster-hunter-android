@@ -4,6 +4,5 @@ sealed class VacancyDetailsState {
     object Loading : VacancyDetailsState()
     object ServerError : VacancyDetailsState()
     object NotFoundError : VacancyDetailsState()
-    data class VacancyLiked(val details: VacancyDetails, val isLiked: Boolean) :
-        VacancyDetailsState()
+    data class VacancyLiked(val details: VacancyDetails) : VacancyDetailsState()
 }

@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.favorites.mapper
 
 import ru.practicum.android.diploma.favorites.data.entity.FavoriteVacancyEntity
-import ru.practicum.android.diploma.favorites.domain.model.FavoriteVacancy
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-fun FavoriteVacancy.toEntity(addedAt: Long): FavoriteVacancyEntity = FavoriteVacancyEntity(
+fun Vacancy.toEntity(addedAt: Long): FavoriteVacancyEntity = FavoriteVacancyEntity(
     id = id,
     name = name,
     salaryFrom = salaryFrom,
@@ -15,7 +15,7 @@ fun FavoriteVacancy.toEntity(addedAt: Long): FavoriteVacancyEntity = FavoriteVac
     icon = icon
 )
 
-fun FavoriteVacancyEntity.toDomain(): FavoriteVacancy = FavoriteVacancy(
+fun FavoriteVacancyEntity.toDomain(): Vacancy = Vacancy(
     id = id,
     name = name,
     salaryFrom = salaryFrom,

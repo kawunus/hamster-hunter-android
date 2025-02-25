@@ -20,6 +20,7 @@ object Mapper {
         workFormat = workFormat?.map { it.name }.orEmpty(),
         description = description.orEmpty(),
         keySkills = keySkills?.map { it.name }.orEmpty(),
-        icon = employer?.logoUrls?.logoUrl.orEmpty()
+        icon = employer?.logoUrls?.logoUrl.orEmpty(),
+        alternateUrl = alternateUrl
     )
 }

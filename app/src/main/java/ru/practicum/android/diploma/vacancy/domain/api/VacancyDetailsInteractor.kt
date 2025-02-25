@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 
 interface VacancyDetailsInteractor {
 
-    fun openVacancyShare(vacancyId: String)
+    fun openVacancyShare(shareUrl: String)
 
     suspend fun findVacancy(vacancyId: Int): Flow<VacancyDetails?>
 

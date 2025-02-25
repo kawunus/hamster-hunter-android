@@ -15,10 +15,11 @@ class VacancyDetailsRepositoryImpl(
 ) :
     VacancyDetailsRepository {
     override fun openUrlShare(shareUrl: String) {
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareUrl)
-        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareUrl)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         context.startActivity(shareIntent)
     }
 

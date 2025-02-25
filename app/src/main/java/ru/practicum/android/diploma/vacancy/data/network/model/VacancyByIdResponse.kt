@@ -18,5 +18,7 @@ data class VacancyByIdResponse(
     val description: String?,
     @SerializedName("key_skills")
     val keySkills: List<KeySkills>?,
-    val icon: String?
+    val icon: String?,
+    @SerializedName("alternate_url")
+    val alternateUrl: String?
 ) : Response()

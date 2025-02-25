@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.util
 
-import ru.practicum.android.diploma.favorites.domain.model.FavoriteVacancy
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 
-fun VacancyDetails.toFavoriteVacancy(): FavoriteVacancy {
-    return FavoriteVacancy(
+fun VacancyDetails.toFavoriteVacancy(): Vacancy {
+    return Vacancy(
         id = this.id,
         name = this.name,
         company = this.employer,

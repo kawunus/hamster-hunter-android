@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteract
 import ru.practicum.android.diploma.util.toFavoriteVacancy
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
+import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsLikeState
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
 
 class VacancyViewModel(
@@ -19,7 +20,11 @@ class VacancyViewModel(
 ) : BaseViewModel() {
     private val vacancyId = savedStateHandle.get<String>(KEY_ID)?.toIntOrNull() ?: 0
     private val vacancyDetailsLiveData = MutableLiveData<VacancyDetailsState>(VacancyDetailsState.Loading)
+    private val vacancyDetailsLikeLiveData =
+        MutableLiveData<VacancyDetailsLikeState>(VacancyDetailsLikeState.Uninitialized)
+
     fun observeVacancyDetailsState(): LiveData<VacancyDetailsState> = vacancyDetailsLiveData
+    fun observeVacancyDetailsLikeState(): LiveData<VacancyDetailsLikeState> = vacancyDetailsLikeLiveData
 
     init {
         if (vacancyId != 0) { // такой вакансии нет
@@ -46,55 +51,62 @@ class VacancyViewModel(
                 }
             }
         } else {
-            // инет пропал =)
+            // инет пропал
         }
     }
 
     private suspend fun initIsVacancyInFavorite(vacancyDetails: VacancyDetails) {
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-        vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(vacancyDetails, isLiked))
+        vacancyDetailsLikeLiveData.postValue(if (isLiked) VacancyDetailsLikeState.Liked else VacancyDetailsLikeState.NotLiked)
+        vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(vacancyDetails))
     }
 
-    fun likeButtonControl() {
+    fun likeControl() {
         val previousState = vacancyDetailsLiveData.value
         if (previousState is VacancyDetailsState.VacancyLiked) {
-            val vacancy = previousState.details
-            if (previousState.isLiked == true) {
-                deleteVacancyFromFavorites()
-            } else {
-                addVacancyToFavorites(vacancy)
+            when (vacancyDetailsLikeLiveData.value) {
+                is VacancyDetailsLikeState.Liked -> deleteVacancyFromFavorites()
+                is VacancyDetailsLikeState.NotLiked -> addVacancyToFavorites(previousState.details)
+                else -> {}
             }
         }
     }
 
+
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
-            val previousState = vacancyDetailsLiveData.value
-            if (previousState is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
+            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
                 favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toFavoriteVacancy())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-                vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(previousState.details, newLikeStatus))
+                vacancyDetailsLikeLiveData.postValue(if (newLikeStatus) VacancyDetailsLikeState.Liked else VacancyDetailsLikeState.NotLiked)
             }
         }
     }
 
     private fun deleteVacancyFromFavorites() {
         viewModelScope.launch {
-            val previousState = vacancyDetailsLiveData.value
-            if (previousState is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
+            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
                 favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId.toString())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-                vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(previousState.details, newLikeStatus))
+                vacancyDetailsLikeLiveData.postValue(
+                    if (newLikeStatus) VacancyDetailsLikeState.Liked else VacancyDetailsLikeState.NotLiked
+                )
             }
         }
     }
 
-    fun shareButtonControll() {
-        vacancyDetailsInteractor.openVacancyShare(vacancyId.toString())
+    fun shareControll() {
+        val prevState = vacancyDetailsLiveData.value
+        if (prevState is VacancyDetailsState.VacancyLiked) {
+            vacancyDetailsInteractor.openVacancyShare(
+                prevState.details.alternateUrl ?: (SHAREPREFIX + vacancyId.toString())
+            )
+        }
     }
 
     companion object {
         const val KEY_ID = "vacancyId"
+        const val SHAREPREFIX = "https://hh.ru/vacancy/"
     }
 
 }

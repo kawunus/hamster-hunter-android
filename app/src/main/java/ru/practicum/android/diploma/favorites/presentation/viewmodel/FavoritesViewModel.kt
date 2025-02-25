@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
-import ru.practicum.android.diploma.favorites.domain.model.FavoriteVacancy
 import ru.practicum.android.diploma.favorites.presentation.model.FavoritesState
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class FavoritesViewModel(private val favoriteVacancyInteractor: FavoriteVacancyInteractor) : BaseViewModel() {
 
@@ -23,7 +23,7 @@ class FavoritesViewModel(private val favoriteVacancyInteractor: FavoriteVacancyI
         }
     }
 
-    private fun processResult(vacanciesList: List<FavoriteVacancy>) {
+    private fun processResult(vacanciesList: List<Vacancy>) {
         if (vacanciesList.isEmpty()) {
             renderState(FavoritesState.Empty)
         } else {

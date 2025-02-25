@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
+import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsLikeState
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
 
@@ -42,29 +43,46 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
                 else -> {}
             }
         }
+        viewModel.observeVacancyDetailsLikeState().observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is VacancyDetailsLikeState.Liked -> changeLikeStatus(true)
+                is VacancyDetailsLikeState.NotLiked -> changeLikeStatus(false)
+                else -> {}
+            }
+        }
     }
 
     private fun bindButtons() = with(binding) {
         buttonBack.setOnClickListener { findNavController().navigateUp() }
-        buttonShare.setOnClickListener { viewModel.shareButtonControll() }
-        buttonLike.setOnClickListener { viewModel.likeButtonControl() }
+        buttonShare.setOnClickListener { viewModel.shareControll() }
+        buttonLike.setOnClickListener { viewModel.likeControl() }
     }
 
-    private fun renderVacancyInfo(vacancyDetails: VacancyDetails) {
-        binding.name.text = vacancyDetails.name
-        binding.salary.text =
+    private fun renderVacancyInfo(vacancyDetails: VacancyDetails) = with(binding) {
+        name.text = vacancyDetails.name
+        salary.text =
             formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
-        binding.employerName.text = vacancyDetails.employer
-        binding.employerLocation.text =
-            if (vacancyDetails.city.isEmpty() || vacancyDetails.street.isEmpty() || vacancyDetails.building.isEmpty()) {
-                vacancyDetails.area
-            } else {
-                vacancyDetails.city + Constants.PUNCTUATION +
-                    vacancyDetails.street + Constants.PUNCTUATION +
-                    vacancyDetails.building
-            }
-        binding.experience.text = vacancyDetails.experience
-        var employmentOptions = ""
+        employerName.text = vacancyDetails.employer
+        employerLocation.text = if (vacancyDetails.city.isEmpty()) {
+            vacancyDetails.area //нету точного адреса
+        } else {
+            vacancyDetails.city +
+                if (vacancyDetails.street.isEmpty()) Constants.EMPTY_STRING else { // город
+                    Constants.PUNCTUATION + vacancyDetails.street + // улица
+                        if (vacancyDetails.building.isEmpty()) Constants.EMPTY_STRING else {
+                            Constants.PUNCTUATION + vacancyDetails.building //дом
+                        }
+                }
+        }
+        if (vacancyDetails.city.isEmpty() || vacancyDetails.street.isEmpty() || vacancyDetails.building.isEmpty()) {
+            vacancyDetails.area
+        } else {
+            vacancyDetails.city + Constants.PUNCTUATION +
+                vacancyDetails.street + Constants.PUNCTUATION +
+                vacancyDetails.building
+        }
+        experience.text = vacancyDetails.experience
+        var employmentOptions = Constants.EMPTY_STRING
         employmentOptions = if (vacancyDetails.employment.isNotEmpty()) {
             vacancyDetails.employment +
                 if (vacancyDetails.workFormat.isNotEmpty()) Constants.PUNCTUATION else Constants.EMPTY_STRING
@@ -75,66 +93,71 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             employmentOptions += s
             if (index < vacancyDetails.workFormat.size - 1) employmentOptions += Constants.PUNCTUATION
         }
-        binding.employmentFormAndWorkFormat.text = employmentOptions
+        employmentFormAndWorkFormat.text = employmentOptions
         // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
         // ЭТО ВРЕМЕННОЕ РЕШЕНИЕ! КАК ИСПРАЯТ УДАЛИТЬ ИМПОРТ Html !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        binding.jobDescription.text = Html.fromHtml(vacancyDetails.description, Html.FROM_HTML_MODE_LEGACY).toString()
+        jobDescription.text = Html.fromHtml(vacancyDetails.description, Html.FROM_HTML_MODE_LEGACY).toString()
         // загружаю ключевые скиллы
-        var keySkills = ""
+        var keySkillsText = Constants.EMPTY_STRING
         for (i in vacancyDetails.keySkills) {
-            keySkills += getString(R.string.key_skill_separator, i)
+            keySkillsText += getString(R.string.key_skill_separator, i)
         }
-        binding.keySkills.text = keySkills
+        keySkills.text = keySkillsText
+        keySkillsTitle.isVisible = if (vacancyDetails.keySkills.size == 0) false else true
         // загружаю иконку
-        Glide.with(this.requireContext())
+        Glide.with(requireContext())
             .load(vacancyDetails.icon)
             .placeholder(R.drawable.placeholder_32px)
             .fitCenter()
-            .into(binding.employerImg)
+            .into(employerImg)
     }
 
-    private fun renderError(showErrorOrNot: Boolean) {
-        binding.errorBox.isVisible = showErrorOrNot
-        binding.jobInfo.isVisible = !showErrorOrNot
+    private fun renderError(showErrorOrNot: Boolean) = with(binding) {
+        errorBox.isVisible = showErrorOrNot
+        jobInfo.isVisible = !showErrorOrNot
     }
 
-    private fun changeErrorMessage(isServerError: Boolean) {
+    private fun changeErrorMessage(isServerError: Boolean) = with(binding) {
         if (isServerError) {
-            binding.errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
-            binding.errorText.text = getString(R.string.error_server)
+            errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
+            errorText.text = getString(R.string.error_server)
         } else {
-            binding.errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
-            binding.errorText.text = getString(R.string.error_job_not_found_or_deleted)
+            errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
+            errorText.text = getString(R.string.error_job_not_found_or_deleted)
         }
     }
 
-    private fun showErrorServer() {
+    private fun showErrorServer() = with(binding) {
         renderError(true)
-        binding.progressBar.isVisible = false
+        progressBar.isVisible = false
         changeErrorMessage(true)
     }
 
-    private fun showErrorNotFound() {
+    private fun showErrorNotFound() = with(binding) {
         renderError(true)
-        binding.progressBar.isVisible = false
+        progressBar.isVisible = false
         changeErrorMessage(false)
     }
 
-    private fun showLoading() {
+    private fun showLoading() = with(binding) {
         renderError(false)
-        binding.jobInfo.isVisible = false
-        binding.progressBar.isVisible = true
+        jobInfo.isVisible = false
+        progressBar.isVisible = true
     }
 
-    private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyLiked) {
+    private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyLiked) = with(binding) {
         renderError(false)
-        binding.progressBar.isVisible = false
+        progressBar.isVisible = false
         renderVacancyInfo(vacancyDetailsState.details)
-        val iconRes = if (vacancyDetailsState.isLiked) {
+
+    }
+
+    private fun changeLikeStatus(isLiked: Boolean) = with(binding) {
+        val iconRes = if (isLiked) {
             R.drawable.ic_favorites_on
         } else {
             R.drawable.ic_favorites_off
         }
-        binding.buttonLike.setImageResource(iconRes)
+        buttonLike.setImageResource(iconRes)
     }
 }
