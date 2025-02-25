@@ -63,47 +63,14 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         salary.text =
             formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
         employerName.text = vacancyDetails.employer
-        employerLocation.text = if (vacancyDetails.city.isEmpty()) {
-            vacancyDetails.area //нету точного адреса
-        } else {
-            vacancyDetails.city +
-                if (vacancyDetails.street.isEmpty()) Constants.EMPTY_STRING else { // город
-                    Constants.PUNCTUATION + vacancyDetails.street + // улица
-                        if (vacancyDetails.building.isEmpty()) Constants.EMPTY_STRING else {
-                            Constants.PUNCTUATION + vacancyDetails.building //дом
-                        }
-                }
-        }
-        if (vacancyDetails.city.isEmpty() || vacancyDetails.street.isEmpty() || vacancyDetails.building.isEmpty()) {
-            vacancyDetails.area
-        } else {
-            vacancyDetails.city + Constants.PUNCTUATION +
-                vacancyDetails.street + Constants.PUNCTUATION +
-                vacancyDetails.building
-        }
+        showAddress(vacancyDetails.area, vacancyDetails.city, vacancyDetails.street, vacancyDetails.building)
         experience.text = vacancyDetails.experience
-        var employmentOptions = Constants.EMPTY_STRING
-        employmentOptions = if (vacancyDetails.employment.isNotEmpty()) {
-            vacancyDetails.employment +
-                if (vacancyDetails.workFormat.isNotEmpty()) Constants.PUNCTUATION else Constants.EMPTY_STRING
-        } else {
-            employmentOptions
-        }
-        vacancyDetails.workFormat.forEachIndexed { index, s ->
-            employmentOptions += s
-            if (index < vacancyDetails.workFormat.size - 1) employmentOptions += Constants.PUNCTUATION
-        }
-        employmentFormAndWorkFormat.text = employmentOptions
+        showEmploymentFormAndWorkFormat(vacancyDetails.employment, vacancyDetails.workFormat)
         // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
         // ЭТО ВРЕМЕННОЕ РЕШЕНИЕ! КАК ИСПРАЯТ УДАЛИТЬ ИМПОРТ Html !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         jobDescription.text = Html.fromHtml(vacancyDetails.description, Html.FROM_HTML_MODE_LEGACY).toString()
         // загружаю ключевые скиллы
-        var keySkillsText = Constants.EMPTY_STRING
-        for (i in vacancyDetails.keySkills) {
-            keySkillsText += getString(R.string.key_skill_separator, i)
-        }
-        keySkills.text = keySkillsText
-        keySkillsTitle.isVisible = if (vacancyDetails.keySkills.size == 0) false else true
+        showKeySkills(vacancyDetails.keySkills)
         // загружаю иконку
         Glide.with(requireContext())
             .load(vacancyDetails.icon)
@@ -151,6 +118,47 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         renderVacancyInfo(vacancyDetailsState.details)
 
     }
+
+    private fun showAddress(area: String, city: String, street: String, building: String) = with(binding) {
+        employerLocation.text = if (city.isEmpty()) {
+            area //нету точного адреса
+        } else {
+            city +
+                if (street.isEmpty()) {
+                    Constants.EMPTY_STRING
+                } else { // город
+                    Constants.PUNCTUATION + street + // улица
+                        if (building.isEmpty()) Constants.EMPTY_STRING else {
+                            Constants.PUNCTUATION + building // дом
+                        }
+                }
+        }
+    }
+
+    private fun showKeySkills(currentKeySkills: List<String>) = with(binding) {
+        var keySkillsText = Constants.EMPTY_STRING
+        for (i in currentKeySkills) {
+            keySkillsText += getString(R.string.key_skill_separator, i)
+        }
+        keySkills.text = keySkillsText
+        keySkillsTitle.isVisible = if (currentKeySkills.size == 0) false else true
+    }
+
+    private fun showEmploymentFormAndWorkFormat(employmentForm: String, currentWorkFormat: List<String>) =
+        with(binding) {
+            var employmentOptions = Constants.EMPTY_STRING
+            employmentOptions = if (employmentForm.isNotEmpty()) {
+                employmentForm +
+                    if (currentWorkFormat.isNotEmpty()) Constants.PUNCTUATION else Constants.EMPTY_STRING
+            } else {
+                employmentOptions
+            }
+            currentWorkFormat.forEachIndexed { index, s ->
+                employmentOptions += s
+                if (index < currentWorkFormat.size - 1) employmentOptions += Constants.PUNCTUATION
+            }
+            employmentFormAndWorkFormat.text = employmentOptions
+        }
 
     private fun changeLikeStatus(isLiked: Boolean) = with(binding) {
         val iconRes = if (isLiked) {

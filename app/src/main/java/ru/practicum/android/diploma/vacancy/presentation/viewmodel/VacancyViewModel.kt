@@ -57,7 +57,11 @@ class VacancyViewModel(
 
     private suspend fun initIsVacancyInFavorite(vacancyDetails: VacancyDetails) {
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-        vacancyDetailsLikeLiveData.postValue(if (isLiked) VacancyDetailsLikeState.Liked else VacancyDetailsLikeState.NotLiked)
+        vacancyDetailsLikeLiveData.postValue(
+            if (isLiked)
+                VacancyDetailsLikeState.Liked
+            else VacancyDetailsLikeState.NotLiked
+        )
         vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(vacancyDetails))
     }
 
@@ -72,13 +76,16 @@ class VacancyViewModel(
         }
     }
 
-
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
                 favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toFavoriteVacancy())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-                vacancyDetailsLikeLiveData.postValue(if (newLikeStatus) VacancyDetailsLikeState.Liked else VacancyDetailsLikeState.NotLiked)
+                vacancyDetailsLikeLiveData.postValue(
+                    if (newLikeStatus)
+                        VacancyDetailsLikeState.Liked
+                    else VacancyDetailsLikeState.NotLiked
+                )
             }
         }
     }
@@ -99,7 +106,7 @@ class VacancyViewModel(
         val prevState = vacancyDetailsLiveData.value
         if (prevState is VacancyDetailsState.VacancyLiked) {
             vacancyDetailsInteractor.openVacancyShare(
-                prevState.details.alternateUrl ?: (SHAREPREFIX + vacancyId.toString())
+                prevState.details.alternateUrl ?: SHAREPREFIX + vacancyId.toString()
             )
         }
     }
