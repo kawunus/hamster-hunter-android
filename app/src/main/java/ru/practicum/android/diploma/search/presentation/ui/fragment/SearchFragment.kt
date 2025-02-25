@@ -43,6 +43,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
     private val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
+    private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
         // инициализируем наши вьюхи тут
@@ -71,10 +72,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
-        lifecycleScope.launch {
-            adapter.clear() // Принудительно очищаем адаптер кастномным методом
-            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
-            adapter.submitData(lifecycle, pagingData) // загружаем новые данные
+        if (pagingData != lastPagingData) {
+            lifecycleScope.launch {
+                lastPagingData = pagingData
+                adapter.clear() // Принудительно очищаем адаптер кастномным методом
+                delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
+                adapter.submitData(lifecycle, pagingData) // загружаем новые данные
+            }
         }
     }
 
@@ -82,9 +86,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun setupSearchTextWatcher() {
         binding.edittextSearch.addTextChangedListener(
             beforeTextChanged = { _, _, _, _ -> },
-            onTextChanged = { text, start, before, count ->
-                updateClearButtonIcon(text)
+            onTextChanged = { text, _, _, _ ->
 
+                updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
                 }
