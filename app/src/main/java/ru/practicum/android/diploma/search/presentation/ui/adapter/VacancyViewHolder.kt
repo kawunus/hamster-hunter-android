@@ -19,7 +19,7 @@ class VacancyViewHolder(
         with(binding) {
             vacancyNameAndLocation.text =
                 when (vacancy.area) {
-                    "" -> vacancy.name
+                    Constants.EMPTY_STRING -> vacancy.name
                     else -> itemView.context.getString(
                         R.string.vacancy_name_and_location,
                         vacancy.name,

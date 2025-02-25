@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import ru.practicum.android.diploma.core.data.network.dto.Response
 
 data class VacancyByIdResponse(
+    val id: String?,
     val name: String?,
     val salary: Salary?,
     val employer: Employer?,
@@ -17,5 +18,7 @@ data class VacancyByIdResponse(
     val description: String?,
     @SerializedName("key_skills")
     val keySkills: List<KeySkills>?,
-    val icon: String?
+    val icon: String?,
+    @SerializedName("alternate_url")
+    val alternateUrl: String?
 ) : Response()
