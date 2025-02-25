@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -61,9 +60,6 @@ class VacanciesPagingSource(
             LoadResult.Error(e)
         } catch (e: IOException) {
             LoadResult.Error(e)
-        } catch (e: Throwable) { // Самый общий случай
-            Log.e("ERROR", "Неизвестная ошибка: ${e.message}", e)
-            throw e // Можно оставить, если неизвестные ошибки нужно прокидывать выше
         }
     }
 
