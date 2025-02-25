@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.search.data.network
 
 import android.content.Context
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,6 +14,8 @@ import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchReq
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.NetworkMonitor
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
@@ -52,8 +55,17 @@ class VacanciesPagingSource(
                 -1 -> LoadResult.Error(NoInternetException()) // Альтернативная обработка ошибки "Нет интернета"
                 else -> LoadResult.Error(Exception("Ошибка сервера: ${response.resultCode}"))
             }
-        } catch (e: HttpException) {
-            LoadResult.Error(e)
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException, is SocketTimeoutException, is IOException -> {
+                    LoadResult.Error(e)
+                }
+
+                else -> {
+                    Log.e("ERROR", "Неизвестная ошибка: ${e.message}")
+                    throw e
+                }
+            }
         }
     }
 
