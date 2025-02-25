@@ -105,9 +105,7 @@ class VacancyViewModel(
     fun shareControll() {
         val prevState = vacancyDetailsLiveData.value
         if (prevState is VacancyDetailsState.VacancyLiked) {
-            vacancyDetailsInteractor.openVacancyShare(
-                prevState.details.alternateUrl ?: SHAREPREFIX + vacancyId.toString()
-            )
+            vacancyDetailsInteractor.openVacancyShare(prevState.details.alternateUrl)
         }
     }
 

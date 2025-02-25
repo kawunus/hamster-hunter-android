@@ -21,6 +21,6 @@ object Mapper {
         description = description.orEmpty(),
         keySkills = keySkills?.map { it.name }.orEmpty(),
         icon = employer?.logoUrls?.logoUrl.orEmpty(),
-        alternateUrl = alternateUrl
+        alternateUrl = alternateUrl.orEmpty()
     )
 }
