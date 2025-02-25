@@ -63,8 +63,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         salary.text =
             formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
         employerName.text = vacancyDetails.employer
-        employerLocation.text =
-            findAddress(vacancyDetails.area, vacancyDetails.city, vacancyDetails.street, vacancyDetails.building)
+        showAddress(vacancyDetails.area, vacancyDetails.city, vacancyDetails.street, vacancyDetails.building)
         experience.text = vacancyDetails.experience
         showEmploymentFormAndWorkFormat(vacancyDetails.employment, vacancyDetails.workFormat)
         // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
@@ -120,22 +119,19 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     }
 
-    private fun findAddress(area: String, city: String, street: String, building: String): String {
+    private fun showAddress(area: String, city: String, street: String, building: String) = with(binding) {
         var newAddress = area
-        if (city.isEmpty()) {
-            return newAddress // нету точного адреса
+        if (city.isEmpty()) { // нету точного адреса
         } else {
             newAddress = city
         }
-        if (street.isEmpty()) {
-            return city
-        } else {
+        if (street.isNotEmpty()) {
             newAddress += Constants.PUNCTUATION + street
         }
-        if (building.isNotEmpty()) {
+        if (building.isNotEmpty() && street.isNotEmpty()) { //дом нужен только если известна улица
             newAddress += Constants.PUNCTUATION + building
         }
-        return newAddress
+        employerLocation.text = newAddress
     }
 
     private fun showKeySkills(currentKeySkills: List<String>) = with(binding) {
