@@ -58,9 +58,11 @@ class VacancyViewModel(
     private suspend fun initIsVacancyInFavorite(vacancyDetails: VacancyDetails) {
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
         vacancyDetailsLikeLiveData.postValue(
-            if (isLiked)
+            if (isLiked) {
                 VacancyDetailsLikeState.Liked
-            else VacancyDetailsLikeState.NotLiked
+            } else {
+                VacancyDetailsLikeState.NotLiked
+            }
         )
         vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(vacancyDetails))
     }
@@ -82,9 +84,11 @@ class VacancyViewModel(
                 favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toFavoriteVacancy())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
                 vacancyDetailsLikeLiveData.postValue(
-                    if (newLikeStatus)
+                    if (newLikeStatus) {
                         VacancyDetailsLikeState.Liked
-                    else VacancyDetailsLikeState.NotLiked
+                    } else {
+                        VacancyDetailsLikeState.NotLiked
+                    }
                 )
             }
         }

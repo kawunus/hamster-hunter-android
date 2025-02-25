@@ -63,7 +63,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         salary.text =
             formatSalary(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency, requireContext())
         employerName.text = vacancyDetails.employer
-        showAddress(vacancyDetails.area, vacancyDetails.city, vacancyDetails.street, vacancyDetails.building)
+        employerLocation.text =
+            findAddress(vacancyDetails.area, vacancyDetails.city, vacancyDetails.street, vacancyDetails.building)
         experience.text = vacancyDetails.experience
         showEmploymentFormAndWorkFormat(vacancyDetails.employment, vacancyDetails.workFormat)
         // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
@@ -119,20 +120,22 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     }
 
-    private fun showAddress(area: String, city: String, street: String, building: String) = with(binding) {
-        employerLocation.text = if (city.isEmpty()) {
-            area //нету точного адреса
+    private fun findAddress(area: String, city: String, street: String, building: String): String = with(binding) {
+        var newAddress = Constants.EMPTY_STRING
+        if (city.isEmpty()) {
+            return area // нету точного адреса
         } else {
-            city +
-                if (street.isEmpty()) {
-                    Constants.EMPTY_STRING
-                } else { // город
-                    Constants.PUNCTUATION + street + // улица
-                        if (building.isEmpty()) Constants.EMPTY_STRING else {
-                            Constants.PUNCTUATION + building // дом
-                        }
-                }
+            newAddress = city
         }
+        if (street.isEmpty()) {
+            return city
+        } else {
+            newAddress += Constants.PUNCTUATION + street
+        }
+        if (!building.isEmpty()) {
+            newAddress += Constants.PUNCTUATION + building
+        }
+        return newAddress
     }
 
     private fun showKeySkills(currentKeySkills: List<String>) = with(binding) {
