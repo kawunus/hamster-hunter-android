@@ -6,8 +6,7 @@ data class VacanciesSearchRequest(
     val text: String,
     val page: Int,
     val area: String?,
-    @SerializedName("professional_role")
-    val professionalRole: String?,
-    @SerializedName("only_with_salary")
-    val onlyWithSalary: Boolean?,
+    @SerializedName("professional_role") val professionalRole: String?,
+    @SerializedName("only_with_salary") val onlyWithSalary: Boolean?,
+    val onlyInTitles: Boolean?
 )

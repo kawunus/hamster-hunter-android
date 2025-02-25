@@ -8,7 +8,9 @@ import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
+import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 
@@ -26,11 +28,7 @@ class RetrofitNetworkClient(
         return withContext(Dispatchers.IO) {
             try {
                 val response = when (dto) {
-                    is VacanciesSearchRequest -> hHApiService.search(
-                        userAgent = USER_AGENT,
-                        text = dto.text,
-                        page = dto.page
-                    )
+                    is VacanciesSearchRequest -> searchVacancies(dto)
 
                     is VacancyByIdRequest -> hHApiService.getVacancyById(
                         userAgent = USER_AGENT,
@@ -45,6 +43,19 @@ class RetrofitNetworkClient(
                 Response().apply { resultCode = HTTP_SERVER_ERROR }
             }
         }
+    }
+
+    private suspend fun searchVacancies(request: VacanciesSearchRequest): VacanciesSearchResponse {
+        val titleSearchField = if (request.onlyInTitles == true) {
+            hHApiService.getDictionaries(userAgent = USER_AGENT)
+                .vacancySearchFields
+                .find { it.id == "name" }
+                ?.id
+        } else {
+            null
+        }
+        val queryMap = request.toQueryMap(titleSearchField)
+        return hHApiService.search(USER_AGENT, queryMap)
     }
 
     private fun logError(errorType: String, e: Exception) {
