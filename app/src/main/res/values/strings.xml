@@ -24,6 +24,7 @@
     <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="enter_salary">Введите сумму</string>
     <string name="dont_show_results_without_salary">Не показывать без зарплаты</string>
+    <string name="search_only_in_titles">Искать только в заголовках вакансий</string>
     <!--выбор места работы-->
     <string name="choose_job_location">Выбор места работы</string>
     <string name="country">Страна</string>
