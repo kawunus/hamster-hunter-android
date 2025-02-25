@@ -60,7 +60,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         Glide.with(requireContext())
             .load(vacancyDetails.icon)
             .placeholder(R.drawable.placeholder_32px)
-            .centerCrop()
+            .fitCenter()
             .into(employerImg)
     }
 

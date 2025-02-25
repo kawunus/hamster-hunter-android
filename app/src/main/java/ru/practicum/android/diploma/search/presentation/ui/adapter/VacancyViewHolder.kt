@@ -32,7 +32,7 @@ class VacancyViewHolder(
             Glide.with(itemView)
                 .load(vacancy.icon)
                 .placeholder(R.drawable.placeholder_32px)
-                .centerCrop()
+                .fitCenter()
                 .into(companyIcon)
 
             root.setOnClickListener { onVacancyClick(vacancy) }
