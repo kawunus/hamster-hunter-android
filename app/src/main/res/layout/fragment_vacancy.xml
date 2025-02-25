@@ -62,9 +62,9 @@
         android:layout_marginTop="@dimen/dp8"
         android:layout_marginEnd="@dimen/dp4"
         android:background="?attr/colorPrimary"
+        android:contentDescription="@null"
         android:paddingHorizontal="@dimen/dp12"
         android:paddingVertical="@dimen/dp12"
-        android:contentDescription="@null"
         android:src="@drawable/ic_sharing"
         app:layout_constraintEnd_toStartOf="@id/button_like"
         app:layout_constraintTop_toTopOf="parent"
@@ -229,7 +229,7 @@
                 android:text="@string/job_description" />
 
             <TextView
-                android:id="@+id/jobDescription"
+                android:id="@+id/job_description"
                 style="@style/Regular16TextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

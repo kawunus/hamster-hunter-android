@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
-import android.text.Html
+import android.text.Spanned
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -52,9 +53,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         showAddress(vacancyDetails.area, vacancyDetails.city, vacancyDetails.street, vacancyDetails.building)
         experience.text = vacancyDetails.experience
         showEmploymentFormAndWorkFormat(vacancyDetails.employment, vacancyDetails.workFormat)
-        // !!!!!!!!!!!!!!!----не забыть дополнить по выполнению коллегами таска 47------!!!!!!!!!!!!
-        // ЭТО ВРЕМЕННОЕ РЕШЕНИЕ! КАК ИСПРАЯТ УДАЛИТЬ ИМПОРТ Html !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        jobDescription.text = Html.fromHtml(vacancyDetails.description, Html.FROM_HTML_MODE_LEGACY).toString()
+        jobDescription.text = createDescription(vacancyDetails.description)
         // загружаю ключевые скиллы
         showKeySkills(vacancyDetails.keySkills)
         // загружаю иконку
@@ -166,5 +165,16 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
             is VacancyDetailsState.VacancyInfo -> showVacancyDetails(state)
         }
+    }
+
+    private fun createDescription(htmlString: String?): Spanned {
+        if (htmlString.isNullOrEmpty()) {
+            binding.jobDescription.isVisible = false
+        }
+
+        val formattedHtml = htmlString
+            ?.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0") ?: ""
+
+        return HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
     }
 }
