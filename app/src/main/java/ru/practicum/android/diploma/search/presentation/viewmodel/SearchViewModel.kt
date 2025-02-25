@@ -92,7 +92,7 @@ class SearchViewModel(
     private fun shouldSearchStart(changedText: String): Boolean {
         // Проверяем, был ли изменён  запрос с момента прошлого поиска
         if (latestSearchText == changedText && searchState.value is SearchScreenState.SearchResults) {
-            return false// если старый текст идентичен новому, не запускаем поиск повторно
+            return false // Если старый текст идентичен новому, не запускаем поиск повторно
         } else {
             latestSearchText = changedText
             return true

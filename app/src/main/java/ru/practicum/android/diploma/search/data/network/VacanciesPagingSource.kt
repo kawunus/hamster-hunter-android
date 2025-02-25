@@ -55,17 +55,15 @@ class VacanciesPagingSource(
                 -1 -> LoadResult.Error(NoInternetException()) // Альтернативная обработка ошибки "Нет интернета"
                 else -> LoadResult.Error(Exception("Ошибка сервера: ${response.resultCode}"))
             }
-        } catch (e: Exception) {
-            when (e) {
-                is HttpException, is SocketTimeoutException, is IOException -> {
-                    LoadResult.Error(e)
-                }
-
-                else -> {
-                    Log.e("ERROR", "Неизвестная ошибка: ${e.message}")
-                    throw e
-                }
-            }
+        } catch (e: HttpException) {
+            LoadResult.Error(e)
+        } catch (e: SocketTimeoutException) {
+            LoadResult.Error(e)
+        } catch (e: IOException) {
+            LoadResult.Error(e)
+        } catch (e: Throwable) { // Самый общий случай
+            Log.e("ERROR", "Неизвестная ошибка: ${e.message}", e)
+            throw e // Можно оставить, если неизвестные ошибки нужно прокидывать выше
         }
     }
 
