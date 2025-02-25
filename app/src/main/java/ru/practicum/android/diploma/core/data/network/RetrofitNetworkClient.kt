@@ -8,6 +8,7 @@ import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.util.NetworkMonitor
@@ -53,7 +54,7 @@ class RetrofitNetworkClient(
         } else {
             null
         }
-        val queryMap = VacanciesSearchRequest.toQueryMap(request, titleSearchField)
+        val queryMap = request.toQueryMap(titleSearchField)
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
