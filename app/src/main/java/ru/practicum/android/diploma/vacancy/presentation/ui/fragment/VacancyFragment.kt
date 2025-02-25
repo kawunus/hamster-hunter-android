@@ -128,7 +128,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         if (street.isNotEmpty()) {
             newAddress += Constants.PUNCTUATION + street
         }
-        if (building.isNotEmpty() && street.isNotEmpty()) { //дом нужен только если известна улица
+        if (building.isNotEmpty() && street.isNotEmpty()) { // дом нужен только если известна улица
             newAddress += Constants.PUNCTUATION + building
         }
         employerLocation.text = newAddress
