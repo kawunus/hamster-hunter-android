@@ -111,7 +111,6 @@ class VacancyViewModel(
 
     companion object {
         const val KEY_ID = "vacancyId"
-        const val SHAREPREFIX = "https://hh.ru/vacancy/"
     }
 
 }
