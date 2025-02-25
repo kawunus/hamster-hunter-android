@@ -6,6 +6,7 @@
         <item name="customColorEditText">@color/light_gray</item>
         <item name="customColorEditTextHint">@color/gray</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="colorBackgroundFloating">@color/background_black_transp_50</item>
     </style>
 
 </resources>
