@@ -2,29 +2,23 @@ package ru.practicum.android.diploma.vacancy.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
-import ru.practicum.android.diploma.util.toFavoriteVacancy
+import ru.practicum.android.diploma.util.toVacancy
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
-import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsLikeState
-import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
 
 class VacancyViewModel(
     private val favoriteVacancyInteractor: FavoriteVacancyInteractor,
     private val vacancyDetailsInteractor: VacancyDetailsInteractor,
-    savedStateHandle: SavedStateHandle
+    private val vacancyId: Int
 ) : BaseViewModel() {
-    private val vacancyId = savedStateHandle.get<String>(KEY_ID)?.toIntOrNull() ?: 0
     private val vacancyDetailsLiveData = MutableLiveData<VacancyDetailsState>(VacancyDetailsState.Loading)
-    private val vacancyDetailsLikeLiveData =
-        MutableLiveData<VacancyDetailsLikeState>(VacancyDetailsLikeState.Uninitialized)
-
+    private val vacancyIsLikedLiveData = MutableLiveData<Boolean?>(null)
+    fun observeIsLikedLiveData(): LiveData<Boolean?> = vacancyIsLikedLiveData
     fun observeVacancyDetailsState(): LiveData<VacancyDetailsState> = vacancyDetailsLiveData
-    fun observeVacancyDetailsLikeState(): LiveData<VacancyDetailsLikeState> = vacancyDetailsLikeLiveData
 
     init {
         if (vacancyId != 0) { // такой вакансии нет
@@ -57,22 +51,16 @@ class VacancyViewModel(
 
     private suspend fun initIsVacancyInFavorite(vacancyDetails: VacancyDetails) {
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-        vacancyDetailsLikeLiveData.postValue(
-            if (isLiked) {
-                VacancyDetailsLikeState.Liked
-            } else {
-                VacancyDetailsLikeState.NotLiked
-            }
-        )
-        vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyLiked(vacancyDetails))
+        vacancyIsLikedLiveData.postValue(isLiked)
+        vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancyDetails))
     }
 
     fun likeControl() {
         val previousState = vacancyDetailsLiveData.value
-        if (previousState is VacancyDetailsState.VacancyLiked) {
-            when (vacancyDetailsLikeLiveData.value) {
-                is VacancyDetailsLikeState.Liked -> deleteVacancyFromFavorites()
-                is VacancyDetailsLikeState.NotLiked -> addVacancyToFavorites(previousState.details)
+        if (previousState is VacancyDetailsState.VacancyInfo) {
+            when (vacancyIsLikedLiveData.value) {
+                true -> deleteVacancyFromFavorites()
+                false -> addVacancyToFavorites(previousState.details)
                 else -> {}
             }
         }
@@ -80,41 +68,29 @@ class VacancyViewModel(
 
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
-            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
-                favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toFavoriteVacancy())
+            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId != 0) {
+                favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toVacancy())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-                vacancyDetailsLikeLiveData.postValue(
-                    if (newLikeStatus) {
-                        VacancyDetailsLikeState.Liked
-                    } else {
-                        VacancyDetailsLikeState.NotLiked
-                    }
-                )
+                vacancyIsLikedLiveData.postValue(newLikeStatus)
             }
         }
     }
 
     private fun deleteVacancyFromFavorites() {
         viewModelScope.launch {
-            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyLiked && vacancyId != 0) {
+            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId != 0) {
                 favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId.toString())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
-                vacancyDetailsLikeLiveData.postValue(
-                    if (newLikeStatus) VacancyDetailsLikeState.Liked else VacancyDetailsLikeState.NotLiked
-                )
+                vacancyIsLikedLiveData.postValue(newLikeStatus)
             }
         }
     }
 
-    fun shareControll() {
+    fun shareVacancyUrl() {
         val prevState = vacancyDetailsLiveData.value
-        if (prevState is VacancyDetailsState.VacancyLiked) {
+        if (prevState is VacancyDetailsState.VacancyInfo) {
             vacancyDetailsInteractor.openVacancyShare(prevState.details.alternateUrl)
         }
-    }
-
-    companion object {
-        const val KEY_ID = "vacancyId"
     }
 
 }

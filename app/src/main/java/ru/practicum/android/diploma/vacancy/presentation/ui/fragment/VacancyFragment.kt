@@ -13,8 +13,7 @@ import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
-import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsLikeState
-import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetailsState
+import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyDetailsState
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
 
 class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
@@ -22,7 +21,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 ) {
     override val viewModel: VacancyViewModel by viewModel {
         val args by navArgs<VacancyFragmentArgs>()
-        parametersOf(args)
+        val vacancyId by lazy { args.vacancyId }
+        parametersOf(vacancyId?.toIntOrNull())
     }
 
     override fun initViews() {
@@ -31,30 +31,16 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     override fun subscribe() = with(binding) {
         viewModel.observeVacancyDetailsState().observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is VacancyDetailsState.Loading -> showLoading()
-
-                is VacancyDetailsState.NotFoundError -> showErrorNotFound()
-
-                is VacancyDetailsState.ServerError -> showErrorServer()
-
-                is VacancyDetailsState.VacancyLiked -> showVacancyDetails(state)
-
-                else -> {}
-            }
+            renderVacancyState(state)
         }
-        viewModel.observeVacancyDetailsLikeState().observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is VacancyDetailsLikeState.Liked -> changeLikeStatus(true)
-                is VacancyDetailsLikeState.NotLiked -> changeLikeStatus(false)
-                else -> {}
-            }
+        viewModel.observeIsLikedLiveData().observe(viewLifecycleOwner) { state ->
+            renderLikeStatus(state)
         }
     }
 
     private fun bindButtons() = with(binding) {
         buttonBack.setOnClickListener { findNavController().navigateUp() }
-        buttonShare.setOnClickListener { viewModel.shareControll() }
+        buttonShare.setOnClickListener { viewModel.shareVacancyUrl() }
         buttonLike.setOnClickListener { viewModel.likeControl() }
     }
 
@@ -112,7 +98,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         progressBar.isVisible = true
     }
 
-    private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyLiked) = with(binding) {
+    private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyInfo) = with(binding) {
         renderError(false)
         progressBar.isVisible = false
         renderVacancyInfo(vacancyDetailsState.details)
@@ -159,12 +145,26 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             employmentFormAndWorkFormat.text = employmentOptions
         }
 
-    private fun changeLikeStatus(isLiked: Boolean) = with(binding) {
-        val iconRes = if (isLiked) {
-            R.drawable.ic_favorites_on
-        } else {
-            R.drawable.ic_favorites_off
+    private fun renderLikeStatus(isLiked: Boolean?) = with(binding) {
+        if (isLiked != null) {
+            val iconRes = if (isLiked) {
+                R.drawable.ic_favorites_on
+            } else {
+                R.drawable.ic_favorites_off
+            }
+            buttonLike.setImageResource(iconRes)
         }
-        buttonLike.setImageResource(iconRes)
+    }
+
+    private fun renderVacancyState(state: VacancyDetailsState) {
+        when (state) {
+            is VacancyDetailsState.Loading -> showLoading()
+
+            is VacancyDetailsState.NotFoundError -> showErrorNotFound()
+
+            is VacancyDetailsState.ServerError -> showErrorServer()
+
+            is VacancyDetailsState.VacancyInfo -> showVacancyDetails(state)
+        }
     }
 }
