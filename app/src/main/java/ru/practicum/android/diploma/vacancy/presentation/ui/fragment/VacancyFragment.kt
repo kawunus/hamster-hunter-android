@@ -120,10 +120,10 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     }
 
-    private fun findAddress(area: String, city: String, street: String, building: String): String = with(binding) {
-        var newAddress = Constants.EMPTY_STRING
+    private fun findAddress(area: String, city: String, street: String, building: String): String {
+        var newAddress = area
         if (city.isEmpty()) {
-            return area // нету точного адреса
+            return newAddress // нету точного адреса
         } else {
             newAddress = city
         }
@@ -132,7 +132,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         } else {
             newAddress += Constants.PUNCTUATION + street
         }
-        if (!building.isEmpty()) {
+        if (building.isNotEmpty()) {
             newAddress += Constants.PUNCTUATION + building
         }
         return newAddress
