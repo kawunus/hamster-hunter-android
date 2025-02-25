@@ -72,12 +72,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
-        if (pagingData != lastPagingData) {
+        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
             lifecycleScope.launch {
                 lastPagingData = pagingData
-                adapter.clear() // Принудительно очищаем адаптер кастномным методом
+                adapter.clear() // Принудительно очищаем адаптер
                 delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
-                adapter.submitData(lifecycle, pagingData) // загружаем новые данные
+                adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
             }
         }
     }
@@ -269,6 +269,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SHOW_RECYCLER_DELAY = 200L
-
     }
 }
