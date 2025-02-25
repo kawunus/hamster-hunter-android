@@ -85,15 +85,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     // настройка отслеживания изменений текста
     private fun setupSearchTextWatcher() {
         binding.edittextSearch.addTextChangedListener(
-            beforeTextChanged = { _, _, _, _ -> },
             onTextChanged = { text, _, _, _ ->
-
                 updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
                 }
             },
-            afterTextChanged = { _ -> }
         )
     }
 
