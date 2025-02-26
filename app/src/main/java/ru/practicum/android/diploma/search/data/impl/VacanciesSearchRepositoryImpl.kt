@@ -28,6 +28,7 @@ class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersReposi
             area = filters.area,
             professionalRole = filters.professionalRole,
             onlyWithSalary = filters.onlyWithSalary,
+            onlyInTitles = filters.onlyInTitles,
         )
 
         return Pager(
