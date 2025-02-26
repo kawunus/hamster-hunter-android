@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp60"
+    android:paddingHorizontal="@dimen/dp16"
+    android:gravity = "center_vertical">
+
+    <TextView
+        android:id="@+id/country_region_name"
+        style="@style/Regular16TextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        app:drawableEndCompat="@drawable/ic_arrow_forward"
+        app:drawableTint="?attr/colorOnPrimary"
+        tool:text="Страна/Регион" />
+
+</LinearLayout>

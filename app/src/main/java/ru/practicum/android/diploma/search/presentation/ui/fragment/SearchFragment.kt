@@ -114,6 +114,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             viewModel.cancelSearchDebounce()
             viewModel.setDefaultScreen()
         }
+        binding.buttonFilter.setOnClickListener{
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())}
     }
 
     // обработка нажатия на кнопку очистки
