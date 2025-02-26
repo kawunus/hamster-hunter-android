@@ -12,12 +12,11 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     init {
         checkSavedFilters() // получаем свежие данные о сохранённых фильтрах при инициализации ViewModel
     }
-    // обязательно дополнительно в OnResume обновлять данные  (checkSavedFilters)
 
     private val savedFiltersLiveData = MutableLiveData<FilterParameters?>(null)
     fun getSavedFiltersLiveData(): LiveData<FilterParameters?> = savedFiltersLiveData
 
-    private fun checkSavedFilters() {
+    fun checkSavedFilters() {
         viewModelScope.launch {
             savedFiltersLiveData.value = interactor.read()
         }
