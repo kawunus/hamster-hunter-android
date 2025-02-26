@@ -28,7 +28,7 @@ class VacancyDetailsRepositoryImpl(
         context.startActivity(shareIntent)
     }
 
-    override suspend fun findVacancyDetails(vacancyId: Int): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
+    override suspend fun findVacancyDetails(vacancyId: String): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
         val response = networkClient.doRequest(VacancyByIdRequest(vacancyId.toString()))
         when (response.resultCode) {
             HTTP_SUCCESS -> emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))

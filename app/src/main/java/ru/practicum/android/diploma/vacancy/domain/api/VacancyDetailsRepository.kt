@@ -9,6 +9,6 @@ interface VacancyDetailsRepository {
 
     fun openUrlShare(shareUrl: String)
 
-    suspend fun findVacancyDetails(vacancyId: Int): Flow<NetworkResult<VacancyDetails?, ErrorType>>
+    suspend fun findVacancyDetails(vacancyId: String): Flow<NetworkResult<VacancyDetails?, ErrorType>>
 
 }

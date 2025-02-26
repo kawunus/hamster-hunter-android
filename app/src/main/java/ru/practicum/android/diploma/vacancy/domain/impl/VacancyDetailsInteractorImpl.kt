@@ -13,7 +13,7 @@ class VacancyDetailsInteractorImpl(private val repository: VacancyDetailsReposit
         repository.openUrlShare(shareUrl)
     }
 
-    override suspend fun findVacancy(vacancyId: Int): Flow<Pair<VacancyDetails?, ErrorType?>> {
+    override suspend fun findVacancy(vacancyId: String): Flow<Pair<VacancyDetails?, ErrorType?>> {
         return repository.findVacancyDetails(vacancyId).map {
             when (it) {
                 is NetworkResult.Success -> Pair(it.data, null)

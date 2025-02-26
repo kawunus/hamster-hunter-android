@@ -8,6 +8,6 @@ interface VacancyDetailsInteractor {
 
     fun openVacancyShare(shareUrl: String)
 
-    suspend fun findVacancy(vacancyId: Int): Flow<Pair<VacancyDetails?, ErrorType?>>
+    suspend fun findVacancy(vacancyId: String): Flow<Pair<VacancyDetails?, ErrorType?>>
 
 }
