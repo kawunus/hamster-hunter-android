@@ -14,7 +14,7 @@ import ru.practicum.android.diploma.vacancy.domain.usecase.VacancyDetailsInterac
 class VacancyViewModel(
     private val favoriteVacancyInteractor: FavoriteVacancyInteractor,
     private val vacancyDetailsInteractor: VacancyDetailsInteractor,
-    private val vacancyId: Int
+    private val vacancyId: String
 ) : BaseViewModel() {
     private val vacancyDetailsLiveData = MutableLiveData<VacancyDetailsState>(VacancyDetailsState.Loading)
     private val vacancyIsLikedLiveData = MutableLiveData<Boolean?>(null)
@@ -42,7 +42,7 @@ class VacancyViewModel(
     }
 
     private suspend fun initIsVacancyInFavorite(vacancyDetails: VacancyDetails) {
-        val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
+        val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
         vacancyIsLikedLiveData.postValue(isLiked)
         vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancyDetails))
     }
@@ -57,12 +57,11 @@ class VacancyViewModel(
             }
         }
     }
-
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
-            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId != 0) {
+            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId.isNotEmpty()) {
                 favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toVacancy())
-                val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
+                val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
                 vacancyIsLikedLiveData.postValue(newLikeStatus)
             }
         }
@@ -70,9 +69,9 @@ class VacancyViewModel(
 
     private fun deleteVacancyFromFavorites() {
         viewModelScope.launch {
-            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId != 0) {
-                favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId.toString())
-                val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId.toString())
+            if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId.isNotEmpty()) {
+                favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId)
+                val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
                 vacancyIsLikedLiveData.postValue(newLikeStatus)
             }
         }

@@ -27,4 +27,3 @@ class VacancyLoadStateAdapter : LoadStateAdapter<VacancyLoadStateAdapter.LoadSta
         holder.bind(loadState)
     }
 }
-
