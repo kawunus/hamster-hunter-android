@@ -30,6 +30,8 @@ import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenSt
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.formatNumber
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
@@ -43,6 +45,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
     private val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
+    private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
         // инициализируем наши вьюхи тут
@@ -71,25 +74,25 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
-        lifecycleScope.launch {
-            adapter.clear() // Принудительно очищаем адаптер кастномным методом
-            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
-            adapter.submitData(lifecycle, pagingData) // загружаем новые данные
+        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
+            lifecycleScope.launch {
+                lastPagingData = pagingData
+                adapter.clear() // Принудительно очищаем адаптер
+                delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
+                adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
+            }
         }
     }
 
     // настройка отслеживания изменений текста
     private fun setupSearchTextWatcher() {
         binding.edittextSearch.addTextChangedListener(
-            beforeTextChanged = { _, _, _, _ -> },
-            onTextChanged = { text, start, before, count ->
+            onTextChanged = { text, _, _, _ ->
                 updateClearButtonIcon(text)
-
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
                 }
             },
-            afterTextChanged = { _ -> }
         )
     }
 
@@ -215,21 +218,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun showFoundCount(count: Int?) {
         binding.notificationText.apply {
             if (count == null) {
-                isVisible = false
+                hide()
             } else {
                 text = if (count == 0) {
                     getString(R.string.no_such_jobs)
                 } else {
                     resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
                 }
-                isVisible = true
+                show()
             }
         }
     }
 
     private fun notificationVisibilityManager(needToBeVisible: Boolean) {
         if (!needToBeVisible) {
-            binding.notificationText.isVisible = false
+            binding.notificationText.hide()
         }
     }
 

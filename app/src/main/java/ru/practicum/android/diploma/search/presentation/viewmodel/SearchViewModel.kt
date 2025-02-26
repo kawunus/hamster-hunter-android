@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -13,11 +15,15 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.data.network.exception.EmptyResultException
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.domain.usecase.VacanciesSearchInteractor
+import ru.practicum.android.diploma.util.Constants.EMPTY_STRING
 import ru.practicum.android.diploma.util.debounce
 
-class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel() {
+class SearchViewModel(
+    private val interactor: VacanciesSearchInteractor,
+    private val savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
     private val searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
     fun getSearchState(): LiveData<SearchScreenState> = searchState
 
@@ -26,6 +32,11 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
     private val pagingDataLiveData = MutableLiveData<PagingData<Vacancy>>(PagingData.empty())
     fun getPagingDataLiveData(): LiveData<PagingData<Vacancy>> = pagingDataLiveData
+    private var latestSearchText: String
+        get() = savedStateHandle.get<String>(LATEST_SEARCH_TEXT) ?: EMPTY_STRING
+        set(value) {
+            savedStateHandle[LATEST_SEARCH_TEXT] = value
+        }
 
     private val searchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY,
@@ -33,13 +44,20 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
         useLastParam = true
     ) { expression ->
         startSearch(expression)
+        Log.d(
+            "DEBUG",
+            "View model: searchDebounce invoked"
+        )
     }
 
     fun searchWithDebounce(changedText: String) {
-        // Показываем загрузку
-        searchState.postValue(SearchScreenState.Loading)
-        // Запускаем отложенное выполнения поиска
-        searchDebounce.invoke(changedText)
+        val shouldSearchStart = shouldSearchStart(changedText)
+        if (shouldSearchStart) {
+            // Показываем загрузку
+            searchState.postValue(SearchScreenState.Loading)
+            // Запускаем отложенное выполнения поиска
+            searchDebounce.invoke(changedText)
+        }
     }
 
     fun startSearch(expression: String) {
@@ -72,6 +90,16 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
             }
     }
 
+    private fun shouldSearchStart(changedText: String): Boolean {
+        // Проверяем, был ли изменён  запрос с момента прошлого поиска
+        if (latestSearchText == changedText && searchState.value is SearchScreenState.SearchResults) {
+            return false // Если старый текст идентичен новому, не запускаем поиск повторно
+        } else {
+            latestSearchText = changedText
+            return true
+        }
+    }
+
     fun cancelSearchDebounce() {
         searchDebounce.cancel()
     }
@@ -91,7 +119,6 @@ class SearchViewModel(val interactor: VacanciesSearchInteractor) : BaseViewModel
 
     private companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val LATEST_SEARCH_TEXT = "latestSearchText"
     }
 }
-
-
