@@ -5,12 +5,13 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
+import ru.practicum.android.diploma.util.Constants.HTTP_BAD_REQUEST
+import ru.practicum.android.diploma.util.Constants.HTTP_SERVER_ERROR
+import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 
@@ -23,7 +24,9 @@ class RetrofitNetworkClient(
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        val token = context.getString(R.string.bearer_token, TOKEN)
+
+//        На будущее, когда понадобится токен в запросах:
+//        val token = context.getString(R.string.bearer_token, TOKEN)
 
         return withContext(Dispatchers.IO) {
             try {
@@ -39,7 +42,7 @@ class RetrofitNetworkClient(
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
             } catch (e: HttpException) {
-                logError("HTTP", e)
+                logError(e)
                 Response().apply { resultCode = HTTP_SERVER_ERROR }
             }
         }
@@ -58,20 +61,18 @@ class RetrofitNetworkClient(
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
-    private fun logError(errorType: String, e: Exception) {
-        Log.d("DEBUG", "$errorType ошибка в методе doRequest: ${e.message}")
+    private fun logError(e: Exception) {
+        Log.d("DEBUG", "Ошибка в методе doRequest: ${e.message}")
     }
 
     private fun isConnected(): Boolean {
         return NetworkMonitor.isNetworkAvailable(context)
     }
 
-    companion object {
-        private const val HTTP_BAD_REQUEST = 400
-        private const val HTTP_SERVER_ERROR = 500
-        private const val HTTP_SUCCESS = 200
-        const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
-        const val USER_AGENT =
+    private companion object {
+        //        На будущее, когда понадобится токен в запросах:
+        //        private const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
+        private const val USER_AGENT =
             "HamsterHunter/1.0 (sergey_sh97@mail.ru)"
     }
 }

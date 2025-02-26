@@ -1,12 +1,13 @@
 package ru.practicum.android.diploma.root.ui
 
 import androidx.core.bundle.Bundle
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseActivity
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 
 class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::inflate) {
 
@@ -35,12 +36,12 @@ class RootActivity : BaseActivity<ActivityRootBinding>(ActivityRootBinding::infl
     }
 
     private fun hideBottomNavigation() {
-        binding.bottomNavigationView.isVisible = false
-        binding.divider.isVisible = false
+        binding.bottomNavigationView.hide()
+        binding.divider.hide()
     }
 
     private fun showBottomNavigation() {
-        binding.bottomNavigationView.isVisible = true
-        binding.divider.isVisible = true
+        binding.bottomNavigationView.show()
+        binding.divider.show()
     }
 }

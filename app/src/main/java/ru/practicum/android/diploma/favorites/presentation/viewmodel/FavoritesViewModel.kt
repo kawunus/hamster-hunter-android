@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
+import ru.practicum.android.diploma.favorites.domain.usecase.FavoriteVacancyInteractor
 import ru.practicum.android.diploma.favorites.presentation.model.FavoritesState
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 

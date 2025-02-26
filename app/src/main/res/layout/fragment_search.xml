@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/edittext_search"
         app:layout_constraintBottom_toTopOf="@id/progress_bar"
         tools:itemCount="5"
-        tools:listitem="@layout/vacancy_item" />
+        tools:listitem="@layout/item_vacancy" />
 
     <TextView
         android:id="@+id/notification_text"
