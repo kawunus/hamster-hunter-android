@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
@@ -53,4 +54,8 @@ val dataModule = module {
     single {
         get<AppDatabase>().favoriteVacancyDao()
     }
+
+    // Gson
+    singleOf(::Gson)
+
 }
