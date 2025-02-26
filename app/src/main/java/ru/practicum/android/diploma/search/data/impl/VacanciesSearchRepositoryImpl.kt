@@ -8,26 +8,27 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.getKoin
+import ru.practicum.android.diploma.filter.domain.api.FiltersRepository
 import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-class VacanciesSearchRepositoryImpl :
+class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersRepository) :
     VacanciesSearchRepository {
 
     private val _foundCount = MutableSharedFlow<Int?>(replay = 0)
     override val foundCount: SharedFlow<Int?> get() = _foundCount
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
-        // Тут вместо null будем подставлять значения установленных фильтров, если они есть. Если нет - оставляем null.
+        val filters = filtersRepository.read()
         val searchRequest = VacanciesSearchRequest(
             text = expression,
             page = 0,
-            area = null,
-            professionalRole = null,
-            onlyWithSalary = null,
-            onlyInTitles = null
+            area = filters.area,
+            professionalRole = filters.professionalRole,
+            onlyWithSalary = filters.onlyWithSalary,
+            onlyInTitles = filters.onlyInTitles,
         )
 
         return Pager(
