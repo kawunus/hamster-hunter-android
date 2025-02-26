@@ -3,13 +3,13 @@ package ru.practicum.android.diploma.search.presentation.ui.adapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.databinding.VacancyItemBinding
+import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
 
 class VacancyViewHolder(
-    private val binding: VacancyItemBinding,
+    private val binding: ItemVacancyBinding,
     private val onVacancyClick: (Vacancy) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
