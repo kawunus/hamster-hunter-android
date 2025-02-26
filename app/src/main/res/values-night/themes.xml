@@ -5,6 +5,7 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="customColorEditText">@color/gray</item>
         <item name="customColorEditTextHint">@color/white</item>
+        <item name="colorBackgroundFloating">@color/background_black_transp_50</item>
     </style>
 
 </resources>

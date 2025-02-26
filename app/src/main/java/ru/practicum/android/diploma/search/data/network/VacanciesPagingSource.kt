@@ -13,6 +13,8 @@ import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchReq
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.NetworkMonitor
+import java.io.IOException
+import java.net.SocketTimeoutException
 
 class VacanciesPagingSource(
     private val networkClient: NetworkClient,
@@ -53,6 +55,10 @@ class VacanciesPagingSource(
                 else -> LoadResult.Error(Exception("Ошибка сервера: ${response.resultCode}"))
             }
         } catch (e: HttpException) {
+            LoadResult.Error(e)
+        } catch (e: SocketTimeoutException) {
+            LoadResult.Error(e)
+        } catch (e: IOException) {
             LoadResult.Error(e)
         }
     }
