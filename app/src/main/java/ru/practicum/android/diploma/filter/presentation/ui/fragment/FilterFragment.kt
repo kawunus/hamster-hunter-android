@@ -14,11 +14,6 @@ class FilterFragment(
     }
 
     override fun subscribe() {
-        viewModel.getSavedFiltersLiveData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.checkSavedFilters()
+        TODO("Not yet implemented")
     }
 }

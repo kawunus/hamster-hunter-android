@@ -21,7 +21,6 @@ class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersReposi
     override val foundCount: SharedFlow<Int?> get() = _foundCount
 
     override fun searchVacancies(expression: String): Flow<PagingData<Vacancy>> {
-
         val filters = filtersRepository.read()
         val searchRequest = VacanciesSearchRequest(
             text = expression,
@@ -29,7 +28,6 @@ class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersReposi
             area = filters.area,
             professionalRole = filters.professionalRole,
             onlyWithSalary = filters.onlyWithSalary,
-            onlyInTitles = filters.onlyInTitles
         )
 
         return Pager(
