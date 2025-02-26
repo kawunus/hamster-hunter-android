@@ -106,15 +106,15 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
         viewModel.getData()
     }
 
-    private companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
-
     private fun View.show() {
         isVisible = true
     }
 
     private fun View.hide() {
         isVisible = false
+    }
+
+    private companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
