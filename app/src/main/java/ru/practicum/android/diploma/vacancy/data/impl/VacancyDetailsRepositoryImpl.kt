@@ -5,7 +5,7 @@ import android.content.Intent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.NetworkClient
-import ru.practicum.android.diploma.util.Constants.SUCCESS_CODE
+import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.mapToErrorType
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
@@ -28,10 +28,10 @@ class VacancyDetailsRepositoryImpl(
         context.startActivity(shareIntent)
     }
 
-    override suspend fun findVacancyDetails(vacancyId: Int): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
+    override suspend fun findVacancyDetails(vacancyId: String): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
         val response = networkClient.doRequest(VacancyByIdRequest(vacancyId.toString()))
         when (response.resultCode) {
-            SUCCESS_CODE -> emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
+            HTTP_SUCCESS -> emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
             else -> emit(NetworkResult.Error(response.resultCode.mapToErrorType()))
         }
     }

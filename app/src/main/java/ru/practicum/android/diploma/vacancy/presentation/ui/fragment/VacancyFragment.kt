@@ -13,7 +13,8 @@ import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
-import ru.practicum.android.diploma.util.gone
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyDetailsState
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
@@ -24,14 +25,14 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     override val viewModel: VacancyViewModel by viewModel {
         val args by navArgs<VacancyFragmentArgs>()
         val vacancyId by lazy { args.vacancyId }
-        parametersOf(vacancyId?.toIntOrNull())
+        parametersOf(vacancyId)
     }
 
     override fun initViews() {
         bindButtons()
     }
 
-    override fun subscribe() = with(binding) {
+    override fun subscribe() {
         viewModel.observeVacancyDetailsState().observe(viewLifecycleOwner) { state ->
             renderVacancyState(state)
         }
@@ -82,27 +83,27 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     private fun showErrorServer() = with(binding) {
         renderError(true)
-        progressBar.isVisible = false
+        progressBar.hide()
         changeErrorMessage(true)
-        buttonShare.gone()
-        buttonLike.gone()
+        buttonShare.hide()
+        buttonLike.hide()
     }
 
     private fun showErrorNotFound() = with(binding) {
         renderError(true)
-        progressBar.isVisible = false
+        progressBar.hide()
         changeErrorMessage(false)
     }
 
     private fun showLoading() = with(binding) {
         renderError(false)
-        jobInfo.isVisible = false
-        progressBar.isVisible = true
+        jobInfo.hide()
+        progressBar.show()
     }
 
     private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyInfo) = with(binding) {
         renderError(false)
-        progressBar.isVisible = false
+        progressBar.hide()
         renderVacancyInfo(vacancyDetailsState.details)
 
     }
@@ -172,7 +173,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
 
     private fun createDescription(htmlString: String?): Spanned {
         if (htmlString.isNullOrEmpty()) {
-            binding.jobDescription.isVisible = false
+            binding.jobDescription.hide()
         }
 
         val formattedHtml = htmlString

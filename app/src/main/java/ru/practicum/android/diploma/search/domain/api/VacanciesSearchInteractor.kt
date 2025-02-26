@@ -7,5 +7,4 @@ import ru.practicum.android.diploma.search.domain.model.Vacancy
 interface VacanciesSearchInteractor {
     val foundCount: Flow<Int?>
     fun searchVacancies(expression: String): Flow<PagingData<Vacancy>>
-
 }

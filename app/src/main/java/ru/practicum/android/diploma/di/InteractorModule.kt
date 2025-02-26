@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
@@ -12,7 +11,7 @@ import ru.practicum.android.diploma.vacancy.domain.impl.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.usecase.VacancyDetailsInteractor
 
 val interactorModule = module {
-    factoryOf(::VacanciesSearchInteractorImpl) { bind<VacanciesSearchInteractor>() }
+    singleOf(::VacanciesSearchInteractorImpl) { bind<VacanciesSearchInteractor>() }
 
     singleOf(::FavoriteVacancyInteractorImpl) { bind<FavoriteVacancyInteractor>() }
 

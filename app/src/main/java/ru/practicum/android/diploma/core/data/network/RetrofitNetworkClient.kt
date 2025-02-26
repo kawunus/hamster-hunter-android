@@ -11,6 +11,9 @@ import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
+import ru.practicum.android.diploma.util.Constants.HTTP_BAD_REQUEST
+import ru.practicum.android.diploma.util.Constants.HTTP_SERVER_ERROR
+import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 
@@ -66,12 +69,9 @@ class RetrofitNetworkClient(
         return NetworkMonitor.isNetworkAvailable(context)
     }
 
-    companion object {
-        private const val HTTP_BAD_REQUEST = 400
-        private const val HTTP_SERVER_ERROR = 500
-        private const val HTTP_SUCCESS = 200
-        const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
-        const val USER_AGENT =
+    private companion object {
+        private const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
+        private const val USER_AGENT =
             "HamsterHunter/1.0 (sergey_sh97@mail.ru)"
     }
 }

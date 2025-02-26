@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.search.data.mapper.toDomain
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.NetworkMonitor
 import java.io.IOException
 import java.net.SocketTimeoutException
@@ -72,10 +73,5 @@ class VacanciesPagingSource(
 
     private fun isConnected(): Boolean {
         return NetworkMonitor.isNetworkAvailable(context)
-    }
-
-    companion object {
-        private const val HTTP_SUCCESS = 200
-
     }
 }
