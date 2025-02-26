@@ -195,7 +195,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_reset"
         app:layout_constraintEnd_toEndOf="@+id/right_border"
         app:layout_constraintStart_toStartOf="@+id/left_border"
-        android:layout_marginTop="219dp"
+        android:layout_marginTop="@dimen/dp219"
         android:visibility="gone"
         android:paddingVertical ="@dimen/dp20"/>
 

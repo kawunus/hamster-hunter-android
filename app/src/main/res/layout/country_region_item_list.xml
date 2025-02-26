@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/country_region_name"
         style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         app:drawableEndCompat="@drawable/ic_arrow_forward"
