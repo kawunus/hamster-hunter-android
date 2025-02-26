@@ -7,8 +7,9 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteractor
 import ru.practicum.android.diploma.util.toVacancy
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
+import ru.practicum.android.diploma.vacancy.domain.model.ErrorType
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
+import ru.practicum.android.diploma.vacancy.domain.usecase.VacancyDetailsInteractor
 
 class VacancyViewModel(
     private val favoriteVacancyInteractor: FavoriteVacancyInteractor,
@@ -21,31 +22,22 @@ class VacancyViewModel(
     fun observeVacancyDetailsState(): LiveData<VacancyDetailsState> = vacancyDetailsLiveData
 
     init {
-        if (vacancyId != 0) { // такой вакансии нет
-            vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
-            viewModelScope.launch {
-                vacancyDetailsInteractor.findVacancy(vacancyId).collect { foundData ->
-                    if (foundData != null) { // есть данные
-                        initIsVacancyInFavorite(foundData)
-                    } else {
-                        vacancyDetailsLiveData.postValue( // обобщенный сигнал ошибки
-                            VacancyDetailsState.ServerError
-                        )
-                    }
-                    // ДОБАВИТЬ ПОСЛЕ 53 таски
-                    /*
-                    ошибка сервера -> {
-                        vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
-                    }
-                    Нет записи в базах -> { // удаление из локальной базы, если его убрали в НН
-                        favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId)
-                        vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
-                    }
-                } */
-                }
+        vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
+        viewModelScope.launch {
+            vacancyDetailsInteractor.findVacancy(vacancyId).collect { pair ->
+                processResult(pair.first, pair.second)
             }
+        }
+    }
+
+    private suspend fun processResult(vacancyDetails: VacancyDetails?, errorMessage: ErrorType?) {
+        if (vacancyDetails != null && errorMessage != ErrorType.NOT_FOUND) {
+            initIsVacancyInFavorite(vacancyDetails)
+        } else if (vacancyDetails != null) {
+            favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyDetails.id)
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
         } else {
-            // инет пропал
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
         }
     }
 

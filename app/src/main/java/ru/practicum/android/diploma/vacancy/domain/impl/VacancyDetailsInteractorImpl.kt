@@ -1,17 +1,25 @@
 package ru.practicum.android.diploma.vacancy.domain.impl
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
+import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
+import ru.practicum.android.diploma.vacancy.domain.model.ErrorType
+import ru.practicum.android.diploma.vacancy.domain.model.NetworkResult
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
+import ru.practicum.android.diploma.vacancy.domain.usecase.VacancyDetailsInteractor
 
 class VacancyDetailsInteractorImpl(private val repository: VacancyDetailsRepository) : VacancyDetailsInteractor {
     override fun openVacancyShare(shareUrl: String) {
         repository.openUrlShare(shareUrl)
     }
 
-    override suspend fun findVacancy(vacancyId: Int): Flow<VacancyDetails?> {
-        return repository.findVacancyDetails(vacancyId)
+    override suspend fun findVacancy(vacancyId: Int): Flow<Pair<VacancyDetails?, ErrorType?>> {
+        return repository.findVacancyDetails(vacancyId).map {
+            when (it) {
+                is NetworkResult.Success -> Pair(it.data, null)
+                is NetworkResult.Error -> Pair(null, it.error)
+            }
+        }
     }
 
 }

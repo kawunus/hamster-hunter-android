@@ -43,6 +43,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
     private val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
+    private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
         // инициализируем наши вьюхи тут
@@ -71,25 +72,25 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
-        lifecycleScope.launch {
-            adapter.clear() // Принудительно очищаем адаптер кастномным методом
-            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
-            adapter.submitData(lifecycle, pagingData) // загружаем новые данные
+        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
+            lifecycleScope.launch {
+                lastPagingData = pagingData
+                adapter.clear() // Принудительно очищаем адаптер
+                delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
+                adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
+            }
         }
     }
 
     // настройка отслеживания изменений текста
     private fun setupSearchTextWatcher() {
         binding.edittextSearch.addTextChangedListener(
-            beforeTextChanged = { _, _, _, _ -> },
-            onTextChanged = { text, start, before, count ->
+            onTextChanged = { text, _, _, _ ->
                 updateClearButtonIcon(text)
-
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
                 }
             },
-            afterTextChanged = { _ -> }
         )
     }
 
@@ -265,6 +266,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SHOW_RECYCLER_DELAY = 200L
-
     }
 }
