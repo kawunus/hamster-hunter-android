@@ -4,10 +4,10 @@ import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 
 interface FiltersRepository {
 
-    fun save(filters: FilterParameters)
+    fun saveFilters(filters: FilterParameters)
 
-    fun read(): FilterParameters
+    fun readFilters(): FilterParameters
 
-    fun clear()
+    fun clearFilters()
 }
 
