@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.search.presentation.ui.fragment
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -162,30 +161,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun showPagingError(error: LoadState.Error) {
-        val message = when (error.error) {
-            is NoInternetException -> getString(R.string.error_toast_no_internet)
-            else -> getString(R.string.error_toast_server)
-        }
-        showToast(message)
-    }
 
-    private fun showToast(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
-    }
 
     private fun renderScreen(state: SearchScreenState) {
         Log.d("DEBUG", "SearchScreenState = $state")
-        placeholderVisibilityManager(isError = state is Error)
-        notificationVisibilityManager(needToBeVisible = state is SearchResults || state is NothingFound)
-        defaultScreenVisibilityManager(needToBeVisible = state is Default)
-        recyclerVisibilityManager(needToBeVisible = state is SearchResults)
-        progressBarVisibilityManager(isLoading = state is Loading)
-
-        if (state is Error) {
-            placeholderContentManager(state)
+        when (state) {
+            is Default -> showDefaultScreen()
+            is Error -> showError(state)
+            is Loading -> showLoading()
+            is SearchResults -> showSearchResults()
         }
-
     }
 
     // обработка разных типов ошибок
@@ -200,6 +185,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 is NothingFound -> {
                     ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
                     tvErrorText.text = getString(R.string.error_nothing_found)
+                    notificationText.show()
                 }
 
                 is ServerError -> {
@@ -210,10 +196,46 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun clearAdapter() {
-        adapter.submitData(lifecycle, PagingData.empty())
+    private fun showDefaultScreen() {
+        binding.apply {
+            llErrorContainer.hide()
+            notificationText.hide()
+            ivPlaceholderMain.show()
+            recycler.hide()
+            progressBar.hide()
+        }
     }
 
+    private fun showSearchResults() {
+        binding.apply {
+            llErrorContainer.hide()
+            notificationText.show()
+            ivPlaceholderMain.hide()
+            recycler.show()
+            progressBar.hide()
+        }
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            llErrorContainer.hide()
+            notificationText.hide()
+            ivPlaceholderMain.hide()
+            recycler.hide()
+            progressBar.show()
+        }
+    }
+
+    private fun showError(state: Error) {
+        binding.apply {
+            llErrorContainer.show()
+            notificationText.hide()
+            ivPlaceholderMain.hide()
+            recycler.hide()
+            progressBar.hide()
+        }
+        placeholderContentManager(state)
+    }
     // отображение сообщения "Найдено $count вакансий"
     private fun showFoundCount(count: Int?) {
         binding.notificationText.apply {
@@ -230,27 +252,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun notificationVisibilityManager(needToBeVisible: Boolean) {
-        if (!needToBeVisible) {
-            binding.notificationText.hide()
+    private fun clearAdapter() {
+        adapter.submitData(lifecycle, PagingData.empty())
+    }
+
+    private fun showPagingError(error: LoadState.Error) {
+        val message = when (error.error) {
+            is NoInternetException -> getString(R.string.error_toast_no_internet)
+            else -> getString(R.string.error_toast_server)
         }
+        showToast(message)
     }
 
-    private fun defaultScreenVisibilityManager(needToBeVisible: Boolean) {
-        binding.ivPlaceholderMain.isVisible = needToBeVisible
-    }
-
-    private fun recyclerVisibilityManager(needToBeVisible: Boolean) {
-        binding.recycler.isVisible = needToBeVisible
-    }
-
-    private fun placeholderVisibilityManager(isError: Boolean) {
-        binding.llErrorContainer.isVisible = isError
-    }
-
-    private fun progressBarVisibilityManager(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-
+    private fun showToast(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
     private fun clickDebounce(): Boolean {
