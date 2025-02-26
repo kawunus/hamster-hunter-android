@@ -11,8 +11,10 @@ class TeamFragment : BaseFragment<FragmentTeamBinding, TeamViewModel>(
     override val viewModel: TeamViewModel by viewModels()
 
     override fun initViews() {
+        // init views
     }
 
     override fun subscribe() {
+        // subscribe on viewModel
     }
 }

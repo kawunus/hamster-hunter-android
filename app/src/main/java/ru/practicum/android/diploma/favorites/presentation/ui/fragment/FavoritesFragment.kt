@@ -33,6 +33,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     }
 
     override fun initViews() {
+
         isClickAllowed = true
         initRecyclerView()
         viewModel.getData()
@@ -108,5 +109,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+
     }
 }

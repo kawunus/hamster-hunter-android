@@ -48,6 +48,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
+
         // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
@@ -268,5 +269,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SHOW_RECYCLER_DELAY = 200L
+
     }
 }
