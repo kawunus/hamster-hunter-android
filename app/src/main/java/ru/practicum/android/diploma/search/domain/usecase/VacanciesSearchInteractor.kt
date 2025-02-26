@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.domain.api
+package ru.practicum.android.diploma.search.domain.usecase
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow

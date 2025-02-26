@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.databinding.VacancyItemBinding
+import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyViewHolder
 
@@ -31,7 +31,7 @@ class VacancyAdapter(private val onItemClick: ((vacancy: Vacancy) -> Unit)) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
-        val binding = VacancyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemVacancyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VacancyViewHolder(binding, onItemClick)
 
     }
