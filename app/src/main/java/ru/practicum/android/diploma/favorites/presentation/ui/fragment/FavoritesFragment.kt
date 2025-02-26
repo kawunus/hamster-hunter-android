@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.favorites.presentation.ui.fragment
 
-import android.view.View
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +13,8 @@ import ru.practicum.android.diploma.favorites.presentation.model.FavoritesState
 import ru.practicum.android.diploma.favorites.presentation.ui.adapter.VacancyAdapter
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavoritesViewModel
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 
 class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewModel>(
     inflate = FragmentFavoritesBinding::inflate
@@ -104,14 +104,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     override fun onResume() {
         super.onResume()
         viewModel.getData()
-    }
-
-    private fun View.show() {
-        isVisible = true
-    }
-
-    private fun View.hide() {
-        isVisible = false
     }
 
     private companion object {

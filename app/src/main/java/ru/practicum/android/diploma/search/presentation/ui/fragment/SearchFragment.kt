@@ -30,6 +30,8 @@ import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenSt
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.formatNumber
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
@@ -216,21 +218,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun showFoundCount(count: Int?) {
         binding.notificationText.apply {
             if (count == null) {
-                isVisible = false
+                hide()
             } else {
                 text = if (count == 0) {
                     getString(R.string.no_such_jobs)
                 } else {
                     resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
                 }
-                isVisible = true
+                show()
             }
         }
     }
 
     private fun notificationVisibilityManager(needToBeVisible: Boolean) {
         if (!needToBeVisible) {
-            binding.notificationText.isVisible = false
+            binding.notificationText.hide()
         }
     }
 
