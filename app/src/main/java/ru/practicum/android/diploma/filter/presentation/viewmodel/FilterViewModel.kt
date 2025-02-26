@@ -14,23 +14,24 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     }
     // обязательно дополнительно в OnResume обновлять данные  (checkSavedFilters)
 
-    private val savedFiltersLiveData = MutableLiveData<FilterParameters?>(null)
-    fun getSavedFiltersLiveData(): LiveData<FilterParameters?> = savedFiltersLiveData
+    private val savedFilters = MutableLiveData<FilterParameters?>(null)
+    fun getSavedFilters(): LiveData<FilterParameters?> = savedFilters
 
-    private val filterWasChangedLiveData = MutableLiveData(false)
-    fun getFilterWasChangedLiveData(): LiveData<Boolean> = filterWasChangedLiveData
+    private val filterWasChanged = MutableLiveData(false)
+    fun getFilterWasChanged(): LiveData<Boolean> =
+        filterWasChanged // флаг для управления видимостью кнопкой "применить"
 
     private fun checkSavedFilters() {
         viewModelScope.launch {
-            savedFiltersLiveData.value = interactor.readFilters()
+            savedFilters.value = interactor.readFilters()
         }
     }
 
     private fun updateFilters(update: (FilterParameters) -> FilterParameters) {
-        val currentFilters = savedFiltersLiveData.value
+        val currentFilters = savedFilters.value
             ?: FilterParameters() // если сохранённых фильтров ещё не было - создаём обьект FilterParameters null-значениями
         val newFilters = update(currentFilters) // применеяем лямбду update к сохранённым ранеее фильтрам
-        savedFiltersLiveData.value = newFilters
+        savedFilters.value = newFilters
 
         viewModelScope.launch {
             interactor.saveFilters(newFilters)
@@ -39,7 +40,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
 
     fun clearFilters() {
         interactor.clearFilters()
-        savedFiltersLiveData.value = null
+        savedFilters.value = null
     }
 
     fun setSalary(salary: Int) {
