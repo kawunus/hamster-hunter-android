@@ -18,11 +18,9 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
 
     override fun read(): FilterParameters {
         val filtersJson = sharedPreferences.getString(SHARED_PREFS_FILTERS_KEY, null)
-        if (filtersJson != null) {
-            val itemType = object : TypeToken<FilterParameters>() {}.type
-            return gson.fromJson(filtersJson, itemType)
-        } else {
-            return FilterParameters()
+        return when {
+            filtersJson != null -> gson.fromJson(filtersJson, filterParametersType)
+            else -> FilterParameters()
         }
     }
 
@@ -31,6 +29,7 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
     }
 
     private companion object {
+        private val filterParametersType = object : TypeToken<FilterParameters>() {}.type
         const val SHARED_PREFS_FILTERS_KEY = "key_for_saved_filters"
     }
 }
