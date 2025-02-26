@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.search.presentation.ui.fragment
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -69,7 +70,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             getPagingDataLiveData().observe(viewLifecycleOwner) { pagingData ->
                 refreshData(pagingData)
             }
+
+            getAnyFilterApplied().observe(viewLifecycleOwner) { it -> renderFilterButton(it) }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkIfAnyFilterApplied()
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
@@ -164,8 +172,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-
-
     private fun renderScreen(state: SearchScreenState) {
         Log.d("DEBUG", "SearchScreenState = $state")
         when (state) {
@@ -239,6 +245,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
         placeholderContentManager(state)
     }
+
     // отображение сообщения "Найдено $count вакансий"
     private fun showFoundCount(count: Int?) {
         binding.notificationText.apply {
@@ -253,6 +260,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 show()
             }
         }
+    }
+
+    private fun renderFilterButton(anyFilterApplied: Boolean?) {
+        val iconRes = when (anyFilterApplied) {
+            true -> R.drawable.ic_filter_on
+            else -> R.drawable.ic_filter_off
+        }
+        binding.buttonFilter.setImageDrawable(getDrawable(requireContext(), iconRes))
     }
 
     private fun clearAdapter() {

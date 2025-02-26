@@ -205,7 +205,7 @@
         android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
         android:drawableTint="@color/blue"
         android:paddingEnd="@dimen/dp8"
-        android:text="Искать только в заголовках"
+        android:text="@string/search_only_in_titles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/left_border"
         app:layout_constraintTop_toBottomOf="@+id/check_box_salary" />
