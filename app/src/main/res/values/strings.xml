@@ -35,6 +35,7 @@
     <string name="enter_region">Введите регион</string>
     <string name="choose_industry">Выбор отрасли</string>
     <string name="enter_industry">Введите отрасль</string>
+    <string name="choose_workplace">Выбор места работы</string>
     <!--деньги -->
     <string name="rur_rub"> ₽</string><!--согласно readme rur/rub-->
     <string name="byr"> Br</string>
