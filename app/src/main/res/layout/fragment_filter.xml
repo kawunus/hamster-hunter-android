@@ -125,7 +125,6 @@
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/edit_text_clear_button"
-        app:endIconMode="clear_text"
         app:expandedHintEnabled="false"
         app:layout_constraintEnd_toEndOf="@id/right_border"
         app:layout_constraintStart_toStartOf="@id/left_border"
@@ -134,15 +133,28 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tet_salary"
             style="@style/Regular16TextStyle"
-            android:textColorHint ="?attr/customColorEditTextHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:hint="@string/enter_salary"
             android:inputType="number"
             android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textColorHint="?attr/customColorEditTextHint" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/btn_clear"
+        style="@style/EditSearchClearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp16"
+        android:contentDescription="@string/reset"
+        android:src = "@drawable/edit_text_clear_button"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/til_salary"
+        app:layout_constraintEnd_toEndOf="@id/til_salary"
+        app:layout_constraintTop_toTopOf="@id/til_salary"/>
 
     <CheckBox
         android:id="@+id/check_box_salary"
