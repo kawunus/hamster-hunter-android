@@ -47,7 +47,6 @@
         android:layout_marginTop="@dimen/dp16"
         android:hint="@string/job_location"
         android:textColorHint="@color/gray"
-        app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
         app:boxStrokeColor="@null"
@@ -73,6 +72,18 @@
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/iv_arrow_job_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/dp12"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/til_job_location"
+        app:layout_constraintEnd_toEndOf="@+id/til_job_location"
+        app:layout_constraintTop_toTopOf="@+id/til_job_location"
+        app:tint ="?attr/colorOnPrimary" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_industry"
         app:boxBackgroundColor="?attr/colorPrimary"
@@ -81,7 +92,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/industry"
         android:textColorHint="@color/gray"
-        app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
         app:boxStrokeColor="@null"
@@ -106,6 +116,18 @@
             android:clickable="true"
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/iv_arrow_industry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/dp12"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/til_industry"
+        app:layout_constraintEnd_toEndOf="@+id/til_industry"
+        app:layout_constraintTop_toTopOf="@+id/til_industry"
+        app:tint ="?attr/colorOnPrimary"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_salary"
