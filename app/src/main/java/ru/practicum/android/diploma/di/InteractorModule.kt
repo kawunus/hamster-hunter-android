@@ -8,8 +8,8 @@ import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyInteract
 import ru.practicum.android.diploma.favorites.domain.impl.FavoriteVacancyInteractorImpl
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.impl.VacanciesSearchInteractorImpl
-import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsInteractor
 import ru.practicum.android.diploma.vacancy.domain.impl.VacancyDetailsInteractorImpl
+import ru.practicum.android.diploma.vacancy.domain.usecase.VacancyDetailsInteractor
 
 val interactorModule = module {
     factoryOf(::VacanciesSearchInteractorImpl) { bind<VacanciesSearchInteractor>() }

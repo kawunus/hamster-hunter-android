@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.formatSalary
+import ru.practicum.android.diploma.util.gone
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyDetailsState
 import ru.practicum.android.diploma.vacancy.presentation.viewmodel.VacancyViewModel
@@ -83,6 +84,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         renderError(true)
         progressBar.isVisible = false
         changeErrorMessage(true)
+        buttonShare.gone()
+        buttonLike.gone()
     }
 
     private fun showErrorNotFound() = with(binding) {
@@ -125,7 +128,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             keySkillsText += getString(R.string.key_skill_separator, i)
         }
         keySkills.text = keySkillsText
-        keySkillsTitle.isVisible = if (currentKeySkills.size == 0) false else true
+        keySkillsTitle.isVisible = currentKeySkills.size != 0
     }
 
     private fun showEmploymentFormAndWorkFormat(employmentForm: String, currentWorkFormat: List<String>) =

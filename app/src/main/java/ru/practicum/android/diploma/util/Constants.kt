@@ -7,4 +7,8 @@ object Constants {
     const val HH_BASE_URL = "https://api.hh.ru/"
     const val EMPTY_STRING = ""
     const val PUNCTUATION = ", "
+
+    // Network constants
+    const val SUCCESS_CODE = 200
+    const val NOT_FOUND_CODE = 404
 }
