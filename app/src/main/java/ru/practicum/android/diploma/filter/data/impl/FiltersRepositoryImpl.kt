@@ -21,7 +21,9 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
         if (filtersJson != null) {
             val itemType = object : TypeToken<FilterParameters>() {}.type
             return gson.fromJson(filtersJson, itemType)
-        } else return FilterParameters()
+        } else {
+            return FilterParameters()
+        }
     }
 
     override fun clear() {
