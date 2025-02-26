@@ -44,7 +44,7 @@ class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersReposi
         ).flow
     }
 
-    companion object {
+    private companion object {
         const val PAGE_SIZE = 20
     }
 }
