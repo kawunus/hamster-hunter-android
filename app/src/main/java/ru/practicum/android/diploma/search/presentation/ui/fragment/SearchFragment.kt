@@ -35,7 +35,7 @@ import ru.practicum.android.diploma.util.show
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
 ) {
-    override val viewModel: SearchViewModel by viewModel<SearchViewModel>()
+    override val viewModel: SearchViewModel by viewModel()
 
     private val adapter = VacancyPagingAdapter { vacancy ->
         if (clickDebounce()) {

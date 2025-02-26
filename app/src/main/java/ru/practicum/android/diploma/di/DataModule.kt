@@ -59,6 +59,5 @@ val dataModule = module {
     // Gson
     singleOf(::Gson)
 
-
     singleOf(::SharedPrefsStorage)
 }

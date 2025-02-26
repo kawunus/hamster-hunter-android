@@ -4,9 +4,9 @@ import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 
 interface FiltersInteractor {
 
-    fun save(filters: FilterParameters)
+    fun saveFilters(filters: FilterParameters)
 
-    fun read(): FilterParameters
+    fun readFilters(): FilterParameters
 
-    fun clear()
+    fun clearFilters()
 }
