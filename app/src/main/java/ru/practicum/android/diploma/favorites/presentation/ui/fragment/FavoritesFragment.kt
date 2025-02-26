@@ -33,7 +33,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     }
 
     override fun initViews() {
-
         isClickAllowed = true
         initRecyclerView()
         viewModel.getData()

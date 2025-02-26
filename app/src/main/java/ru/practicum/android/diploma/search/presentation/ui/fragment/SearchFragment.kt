@@ -48,7 +48,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
-
         // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
