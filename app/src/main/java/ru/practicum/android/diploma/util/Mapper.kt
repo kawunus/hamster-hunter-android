@@ -22,4 +22,3 @@ fun Int.mapToErrorType(): ErrorType {
         else -> ErrorType.UNKNOWN
     }
 }
-
