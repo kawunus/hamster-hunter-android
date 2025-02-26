@@ -17,9 +17,12 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     private val savedFiltersLiveData = MutableLiveData<FilterParameters?>(null)
     fun getSavedFiltersLiveData(): LiveData<FilterParameters?> = savedFiltersLiveData
 
+    private val filterWasChangedLiveData = MutableLiveData(false)
+    fun getFilterWasChangedLiveData(): LiveData<Boolean> = filterWasChangedLiveData
+
     private fun checkSavedFilters() {
         viewModelScope.launch {
-            savedFiltersLiveData.value = interactor.read()
+            savedFiltersLiveData.value = interactor.readFilters()
         }
     }
 
@@ -30,21 +33,17 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         savedFiltersLiveData.value = newFilters
 
         viewModelScope.launch {
-            interactor.save(newFilters)
+            interactor.saveFilters(newFilters)
         }  // сохраняем новые значения в корутине, чтобы не вызывать задержку интерфейса
     }
 
     fun clearFilters() {
-        interactor.clear()
+        interactor.clearFilters()
         savedFiltersLiveData.value = null
     }
 
-    fun setArea(area: String) {
-        updateFilters { it.copy(area = area) }
-    }
-
-    fun setProfessionalRole(role: String) {
-        updateFilters { it.copy(professionalRole = role) }
+    fun setSalary(salary: Int) {
+        updateFilters { it.copy(salary = salary) }
     }
 
     fun setOnlyWithSalary(onlyWithSalary: Boolean) {
@@ -56,13 +55,6 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     }
 }
 
-// Нажатие на кнопку «Применить» на экране фильтра возвращает пользователя на экран поиска.
-// И если поле ввода поискового запроса было не пустым, то этот поисковый запрос должен
-// автоматически выполниться повторно с применением актуальных настроек фильтрации.
-
-// При нажатии на кнопку «Назад» пользователь возвращается на экран поиска, и актуальные настройки фильтра к последнему поисковому запросу не применяются автоматически.
-
 // Если в приложении есть сохранённые непустые настройки параметров фильтрации, то кнопка фильтра на главном экране находится в подсвеченном состоянии.
 
 // Кнопка «Применить» появляется, если пользователь указал фильтр, отличающийся от предыдущего.
-// Нажатие на кнопку «Применить» приводит к сохранению выбранных настроек фильтра и применению фильтра для всех последующих запросов на поиск вакансий до изменения фильтра.

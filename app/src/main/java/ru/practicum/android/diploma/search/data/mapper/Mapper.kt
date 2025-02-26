@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchReq
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.ONLY_WITH_SALARY
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.PAGE
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.PROFESSIONAL_ROLE
+import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.SALARY
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.SEARCH_FIELD
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.TEXT
 import ru.practicum.android.diploma.search.domain.model.Vacancy
@@ -26,15 +27,14 @@ fun VacancyDto.toDomain(): Vacancy {
 fun VacanciesSearchRequest.toQueryMap(
     titleSearchField: String? = null
 ): Map<String, String> {
-    return mutableMapOf<String, String>().apply {
-        put(TEXT, text)
-        put(PAGE, page.toString())
-        area?.let { put(AREA, it) }
-        professionalRole?.let { put(PROFESSIONAL_ROLE, it) }
-        onlyWithSalary?.let { put(ONLY_WITH_SALARY, it.toString()) }
-
-        if (onlyInTitles == true) {
-            titleSearchField?.let { put(SEARCH_FIELD, it) }
-        }
-    }
+    return mapOf(
+        TEXT to text,
+        PAGE to page.toString(),
+        AREA to area,
+        PROFESSIONAL_ROLE to professionalRole,
+        SALARY to salary?.toString(),
+        ONLY_WITH_SALARY to onlyWithSalary?.toString(),
+        SEARCH_FIELD to titleSearchField.takeIf { onlyInTitles == true }
+    ).filterValues { it != null }
+        .mapValues { it.value!! } // Безопасно преобразуем String? -> String
 }
