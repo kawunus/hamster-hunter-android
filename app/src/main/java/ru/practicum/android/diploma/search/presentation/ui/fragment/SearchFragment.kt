@@ -114,6 +114,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             viewModel.cancelSearchDebounce()
             viewModel.setDefaultScreen()
         }
+        binding.buttonFilter.setOnClickListener {
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
+        }
     }
 
     // обработка нажатия на кнопку очистки
@@ -268,5 +271,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SHOW_RECYCLER_DELAY = 200L
+
     }
 }
