@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp16"
         app:layout_constraintTop_toBottomOf="@id/title_text_view"
-        tools:listitem="@layout/vacancy_item" />
+        tools:listitem="@layout/item_vacancy" />
 
     <ImageView
         android:id="@+id/placeholder_image_view"

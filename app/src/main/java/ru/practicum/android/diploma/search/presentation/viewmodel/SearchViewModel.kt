@@ -15,8 +15,9 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.data.network.exception.EmptyResultException
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.search.domain.api.VacanciesSearchInteractor
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.domain.usecase.VacanciesSearchInteractor
+import ru.practicum.android.diploma.util.Constants.EMPTY_STRING
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
@@ -32,9 +33,9 @@ class SearchViewModel(
     private val pagingDataLiveData = MutableLiveData<PagingData<Vacancy>>(PagingData.empty())
     fun getPagingDataLiveData(): LiveData<PagingData<Vacancy>> = pagingDataLiveData
     private var latestSearchText: String
-        get() = savedStateHandle.get<String>("latestSearchText") ?: ""
+        get() = savedStateHandle.get<String>(LATEST_SEARCH_TEXT) ?: EMPTY_STRING
         set(value) {
-            savedStateHandle["latestSearchText"] = value
+            savedStateHandle[LATEST_SEARCH_TEXT] = value
         }
 
     private val searchDebounce = debounce<String>(
@@ -118,5 +119,6 @@ class SearchViewModel(
 
     private companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val LATEST_SEARCH_TEXT = "latestSearchText"
     }
 }

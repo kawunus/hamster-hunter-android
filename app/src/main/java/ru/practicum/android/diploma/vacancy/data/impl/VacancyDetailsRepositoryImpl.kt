@@ -21,7 +21,7 @@ class VacancyDetailsRepositoryImpl(
 ) : VacancyDetailsRepository {
     override fun openUrlShare(shareUrl: String) {
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
+            type = TYPE_TEXT_PLAIN
             putExtra(Intent.EXTRA_TEXT, shareUrl)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -29,10 +29,14 @@ class VacancyDetailsRepositoryImpl(
     }
 
     override suspend fun findVacancyDetails(vacancyId: String): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
-        val response = networkClient.doRequest(VacancyByIdRequest(vacancyId.toString()))
+        val response = networkClient.doRequest(VacancyByIdRequest(vacancyId))
         when (response.resultCode) {
             HTTP_SUCCESS -> emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
             else -> emit(NetworkResult.Error(response.resultCode.mapToErrorType()))
         }
+    }
+
+    private companion object {
+        const val TYPE_TEXT_PLAIN = "text/plain"
     }
 }
