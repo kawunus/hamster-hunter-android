@@ -16,4 +16,8 @@ class FiltersInteractorImpl(private val repository: FiltersRepository) : Filters
     override fun clearFilters() {
         repository.clearFilters()
     }
+
+    override fun checkIfAnyFilterApplied(): Boolean {
+        return repository.checkIfAnyFilterApplied()
+    }
 }

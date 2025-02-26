@@ -24,6 +24,14 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
         }
     }
 
+    override fun checkIfAnyFilterApplied(): Boolean {
+        val filters = readFilters()
+        with(filters) {
+            val parametersList = listOf(area, professionalRole, salary, onlyWithSalary, onlyInTitles)
+            return parametersList.any { it != null }
+        }
+    }
+
     override fun clearFilters() {
         sharedPreferences.edit().remove(SHARED_PREFS_FILTERS_KEY).apply()
     }
