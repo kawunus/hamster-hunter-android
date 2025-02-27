@@ -47,11 +47,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             }
             tetArea.setOnClickListener {
                 findNavController()
-                    .navigate(FilterFragmentDirections.actionFilterFragmentToWorkplaceFragment())
+                    .navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
             }
             tetIndustry.setOnClickListener {
                 findNavController()
-                    .navigate(FilterFragmentDirections.actionFilterFragmentToFieldFragment())
+                    .navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
             }
 
             checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
