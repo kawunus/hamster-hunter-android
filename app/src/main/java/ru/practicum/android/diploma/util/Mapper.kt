@@ -37,7 +37,7 @@ fun CountryDto.toCountry(): Country {
 fun RegionDto.toRegion(): Region {
     return Region(
         id = id,
-        name = name?: "Неизвестный регион",
+        name = name ?: "Неизвестный регион",
         parentId = parentId
     )
 }
