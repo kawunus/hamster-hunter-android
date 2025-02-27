@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dp64"
         android:paddingStart="@dimen/zero"
-        android:text="@string/choose_workplace"
+        android:text="@string/choose_job_location"
         app:icon="@drawable/ic_arrow_back"
         app:iconGravity="textStart"
         app:iconPadding="@dimen/dp16"
