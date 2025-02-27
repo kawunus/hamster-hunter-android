@@ -34,7 +34,7 @@ fun CountryDto.toCountry(): Country {
     )
 }
 
-fun RegionDTO.toRegion():Region{
+fun RegionDTO.toRegion(): Region {
     return Region(
         id = id,
         name = name,
