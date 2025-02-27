@@ -27,7 +27,9 @@ class CountriesRepositoryImpl(
             when (response.resultCode) {
                 Constants.HTTP_SUCCESS -> {
                     response = response as CountriesResponse
-                    val countries = response.countriesList.map { it.toCountry() }
+                    val countries = response.countriesList
+                        .filter { it.parentId == null }
+                        .map { it.toCountry() }
                     emit(Resource(data = countries, code = Constants.HTTP_SUCCESS))
                 }
 
