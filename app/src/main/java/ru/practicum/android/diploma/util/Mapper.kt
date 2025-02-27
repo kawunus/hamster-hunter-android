@@ -28,7 +28,6 @@ fun Int.mapToErrorType(): ErrorType {
 fun CountryDto.toCountry(): Country {
     return Country(
         id = id,
-        parentId = parentId ?: "",
         name = name ?: "Неизвестная страна"
     )
 }
