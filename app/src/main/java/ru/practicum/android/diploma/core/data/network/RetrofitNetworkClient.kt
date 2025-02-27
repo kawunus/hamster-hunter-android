@@ -9,6 +9,8 @@ import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
+import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
+import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
@@ -33,14 +35,13 @@ class RetrofitNetworkClient(
             try {
                 val response = when (dto) {
                     is VacanciesSearchRequest -> searchVacancies(dto)
-
                     is VacancyByIdRequest -> hHApiService.getVacancyById(
                         userAgent = USER_AGENT,
                         vacancyId = dto.id,
                     )
 
                     is CountriesRequest -> getCountries()
-
+                    is RegionsRequest -> getRegions(dto.countryId)
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
@@ -66,6 +67,10 @@ class RetrofitNetworkClient(
 
     private suspend fun getCountries(): CountriesResponse {
         return hHApiService.getCountries()
+    }
+
+    private suspend fun getRegions(countryId: String): RegionsResponse {
+        return hHApiService.getRegions(countryId)
     }
 
     private fun logError(e: Exception) {
