@@ -41,17 +41,17 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_job_location"
         app:boxBackgroundColor="?attr/colorPrimary"
-        android:layout_width="0dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp16"
         android:hint="@string/job_location"
         android:textColorHint="@color/gray"
-        app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
         app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,19 +72,31 @@
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/iv_arrow_job_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/dp12"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/til_job_location"
+        app:layout_constraintEnd_toEndOf="@+id/til_job_location"
+        app:layout_constraintTop_toTopOf="@+id/til_job_location"
+        app:tint ="?attr/colorOnPrimary" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_industry"
         app:boxBackgroundColor="?attr/colorPrimary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/industry"
         android:textColorHint="@color/gray"
-        app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
         app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,11 +117,23 @@
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/iv_arrow_industry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/dp12"
+        android:src="@drawable/ic_arrow_forward"
+        app:layout_constraintBottom_toBottomOf="@+id/til_industry"
+        app:layout_constraintEnd_toEndOf="@+id/til_industry"
+        app:layout_constraintTop_toTopOf="@+id/til_industry"
+        app:tint ="?attr/colorOnPrimary"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_salary"
         app:boxBackgroundColor="?attr/customColorEditText"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp24"
         android:hint="@string/expected_salary"
@@ -120,12 +144,11 @@
         app:boxCornerRadiusBottomStart="@dimen/dp12"
         app:boxCornerRadiusTopEnd="@dimen/dp12"
         app:boxCornerRadiusTopStart="@dimen/dp12"
-        app:boxCollapsedPaddingTop="5dp"
+        app:boxCollapsedPaddingTop="@dimen/dp5"
         app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:endIconDrawable="@drawable/edit_text_clear_button"
-        app:endIconMode="clear_text"
         app:expandedHintEnabled="false"
         app:layout_constraintEnd_toEndOf="@id/right_border"
         app:layout_constraintStart_toStartOf="@id/left_border"
@@ -134,20 +157,33 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tet_salary"
             style="@style/Regular16TextStyle"
-            android:textColorHint ="?attr/customColorEditTextHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:hint="@string/enter_salary"
             android:inputType="number"
             android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textColorHint="?attr/customColorEditTextHint" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/btn_clear"
+        style="@style/EditSearchClearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp16"
+        android:contentDescription="@string/reset"
+        android:src = "@drawable/edit_text_clear_button"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/til_salary"
+        app:layout_constraintEnd_toEndOf="@id/til_salary"
+        app:layout_constraintTop_toTopOf="@id/til_salary"/>
 
     <CheckBox
         android:id="@+id/check_box_salary"
         style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp24"
         android:button="@null"
@@ -162,7 +198,7 @@
     <CheckBox
         android:id="@+id/check_box_search_in_title"
         style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp24"
         android:button="@null"
@@ -177,20 +213,20 @@
     <Button
         android:id="@+id/btn_apply"
         style="@style/ApplyButtonStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/check_box_salary"
         app:layout_constraintBottom_toTopOf="@+id/btn_reset"
         app:layout_constraintEnd_toEndOf="@+id/right_border"
         app:layout_constraintStart_toStartOf="@+id/left_border"
-        android:layout_marginTop="219dp"
+        android:layout_marginTop="@dimen/dp219"
         android:visibility="gone"
         android:paddingVertical ="@dimen/dp20"/>
 
     <Button
         android:id="@+id/btn_reset"
         style="@style/ResetButtonStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="@dimen/dp60"
         android:background="@color/transparent"
         android:layout_marginTop="@dimen/dp8"
