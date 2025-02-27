@@ -9,5 +9,7 @@ interface FiltersRepository {
     fun readFilters(): FilterParameters
 
     fun clearFilters()
+
+    fun checkIfAnyFilterApplied(): Boolean
 }
 
