@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".filter.presentation.ui.fragment.WorkplaceFragment">
+    android:background="?attr/colorPrimary"
+    android:theme="@style/Theme.PracticumAndroidDiploma"
+    tools:context=".filter.presentation.ui.fragment.FilterFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Workplace Fragment"
-        android:layout_gravity="center"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp16" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp16" />
+
+    <Button
+        android:id="@+id/btn_back"
+        style="@style/HeadToolBarStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp64"
+        android:paddingStart="@dimen/zero"
+        android:text="@string/choose_job_location"
+        app:icon="@drawable/ic_arrow_back"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/dp16"
+        app:iconSize="@dimen/dp24"
+        app:iconTint="?attr/colorOnPrimary"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_job_location"
+        app:boxBackgroundColor="?attr/colorPrimary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:hint="@string/country"
+        android:textColorHint="@color/gray"
+        app:endIconDrawable="@drawable/ic_arrow_forward"
+        app:endIconMode="custom"
+        app:endIconTint="?attr/colorOnPrimary"
+        app:boxStrokeColor="@null"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_back">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tet_job_location"
+            style="@style/Regular16TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:background="@null"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="none"
+            android:clickable="true"
+            android:textColor="?attr/colorOnPrimary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_industry"
+        app:boxBackgroundColor="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/region"
+        android:textColorHint="@color/gray"
+        app:endIconDrawable="@drawable/ic_arrow_forward"
+        app:endIconMode="custom"
+        app:endIconTint="?attr/colorOnPrimary"
+        app:boxStrokeColor="@null"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_job_location">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tet_industry"
+            style="@style/Regular16TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:background="@null"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="none"
+            android:clickable="true"
+            android:textColor="?attr/colorOnPrimary" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
