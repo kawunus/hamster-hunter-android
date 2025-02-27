@@ -10,21 +10,31 @@ import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 
 class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel() {
-
     private val savedFilters = MutableLiveData(FilterParameters())
     fun getSavedFilters(): LiveData<FilterParameters> = savedFilters
 
+    //для отслеживания первоначальных фильтров и управления видимостью кнопки"Применить"
+    private var initialFilters: FilterParameters? = null
     private val filterWasChanged = MutableLiveData(false)
-    fun getFilterWasChanged(): LiveData<Boolean> =
-        filterWasChanged // для управления видимостью кнопки "Gрименить"
+    fun getFilterWasChanged(): LiveData<Boolean> = filterWasChanged
+    private var isInitialFiltersSaved = false
 
-    private val anyFilterApplied = MutableLiveData<Boolean?>(null) // для управления видимостью кнопки "Сбросить"
+    // для управления видимостью кнопки "Сбросить"
+    private val anyFilterApplied = MutableLiveData<Boolean?>(null)
     fun getAnyFilterApplied(): LiveData<Boolean?> = anyFilterApplied
 
     fun checkSavedFilters() {
         viewModelScope.launch {
-            savedFilters.value = interactor.readFilters()
+            val filters = interactor.readFilters()
+            savedFilters.value = filters
+
+            if (!isInitialFiltersSaved) { // Сохраняем первоначальное состояние только один раз
+                initialFilters = filters.copy()
+                isInitialFiltersSaved = true
+                Log.d("DEBUG", "Сохраняем начальные фильтры: $initialFilters")
+            }
             checkIfAnyFilterApplied()
+            checkIFilterWasChanged()
         }
     }
 
@@ -34,9 +44,10 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         val newFilters = update(currentFilters) // применеяем лямбду update к сохранённым ранеее фильтрам
         savedFilters.value = newFilters
         checkIfAnyFilterApplied()
+        checkIFilterWasChanged()
         viewModelScope.launch {
             interactor.saveFilters(newFilters)
-        }  // сохраняем новые значения в корутине, чтобы не вызывать задержку интерфейса
+        }
     }
 
     fun clearFilters() {
@@ -44,7 +55,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
             interactor.clearFilters()
             savedFilters.value = FilterParameters()
             anyFilterApplied.value = false
-            Log.d("DEBUG", "clearFilters. ${savedFilters.value}")
+            filterWasChanged.value = false
         }
     }
 
@@ -60,6 +71,10 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         updateFilters { it.copy(onlyInTitles = onlyInTitles) }
     }
 
+    private fun checkIFilterWasChanged() {
+        filterWasChanged.value = savedFilters.value != initialFilters // Проверяем изменения
+    }
+
     private fun checkIfAnyFilterApplied() {
         savedFilters.value?.let { filters ->
             val parametersList = listOf(
@@ -73,7 +88,3 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         }
     }
 }
-
-// Если в приложении есть сохранённые непустые настройки параметров фильтрации, то кнопка фильтра на главном экране находится в подсвеченном состоянии.
-
-// Кнопка «Применить» появляется, если пользователь указал фильтр, отличающийся от предыдущего.
