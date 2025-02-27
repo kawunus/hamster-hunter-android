@@ -37,6 +37,14 @@ class SearchViewModel(
     private val pagingDataLiveData = MutableLiveData<PagingData<Vacancy>>(PagingData.empty())
     fun getPagingDataLiveData(): LiveData<PagingData<Vacancy>> = pagingDataLiveData
 
+    private val _searchText = MutableLiveData<String>()
+    private val searchText: LiveData<String> get() = _searchText
+    fun updateSearchText(searchText: String) {
+        _searchText.value = searchText
+    }
+
+    fun getSearchText(): String = searchText.value ?: ""
+
     private var latestSearchText: String
         get() = savedStateHandle.get<String>(LATEST_SEARCH_TEXT) ?: EMPTY_STRING
         set(value) {

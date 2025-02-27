@@ -3,8 +3,11 @@ package ru.practicum.android.diploma.filter.presentation.ui.fragment
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
@@ -17,6 +20,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 ) {
     override val viewModel: FilterViewModel by viewModel()
     private var isTextUpdating = false
+    private val args by navArgs<FilterFragmentArgs>()
 
     override fun initViews() {
         setClickListeners()
@@ -63,11 +67,12 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             }
 
             btnApply.setOnClickListener {
-                findNavController()
-                    .navigateUp()
+                val action = FilterFragmentDirections.actionFilterFragmentToSearchFragment(args.searchQuery)
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.filterFragment, true) // Очищает стек до FilterFragment (включительно)
+                    .build()
+                findNavController().navigate(action, navOptions)
             }
-            // !!!Тут должен быть не просто возврат  на экран поиска, а возврат + повтор поиска.
-            // Это на Сергее (таска #96)
 
             btnReset.setOnClickListener { viewModel.clearFilters() }
         }

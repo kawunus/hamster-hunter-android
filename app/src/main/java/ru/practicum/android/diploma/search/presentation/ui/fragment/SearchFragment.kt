@@ -7,6 +7,7 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +47,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
     private var lastPagingData: PagingData<Vacancy>? = null
+    private val args by navArgs<SearchFragmentArgs>()
+    private val searchQuery by lazy { args.searchQuery }
 
     override fun initViews() {
         // инициализируем наши вьюхи тут
@@ -54,6 +57,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         setupClearButtonClickListener()
         setEditTextActionListener()
         setRecyclerView()
+        haveSearchQuery()
     }
 
     override fun subscribe() {
@@ -74,6 +78,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         viewModel.checkIfAnyFilterApplied()
     }
 
+    // Если в аргументах есть текст поиска
+    // значит мы вернулись из фильтров и надо передать его в edit text
+    // и выполнить новый поиск
+    private fun haveSearchQuery() {
+        if (searchQuery?.isBlank() == false) {
+            binding.edittextSearch.setText(searchQuery)
+            viewModel.startSearch(searchQuery!!)
+        }
+    }
+
     private fun refreshData(pagingData: PagingData<Vacancy>) {
         if (pagingData != lastPagingData) { // проверяем, обновились ли данные
             lifecycleScope.launch {
@@ -92,6 +106,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
+                    viewModel.updateSearchText(text.toString())
                 }
             },
         )
@@ -116,7 +131,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             viewModel.setDefaultScreen()
         }
         binding.buttonFilter.setOnClickListener {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
+            val searchText = viewModel.getSearchText()
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment(searchText))
         }
     }
 
