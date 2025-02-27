@@ -10,9 +10,10 @@ import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 
 class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel() {
     init {
-        checkSavedFilters() // получаем свежие данные о сохранённых фильтрах при инициализации ViewModel
+        // получаем свежие данные о сохранённых фильтрах при инициализации ViewModel
+        checkSavedFilters()
+        checkIfAnyFilterApplied()
     }
-    // обязательно дополнительно в OnResume обновлять данные  (checkSavedFilters)
 
     private val savedFilters = MutableLiveData(FilterParameters())
     fun getSavedFilters(): LiveData<FilterParameters> = savedFilters
@@ -35,7 +36,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
             ?: FilterParameters() // если сохранённых фильтров ещё не было - создаём обьект FilterParameters null-значениями
         val newFilters = update(currentFilters) // применеяем лямбду update к сохранённым ранеее фильтрам
         savedFilters.value = newFilters
-
+        checkIfAnyFilterApplied()
         viewModelScope.launch {
             interactor.saveFilters(newFilters)
         }  // сохраняем новые значения в корутине, чтобы не вызывать задержку интерфейса
@@ -44,6 +45,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     fun clearFilters() {
         interactor.clearFilters()
         savedFilters.value = FilterParameters()
+        anyFilterApplied.value = false
     }
 
     fun setSalary(salary: Int?) {
@@ -58,10 +60,15 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         updateFilters { it.copy(onlyInTitles = onlyInTitles) }
     }
 
-    fun checkIfAnyFilterApplied() {
-        val filters = savedFilters.value
-        with(filters) {
-            val parametersList = listOf(area, professionalRole, salary, onlyWithSalary, onlyInTitles)
+    private fun checkIfAnyFilterApplied() {
+        savedFilters.value?.let { filters ->
+            val parametersList = listOf(
+                filters.area,
+                filters.professionalRole,
+                filters.salary,
+                filters.onlyWithSalary,
+                filters.onlyInTitles
+            )
             anyFilterApplied.value = parametersList.any { it != null }
         }
     }

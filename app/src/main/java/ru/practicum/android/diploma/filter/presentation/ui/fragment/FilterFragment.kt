@@ -59,6 +59,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.setOnlyInTitles(isChecked)
             }
+
+            btnApply.setOnClickListener { // Это на Сергее (таска #96)
+
+            }
+            btnReset.setOnClickListener { viewModel.clearFilters() }
         }
     }
 
