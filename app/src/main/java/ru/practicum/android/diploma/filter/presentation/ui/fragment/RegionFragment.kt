@@ -10,10 +10,10 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
 ) {
     override val viewModel: RegionViewModel by viewModel()
     override fun initViews() {
-
+        // инициализируем наши вьюхи тут
     }
 
     override fun subscribe() {
-
+        // подписка на данные от viewModel
     }
 }

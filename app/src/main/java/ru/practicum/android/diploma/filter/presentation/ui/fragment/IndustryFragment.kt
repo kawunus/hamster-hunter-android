@@ -10,10 +10,10 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, FieldViewModel>(
 ) {
     override val viewModel: FieldViewModel by viewModel()
     override fun initViews() {
-
+        // инициализируем наши вьюхи тут
     }
 
     override fun subscribe() {
-
+        // подписка на данные от viewModel
     }
 }

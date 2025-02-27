@@ -10,10 +10,10 @@ class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
 ) {
     override val viewModel: CountryViewModel by viewModel()
     override fun initViews() {
-
+        // инициализируем наши вьюхи тут
     }
 
     override fun subscribe() {
-
+        // подписка на данные от viewModel
     }
 }
