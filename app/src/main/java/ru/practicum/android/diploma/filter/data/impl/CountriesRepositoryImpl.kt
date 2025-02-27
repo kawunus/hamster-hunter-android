@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.filter.data.impl
 
 import CountriesResponse
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.NetworkClient
@@ -17,15 +18,15 @@ class CountriesRepositoryImpl(
 ) : CountriesRepository {
     override suspend fun getCountries(): Flow<Resource<List<Country>>> = flow {
         try {
-            val response = networkClient.doRequest(CountriesRequest)
+            var response = networkClient.doRequest(CountriesRequest)
 
             if (response !is CountriesResponse) {
                 emit(Resource(data = null, code = Constants.HTTP_BAD_REQUEST))
-                return@flow
             }
 
             when (response.resultCode) {
                 Constants.HTTP_SUCCESS -> {
+                    response = response as CountriesResponse
                     val countries = response.countriesList.map { it.toCountry() }
                     emit(Resource(data = countries, code = Constants.HTTP_SUCCESS))
                 }
@@ -47,6 +48,7 @@ class CountriesRepositoryImpl(
                 }
             }
         } catch (e: IOException) {
+            Log.e("CountriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
             emit(Resource(data = null, code = -1))
         }
     }
