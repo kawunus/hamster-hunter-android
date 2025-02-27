@@ -9,4 +9,6 @@ interface FiltersInteractor {
     fun readFilters(): FilterParameters
 
     fun clearFilters()
+
+    fun checkIfAnyFilterApplied(): Boolean
 }

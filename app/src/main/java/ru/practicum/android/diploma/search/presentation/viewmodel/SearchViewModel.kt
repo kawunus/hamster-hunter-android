@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -15,13 +14,15 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.data.network.exception.EmptyResultException
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseViewModel
+import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.domain.usecase.VacanciesSearchInteractor
 import ru.practicum.android.diploma.util.Constants.EMPTY_STRING
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val interactor: VacanciesSearchInteractor,
+    private val searchInteractor: VacanciesSearchInteractor,
+    private val filtersInteractor: FiltersInteractor,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
     private val searchState = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
@@ -30,8 +31,12 @@ class SearchViewModel(
     private val foundCount = MutableLiveData<Int?>()
     fun getFoundCount(): LiveData<Int?> = foundCount
 
+    private val anyFilterApplied = MutableLiveData<Boolean?>() // флаг для управления подсветкой кнопкой "фильтры"
+    fun getAnyFilterApplied(): LiveData<Boolean?> = anyFilterApplied
+
     private val pagingDataLiveData = MutableLiveData<PagingData<Vacancy>>(PagingData.empty())
     fun getPagingDataLiveData(): LiveData<PagingData<Vacancy>> = pagingDataLiveData
+
     private var latestSearchText: String
         get() = savedStateHandle.get<String>(LATEST_SEARCH_TEXT) ?: EMPTY_STRING
         set(value) {
@@ -44,10 +49,10 @@ class SearchViewModel(
         useLastParam = true
     ) { expression ->
         startSearch(expression)
-        Log.d(
-            "DEBUG",
-            "View model: searchDebounce invoked"
-        )
+    }
+
+    init {
+        checkIfAnyFilterApplied()
     }
 
     fun searchWithDebounce(changedText: String) {
@@ -57,6 +62,12 @@ class SearchViewModel(
             searchState.postValue(SearchScreenState.Loading)
             // Запускаем отложенное выполнения поиска
             searchDebounce.invoke(changedText)
+        }
+    }
+
+    fun checkIfAnyFilterApplied() {
+        viewModelScope.launch {
+            anyFilterApplied.value = filtersInteractor.checkIfAnyFilterApplied()
         }
     }
 
@@ -71,7 +82,7 @@ class SearchViewModel(
                 getCount()
             }
 
-            interactor.searchVacancies(expression)
+            searchInteractor.searchVacancies(expression)
                 .cachedIn(viewModelScope)
                 .distinctUntilChanged() // Игнорировать повторные значения
                 .collectLatest { data ->
@@ -82,7 +93,7 @@ class SearchViewModel(
     }
 
     private suspend fun getCount() {
-        interactor.foundCount
+        searchInteractor.foundCount
             .filterNotNull()
             .distinctUntilChanged() // Игнорировать повторные значения
             .collectLatest { count ->

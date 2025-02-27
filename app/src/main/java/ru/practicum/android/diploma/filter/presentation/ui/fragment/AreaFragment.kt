@@ -2,13 +2,13 @@ package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.core.ui.BaseFragment
-import ru.practicum.android.diploma.databinding.FragmentCountryBinding
-import ru.practicum.android.diploma.filter.presentation.viewmodel.CountryViewModel
+import ru.practicum.android.diploma.databinding.FragmentAreaBinding
+import ru.practicum.android.diploma.filter.presentation.viewmodel.WorkplaceViewModel
 
-class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
-    inflate = FragmentCountryBinding::inflate
+class AreaFragment : BaseFragment<FragmentAreaBinding, WorkplaceViewModel>(
+    inflate = FragmentAreaBinding::inflate
 ) {
-    override val viewModel: CountryViewModel by viewModel()
+    override val viewModel: WorkplaceViewModel by viewModel()
     override fun initViews() {
         // инициализируем наши вьюхи тут
     }
