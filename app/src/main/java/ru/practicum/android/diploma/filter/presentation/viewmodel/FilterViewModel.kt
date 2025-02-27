@@ -22,11 +22,8 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     fun getAnyFilterApplied(): LiveData<Boolean?> = anyFilterApplied
 
     fun checkSavedFilters() {
-        Log.d("DEBUG", "Запускаю checkSavedFilters")
         viewModelScope.launch {
-            Log.d("DEBUG", "checkSavedFilters - начало корутины")
             savedFilters.value = interactor.readFilters()
-            Log.d("DEBUG", "checkSavedFilters. Получил фильтры: ${savedFilters.value}")
             checkIfAnyFilterApplied()
         }
     }
@@ -43,9 +40,12 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     }
 
     fun clearFilters() {
-        interactor.clearFilters()
-        savedFilters.value = FilterParameters()
-        anyFilterApplied.value = false
+        viewModelScope.launch {
+            interactor.clearFilters()
+            savedFilters.value = FilterParameters()
+            anyFilterApplied.value = false
+            Log.d("DEBUG", "clearFilters. ${savedFilters.value}")
+        }
     }
 
     fun setSalary(salary: Int?) {

@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
+import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -28,8 +29,14 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     override fun subscribe() {
         with(viewModel) {
             getSavedFilters().observe(viewLifecycleOwner) { renderScreen(it) }
-            getFilterWasChanged().observe(viewLifecycleOwner) { setApplyBtnVisibility(it) }
-            getAnyFilterApplied().observe(viewLifecycleOwner) { setResetBtnVisibility(it) }
+            getFilterWasChanged().observe(viewLifecycleOwner) {
+                setApplyBtnVisibility(it)
+                Log.d("DEBUG", "getFilterWasChanged : $it")
+            }
+            getAnyFilterApplied().observe(viewLifecycleOwner) {
+                setResetBtnVisibility(it)
+                Log.d("DEBUG", "getAnyFilterApplied : $it")
+            }
         }
     }
 
@@ -107,7 +114,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
             Toast.makeText(requireContext(), "Введите число от 0 до 2 147 483 647", Toast.LENGTH_SHORT).show()
         }
-
         visibleClearButtonIcon(text)
     }
 
@@ -159,9 +165,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun setApplyBtnVisibility(filterWasChanged: Boolean) {
         binding.btnApply.isVisible = filterWasChanged
+        Log.d("DEBUG", "setResetBtnVisibility. filterWasChanged: ${filterWasChanged}")
+        Log.d("DEBUG", "setResetBtnVisibility.    binding.btnApply.isVisible: ${binding.btnApply.isVisible}")
     }
 
     private fun setResetBtnVisibility(anyFilterApplied: Boolean?) {
-        binding.btnApply.isVisible = anyFilterApplied ?: false
+        binding.btnReset.isVisible = anyFilterApplied ?: false
     }
 }
