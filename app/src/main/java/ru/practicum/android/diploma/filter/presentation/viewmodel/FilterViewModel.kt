@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,11 +10,6 @@ import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 
 class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel() {
-    init {
-        // получаем свежие данные о сохранённых фильтрах при инициализации ViewModel
-        checkSavedFilters()
-        checkIfAnyFilterApplied()
-    }
 
     private val savedFilters = MutableLiveData(FilterParameters())
     fun getSavedFilters(): LiveData<FilterParameters> = savedFilters
@@ -26,8 +22,12 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     fun getAnyFilterApplied(): LiveData<Boolean?> = anyFilterApplied
 
     fun checkSavedFilters() {
+        Log.d("DEBUG", "Запускаю checkSavedFilters")
         viewModelScope.launch {
+            Log.d("DEBUG", "checkSavedFilters - начало корутины")
             savedFilters.value = interactor.readFilters()
+            Log.d("DEBUG", "checkSavedFilters. Получил фильтры: ${savedFilters.value}")
+            checkIfAnyFilterApplied()
         }
     }
 

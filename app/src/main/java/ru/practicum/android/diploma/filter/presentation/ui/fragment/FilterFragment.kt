@@ -16,11 +16,13 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     inflate = FragmentFilterBinding::inflate
 ) {
     override val viewModel: FilterViewModel by viewModel()
+    private var isTextUpdating = false
 
     override fun initViews() {
         setClickListeners()
         setupSalaryTextWatcher()
         handleClearButtonClick()
+        viewModel.checkSavedFilters()
     }
 
     override fun subscribe() {
@@ -60,9 +62,13 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                 viewModel.setOnlyInTitles(isChecked)
             }
 
-            btnApply.setOnClickListener { // Это на Сергее (таска #96)
-
+            btnApply.setOnClickListener {
+                findNavController()
+                    .navigateUp()
             }
+            // !!!Тут должен быть не просто возврат  на экран поиска, а возврат + повтор поиска.
+            // Это на Сергее (таска #96)
+
             btnReset.setOnClickListener { viewModel.clearFilters() }
         }
     }
@@ -71,7 +77,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     private fun setupSalaryTextWatcher() {
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
-                handleSalaryText(text)
+                if (!isTextUpdating) {
+                    handleSalaryText(text)
+                }
             }
         )
     }
@@ -131,8 +139,14 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun renderSalaryFilter(salary: Int?) {
-        if (salary != null)
-            binding.tetSalary.setText(salary)
+        val salaryText = salary?.toString() ?: ""
+        binding.tetSalary.apply {
+            if (text.toString() != salaryText) {
+                isTextUpdating = true
+                setText(salaryText)
+                isTextUpdating = false
+            }
+        }
     }
 
     private fun renderOnlyWithSalaryFilter(onlyWithSalary: Boolean?) {
