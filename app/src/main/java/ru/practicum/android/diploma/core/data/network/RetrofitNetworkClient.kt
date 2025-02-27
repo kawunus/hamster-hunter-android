@@ -28,7 +28,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-        val token = context.getString(R.string.bearer_token, TOKEN)
+        // val token = context.getString(R.string.bearer_token, TOKEN)
 
         return withContext(Dispatchers.IO) {
             try {
