@@ -39,7 +39,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_job_location"
+        android:id="@+id/til_area"
         app:boxBackgroundColor="?attr/colorPrimary"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="@dimen/zero"
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/btn_back">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tet_job_location"
+            android:id="@+id/tet_area"
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,15 +73,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
-        android:id="@+id/iv_arrow_job_location"
+        android:id="@+id/iv_arrow_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:padding="@dimen/dp12"
         android:src="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="@+id/til_job_location"
-        app:layout_constraintEnd_toEndOf="@+id/til_job_location"
-        app:layout_constraintTop_toTopOf="@+id/til_job_location"
+        app:layout_constraintBottom_toBottomOf="@+id/til_area"
+        app:layout_constraintEnd_toEndOf="@+id/til_area"
+        app:layout_constraintTop_toTopOf="@+id/til_area"
         app:tint ="?attr/colorOnPrimary" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -101,7 +101,7 @@
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_job_location">
+        app:layout_constraintTop_toBottomOf="@id/til_area">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tet_industry"

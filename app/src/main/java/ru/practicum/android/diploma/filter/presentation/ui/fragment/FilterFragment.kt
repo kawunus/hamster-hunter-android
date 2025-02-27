@@ -1,10 +1,13 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
@@ -15,27 +18,55 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     override val viewModel: FilterViewModel by viewModel()
 
     override fun initViews() {
-        setupButtonClickListener()
-        setupSearchTextWatcher()
+        setClickListeners()
+        setupSalaryTextWatcher()
         handleClearButtonClick()
     }
 
     override fun subscribe() {
-        // Реализация subscribe
+        with(viewModel) {
+            getSavedFilters().observe(viewLifecycleOwner) { renderScreen(it) }
+            getFilterWasChanged().observe(viewLifecycleOwner) { setApplyBtnVisibility(it) }
+            getAnyFilterApplied().observe(viewLifecycleOwner) { setResetBtnVisibility(it) }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkSavedFilters()
     }
 
     // настройка слушателя нажатий
-    private fun setupButtonClickListener() {
-        binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
+    private fun setClickListeners() {
+        binding.apply {
+            btnBack.setOnClickListener {
+                findNavController()
+                    .navigateUp()
+            }
+            tetArea.setOnClickListener {
+                findNavController()
+                    .navigate(FilterFragmentDirections.actionFilterFragmentToWorkplaceFragment())
+            }
+            tetIndustry.setOnClickListener {
+                findNavController()
+                    .navigate(FilterFragmentDirections.actionFilterFragmentToFieldFragment())
+            }
+
+            checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.setOnlyWithSalary(isChecked)
+            }
+
+            checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.setOnlyInTitles(isChecked)
+            }
         }
     }
 
     // настройка отслеживания изменений текста
-    private fun setupSearchTextWatcher() {
+    private fun setupSalaryTextWatcher() {
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
-                visibleClearButtonIcon(text)
+                handleSalaryText(text)
             }
         )
     }
@@ -47,6 +78,26 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         }
     }
 
+    private fun handleSalaryText(text: CharSequence?) {
+        // Проверяем, что текст не null и не пустой
+        if (text.isNullOrEmpty()) {
+            viewModel.setSalary(null)
+            return
+        }
+
+        val salaryText = text.toString()
+        val salary = salaryText.toIntOrNull() // если salary превысит Int.MAX_VALUE, вернётся null
+
+        if (salary != null && salary >= 0) {
+            viewModel.setSalary(salary)
+        } else {
+            // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
+            Toast.makeText(requireContext(), "Введите число от 0 до 2 147 483 647", Toast.LENGTH_SHORT).show()
+        }
+
+        visibleClearButtonIcon(text)
+    }
+
     // отображение иконки очистки
     private fun visibleClearButtonIcon(text: CharSequence?) {
         if (text?.isNotEmpty() == true) {
@@ -54,5 +105,44 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         } else {
             binding.btnClear.hide()
         }
+    }
+
+    private fun renderScreen(filterParameters: FilterParameters) {
+        with(filterParameters) {
+            renderAreaFilter(area)
+            renderIndustryFilter(professionalRole)
+            renderSalaryFilter(salary)
+            renderOnlyWithSalaryFilter(onlyWithSalary)
+            renderOnlyInTitlesFilter(onlyInTitles)
+        }
+    }
+
+    private fun renderAreaFilter(area: String?) {
+        binding.tetArea.setText(area)
+    }
+
+    private fun renderIndustryFilter(industry: String?) {
+        binding.tetIndustry.setText(industry)
+    }
+
+    private fun renderSalaryFilter(salary: Int?) {
+        if (salary != null)
+            binding.tetSalary.setText(salary)
+    }
+
+    private fun renderOnlyWithSalaryFilter(onlyWithSalary: Boolean?) {
+        binding.checkBoxSalary.isChecked = onlyWithSalary ?: false
+    }
+
+    private fun renderOnlyInTitlesFilter(onlyInTitles: Boolean?) {
+        binding.checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
+    }
+
+    private fun setApplyBtnVisibility(filterWasChanged: Boolean) {
+        binding.btnApply.isVisible = filterWasChanged
+    }
+
+    private fun setResetBtnVisibility(anyFilterApplied: Boolean?) {
+        binding.btnApply.isVisible = anyFilterApplied ?: false
     }
 }

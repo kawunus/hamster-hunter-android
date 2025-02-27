@@ -25,6 +25,7 @@
     <string name="enter_salary">Введите сумму</string>
     <string name="dont_show_results_without_salary">Не показывать без зарплаты</string>
     <string name="search_only_in_titles">Искать только в заголовках вакансий</string>
+    <string name="error_enter_a_number">Введите число от 0 до 2 147 483 647</string>
     <!--выбор места работы-->
     <string name="choose_job_location">Выбор места работы</string>
     <string name="country">Страна</string>

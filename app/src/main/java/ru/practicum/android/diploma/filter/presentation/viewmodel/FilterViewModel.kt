@@ -14,14 +14,17 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     }
     // обязательно дополнительно в OnResume обновлять данные  (checkSavedFilters)
 
-    private val savedFilters = MutableLiveData<FilterParameters?>(null)
-    fun getSavedFilters(): LiveData<FilterParameters?> = savedFilters
+    private val savedFilters = MutableLiveData(FilterParameters())
+    fun getSavedFilters(): LiveData<FilterParameters> = savedFilters
 
     private val filterWasChanged = MutableLiveData(false)
     fun getFilterWasChanged(): LiveData<Boolean> =
-        filterWasChanged // флаг для управления видимостью кнопкой "применить"
+        filterWasChanged // для управления видимостью кнопки "Gрименить"
 
-    private fun checkSavedFilters() {
+    private val anyFilterApplied = MutableLiveData<Boolean?>(null) // для управления видимостью кнопки "Сбросить"
+    fun getAnyFilterApplied(): LiveData<Boolean?> = anyFilterApplied
+
+    fun checkSavedFilters() {
         viewModelScope.launch {
             savedFilters.value = interactor.readFilters()
         }
@@ -40,10 +43,10 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
 
     fun clearFilters() {
         interactor.clearFilters()
-        savedFilters.value = null
+        savedFilters.value = FilterParameters()
     }
 
-    fun setSalary(salary: Int) {
+    fun setSalary(salary: Int?) {
         updateFilters { it.copy(salary = salary) }
     }
 
@@ -53,6 +56,14 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
 
     fun setOnlyInTitles(onlyInTitles: Boolean) {
         updateFilters { it.copy(onlyInTitles = onlyInTitles) }
+    }
+
+    fun checkIfAnyFilterApplied() {
+        val filters = savedFilters.value
+        with(filters) {
+            val parametersList = listOf(area, professionalRole, salary, onlyWithSalary, onlyInTitles)
+            anyFilterApplied.value = parametersList.any { it != null }
+        }
     }
 }
 

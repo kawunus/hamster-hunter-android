@@ -59,19 +59,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override fun subscribe() {
         // подписка на данные от viewModel
         with(viewModel) {
-            getSearchState().observe(viewLifecycleOwner) { state ->
-                renderScreen(state)
-            }
+            getSearchState().observe(viewLifecycleOwner) { renderScreen(it) }
 
-            getFoundCount().observe(viewLifecycleOwner) { foundCount ->
-                showFoundCount(foundCount)
-            }
+            getFoundCount().observe(viewLifecycleOwner) { showFoundCount(it) }
 
-            getPagingDataLiveData().observe(viewLifecycleOwner) { pagingData ->
-                refreshData(pagingData)
-            }
+            getPagingDataLiveData().observe(viewLifecycleOwner) { refreshData(it) }
 
-            getAnyFilterApplied().observe(viewLifecycleOwner) { it -> renderFilterButton(it) }
+            getAnyFilterApplied().observe(viewLifecycleOwner) { renderFilterButton(it) }
         }
     }
 
