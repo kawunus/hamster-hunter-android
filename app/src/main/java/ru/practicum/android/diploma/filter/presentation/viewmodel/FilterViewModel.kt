@@ -53,7 +53,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
             interactor.clearFilters()
             savedFilters.value = FilterParameters()
             anyFilterApplied.value = false
-            filterWasChanged.value = false
+            checkIFilterWasChanged()
         }
     }
 

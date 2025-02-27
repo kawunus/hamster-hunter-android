@@ -217,6 +217,8 @@
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/dp20"
         android:visibility="visible"
+        android:layout_marginBottom="@dimen/dp8"
+        app:layout_goneMarginBottom="@dimen/dp24"
         app:layout_constraintBottom_toTopOf="@+id/btn_reset"
         app:layout_constraintEnd_toEndOf="@+id/right_border"
         app:layout_constraintStart_toStartOf="@+id/left_border" />
@@ -226,7 +228,6 @@
         style="@style/ResetButtonStyle"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/dp60"
-        android:layout_marginTop="@dimen/dp8"
         android:layout_marginBottom="@dimen/dp24"
         android:background="@color/transparent"
         android:visibility="visible"
