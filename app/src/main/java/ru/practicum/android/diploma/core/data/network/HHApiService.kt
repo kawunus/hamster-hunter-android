@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.core.data.network
 
+import CountriesResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -26,4 +27,7 @@ interface HHApiService {
         // Для получения справочника с возможными значениями vacancy_search_fields
         @Header("User-Agent") userAgent: String,
     ): DictionariesResponse
+
+    @GET("areas")
+    suspend fun getCountries(): CountriesResponse
 }

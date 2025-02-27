@@ -5,6 +5,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.data.impl.FavoriteVacancyRepositoryImpl
 import ru.practicum.android.diploma.favorites.domain.api.FavoriteVacancyRepository
+import ru.practicum.android.diploma.filter.data.impl.CountriesRepositoryImpl
+import ru.practicum.android.diploma.filter.domain.api.CountriesRepository
 import ru.practicum.android.diploma.filter.data.impl.FiltersRepositoryImpl
 import ru.practicum.android.diploma.filter.domain.api.FiltersRepository
 import ru.practicum.android.diploma.search.data.impl.VacanciesSearchRepositoryImpl
@@ -19,6 +21,8 @@ val repositoryModule = module {
     singleOf(::FavoriteVacancyRepositoryImpl) { bind<FavoriteVacancyRepository>() }
 
     singleOf(::VacancyDetailsRepositoryImpl) { bind<VacancyDetailsRepository>() }
+
+    singleOf(::CountriesRepositoryImpl) { bind<CountriesRepository>() }
 
     singleOf(::FiltersRepositoryImpl) { bind<FiltersRepository>() }
 
