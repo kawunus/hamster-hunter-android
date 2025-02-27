@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
-import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -31,11 +30,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             getSavedFilters().observe(viewLifecycleOwner) { renderScreen(it) }
             getFilterWasChanged().observe(viewLifecycleOwner) {
                 setApplyBtnVisibility(it)
-                Log.d("DEBUG", "getFilterWasChanged : $it")
             }
             getAnyFilterApplied().observe(viewLifecycleOwner) {
                 setResetBtnVisibility(it)
-                Log.d("DEBUG", "getAnyFilterApplied : $it")
             }
         }
     }
@@ -99,6 +96,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun handleSalaryText(text: CharSequence?) {
+        clearButtonVisibilityManager(text)
         // Проверяем, что текст не null и не пустой
         if (text.isNullOrEmpty()) {
             viewModel.setSalary(null)
@@ -114,11 +112,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
             Toast.makeText(requireContext(), "Введите число от 0 до 2 147 483 647", Toast.LENGTH_SHORT).show()
         }
-        visibleClearButtonIcon(text)
+
     }
 
     // отображение иконки очистки
-    private fun visibleClearButtonIcon(text: CharSequence?) {
+    private fun clearButtonVisibilityManager(text: CharSequence?) {
         if (text?.isNotEmpty() == true) {
             binding.btnClear.show()
         } else {
@@ -165,8 +163,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun setApplyBtnVisibility(filterWasChanged: Boolean) {
         binding.btnApply.isVisible = filterWasChanged
-        Log.d("DEBUG", "setResetBtnVisibility. filterWasChanged: ${filterWasChanged}")
-        Log.d("DEBUG", "setResetBtnVisibility.    binding.btnApply.isVisible: ${binding.btnApply.isVisible}")
     }
 
     private fun setResetBtnVisibility(anyFilterApplied: Boolean?) {

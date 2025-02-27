@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -31,7 +30,6 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
             if (!isInitialFiltersSaved) { // Сохраняем первоначальное состояние только один раз
                 initialFilters = filters.copy()
                 isInitialFiltersSaved = true
-                Log.d("DEBUG", "Сохраняем начальные фильтры: $initialFilters")
             }
             checkIfAnyFilterApplied()
             checkIFilterWasChanged()
