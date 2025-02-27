@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import CountryDto
-import ru.practicum.android.diploma.filter.data.dto.RegionDTO
+import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.domain.models.Country
 import ru.practicum.android.diploma.filter.domain.models.Region
 import ru.practicum.android.diploma.search.domain.model.Vacancy
@@ -34,10 +34,10 @@ fun CountryDto.toCountry(): Country {
     )
 }
 
-fun RegionDTO.toRegion(): Region {
+fun RegionDto.toRegion(): Region {
     return Region(
         id = id,
-        name = name,
+        name = name?: "Неизвестный регион",
         parentId = parentId
     )
 }
