@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import ru.practicum.android.diploma.databinding.VacancyItemBinding
+import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 class VacancyPagingAdapter(
@@ -13,7 +13,7 @@ class VacancyPagingAdapter(
 ) : PagingDataAdapter<Vacancy, VacancyViewHolder>(VacancyDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
-        val binding = VacancyItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemVacancyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return VacancyViewHolder(binding, onVacancyClick)
     }
 
