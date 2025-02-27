@@ -1,11 +1,14 @@
 package ru.practicum.android.diploma.core.data.network
 
+import CountriesResponse
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
@@ -24,9 +27,7 @@ class RetrofitNetworkClient(
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
-
-//        На будущее, когда понадобится токен в запросах:
-//        val token = context.getString(R.string.bearer_token, TOKEN)
+        // val token = context.getString(R.string.bearer_token, TOKEN)
 
         return withContext(Dispatchers.IO) {
             try {
@@ -37,6 +38,8 @@ class RetrofitNetworkClient(
                         userAgent = USER_AGENT,
                         vacancyId = dto.id,
                     )
+
+                    is CountriesRequest -> getCountries()
 
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
@@ -61,6 +64,10 @@ class RetrofitNetworkClient(
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
+    private suspend fun getCountries(): CountriesResponse {
+        return hHApiService.getCountries()
+    }
+
     private fun logError(e: Exception) {
         Log.d("DEBUG", "Ошибка в методе doRequest: ${e.message}")
     }
@@ -70,8 +77,7 @@ class RetrofitNetworkClient(
     }
 
     private companion object {
-        //        На будущее, когда понадобится токен в запросах:
-        //        private const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
+        private const val TOKEN = BuildConfig.HH_ACCESS_TOKEN
         private const val USER_AGENT =
             "HamsterHunter/1.0 (sergey_sh97@mail.ru)"
     }
