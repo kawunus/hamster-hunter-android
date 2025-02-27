@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.core.data.network
 
+import CountriesResponse
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
@@ -8,6 +9,7 @@ import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
@@ -38,11 +40,13 @@ class RetrofitNetworkClient(
                         vacancyId = dto.id,
                     )
 
+                    is CountriesRequest -> getCountries()
+
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
             } catch (e: HttpException) {
-                logError("HTTP", e)
+                logError(e)
                 Response().apply { resultCode = HTTP_SERVER_ERROR }
             }
         }
@@ -65,8 +69,6 @@ class RetrofitNetworkClient(
         return hHApiService.getCountries()
     }
 
-    private fun logError(e: Exception) {
-        Log.d("DEBUG", "Ошибка в методе doRequest: ${e.message}")
     private fun logError(e: Exception) {
         Log.d("DEBUG", "Ошибка в методе doRequest: ${e.message}")
     }
