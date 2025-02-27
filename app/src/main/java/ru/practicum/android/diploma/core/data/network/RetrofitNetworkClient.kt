@@ -7,7 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.data.network.dto.Response
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
