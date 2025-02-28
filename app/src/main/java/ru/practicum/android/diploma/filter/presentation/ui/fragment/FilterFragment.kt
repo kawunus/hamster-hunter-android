@@ -1,14 +1,18 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
+import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
+import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -50,19 +54,23 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                     .navigateUp()
             }
             tetArea.setOnClickListener {
+                setFiltersChanged()
                 findNavController()
                     .navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
             }
             tetIndustry.setOnClickListener {
+                setFiltersChanged()
                 findNavController()
                     .navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
             }
 
             checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
+                setFiltersChanged()
                 viewModel.setOnlyWithSalary(isChecked)
             }
 
             checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
+                setFiltersChanged()
                 viewModel.setOnlyInTitles(isChecked)
             }
 
@@ -70,8 +78,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                 findNavController()
                     .navigateUp()
             }
-            // !!!Тут должен быть не просто возврат  на экран поиска, а возврат + повтор поиска.
-            // Это на Сергее (таска #96)
 
             btnReset.setOnClickListener { viewModel.clearFilters() }
         }
@@ -82,6 +88,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
                 if (!isTextUpdating) {
+                    setFiltersChanged()
                     handleSalaryText(text)
                 }
             }
@@ -167,5 +174,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun setResetBtnVisibility(anyFilterApplied: Boolean?) {
         binding.btnReset.isVisible = anyFilterApplied ?: false
+    }
+
+    private fun setFiltersChanged() {
+        setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
     }
 }
