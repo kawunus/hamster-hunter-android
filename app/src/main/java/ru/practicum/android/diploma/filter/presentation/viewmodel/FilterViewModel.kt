@@ -77,7 +77,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         savedFilters.value?.let { filters ->
             val parametersList = listOf(
                 filters.area,
-                filters.professionalRole,
+                filters.industry,
                 filters.salary,
                 filters.onlyWithSalary,
                 filters.onlyInTitles

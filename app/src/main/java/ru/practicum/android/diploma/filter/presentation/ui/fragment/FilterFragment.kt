@@ -126,8 +126,8 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun renderScreen(filterParameters: FilterParameters) {
         with(filterParameters) {
-            renderAreaFilter(area)
-            renderIndustryFilter(professionalRole)
+            renderAreaFilter(area?.name)
+            renderIndustryFilter(industry?.name)
             renderSalaryFilter(salary)
             renderOnlyWithSalaryFilter(onlyWithSalary)
             renderOnlyInTitlesFilter(onlyInTitles)
