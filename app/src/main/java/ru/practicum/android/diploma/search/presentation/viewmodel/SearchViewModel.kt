@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -15,7 +14,6 @@ import ru.practicum.android.diploma.core.data.network.exception.EmptyResultExcep
 import ru.practicum.android.diploma.core.data.network.exception.NoInternetException
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
-import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.domain.usecase.VacanciesSearchInteractor
 import ru.practicum.android.diploma.util.Constants.EMPTY_STRING
 import ru.practicum.android.diploma.util.debounce
@@ -33,9 +31,6 @@ class SearchViewModel(
 
     private val anyFilterApplied = MutableLiveData<Boolean?>() // флаг для управления подсветкой кнопкой "фильтры"
     fun getAnyFilterApplied(): LiveData<Boolean?> = anyFilterApplied
-
-    private val pagingDataLiveData = MutableLiveData<PagingData<Vacancy>>(PagingData.empty())
-    fun getPagingDataLiveData(): LiveData<PagingData<Vacancy>> = pagingDataLiveData
 
     private var latestSearchText: String
         get() = savedStateHandle.get<String>(LATEST_SEARCH_TEXT) ?: EMPTY_STRING
@@ -74,7 +69,7 @@ class SearchViewModel(
     fun startSearch(expression: String) {
         viewModelScope.launch {
             // Очищаем старые данные
-            pagingDataLiveData.postValue(PagingData.empty())
+//            pagingDataLiveData.postValue(PagingData.empty())
             foundCount.postValue(null)
 
             // Загружаем общее количество найденных вакансий по запросу
@@ -86,8 +81,7 @@ class SearchViewModel(
                 .cachedIn(viewModelScope)
                 .distinctUntilChanged() // Игнорировать повторные значения
                 .collectLatest { data ->
-                    pagingDataLiveData.postValue(data)
-                    searchState.postValue(SearchScreenState.SearchResults)
+                    searchState.postValue(SearchScreenState.SearchResults(data))
                 }
         }
     }

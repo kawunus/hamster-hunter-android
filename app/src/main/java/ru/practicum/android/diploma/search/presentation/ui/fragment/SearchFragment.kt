@@ -63,8 +63,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
             getFoundCount().observe(viewLifecycleOwner) { showFoundCount(it) }
 
-            getPagingDataLiveData().observe(viewLifecycleOwner) { refreshData(it) }
-
             getAnyFilterApplied().observe(viewLifecycleOwner) { renderFilterButton(it) }
         }
     }
@@ -92,6 +90,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
+                } else {
+                    setDefaultScreen()
                 }
             },
         )
@@ -112,8 +112,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun setupClearButtonClickListener() {
         binding.buttonClear.setOnClickListener {
             handleClearButtonClick()
-            viewModel.cancelSearchDebounce()
-            viewModel.setDefaultScreen()
+            setDefaultScreen()
         }
         binding.buttonFilter.setOnClickListener {
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
@@ -140,6 +139,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 }
                 false
             }
+        }
+    }
+
+    private fun setDefaultScreen() {
+        viewModel.apply {
+            cancelSearchDebounce()
+            setDefaultScreen()
         }
     }
 
@@ -172,7 +178,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             is Default -> showDefaultScreen()
             is Error -> showError(state)
             is Loading -> showLoading()
-            is SearchResults -> showSearchResults()
+            is SearchResults -> showSearchResults(state.data)
         }
     }
 
@@ -209,7 +215,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun showSearchResults() {
+    private fun showSearchResults(data: PagingData<Vacancy>) {
+        refreshData(data)
         binding.apply {
             llErrorContainer.hide()
             notificationText.show()
