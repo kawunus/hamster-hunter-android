@@ -29,6 +29,8 @@ import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenSt
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.SearchResults
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
+import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
+import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
 import ru.practicum.android.diploma.util.formatNumber
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
@@ -66,6 +68,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             getPagingDataLiveData().observe(viewLifecycleOwner) { refreshData(it) }
 
             getAnyFilterApplied().observe(viewLifecycleOwner) { renderFilterButton(it) }
+        }
+        // подписка на изменения в FilterFragment
+        parentFragmentManager.setFragmentResultListener(
+            FILTERS_CHANGED_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val filtersChanged = bundle.getBoolean(FILTERS_CHANGED_BUNDLE_KEY)
+            if (filtersChanged) {
+                viewModel.startSearchWithLatestText()
+            }
         }
     }
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:theme="@style/Theme.PracticumAndroidDiploma"
-    tools:context=".filter.presentation.ui.fragment.FilterFragment">
+    tools:context=".filter.presentation.ui.fragment.AreaFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_border"
