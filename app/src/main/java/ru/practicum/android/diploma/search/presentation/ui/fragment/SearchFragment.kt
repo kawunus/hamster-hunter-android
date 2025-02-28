@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.ui.fragment
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -48,7 +49,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
-        // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
@@ -57,7 +57,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
-        // подписка на данные от viewModel
         with(viewModel) {
             getSearchState().observe(viewLifecycleOwner) { renderScreen(it) }
 
@@ -77,7 +76,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             lifecycleScope.launch {
                 lastPagingData = pagingData
                 adapter.clear() // Принудительно очищаем адаптер
-                delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
                 adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
             }
         }
@@ -215,14 +213,19 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showSearchResults(data: PagingData<Vacancy>) {
-        refreshData(data)
-        binding.apply {
-            llErrorContainer.hide()
-            notificationText.show()
-            ivPlaceholderMain.hide()
-            recycler.show()
-            progressBar.hide()
+        lifecycleScope.launch {
+            refreshData(data)
+            adapter.notifyDataSetChanged()
+            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
+            binding.apply {
+                llErrorContainer.hide()
+                notificationText.show()
+                ivPlaceholderMain.hide()
+                progressBar.hide()
+                recycler.show()
+            }
         }
     }
 

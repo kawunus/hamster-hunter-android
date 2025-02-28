@@ -69,7 +69,6 @@ class SearchViewModel(
     fun startSearch(expression: String) {
         viewModelScope.launch {
             // Очищаем старые данные
-//            pagingDataLiveData.postValue(PagingData.empty())
             foundCount.postValue(null)
 
             // Загружаем общее количество найденных вакансий по запросу
