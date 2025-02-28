@@ -79,10 +79,9 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
                 filters.area,
                 filters.industry,
                 filters.salary,
-                filters.onlyWithSalary,
-                filters.onlyInTitles
             )
-            anyFilterApplied.value = parametersList.any { it != null }
+            anyFilterApplied.value =
+                parametersList.any { it != null } || filters.onlyWithSalary == true || filters.onlyInTitles == true
         }
     }
 }
