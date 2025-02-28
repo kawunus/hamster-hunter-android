@@ -1,15 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".favorites.presentation.ui.fragment.FavoritesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/title_text_view"
+        style="@style/HeadToolBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:minHeight="@dimen/dp64"
+        android:text="@string/favorite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        app:layout_constraintTop_toBottomOf="@id/title_text_view"
+        tools:listitem="@layout/item_vacancy" />
+
+    <ImageView
+        android:id="@+id/placeholder_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favorites Fragment"
-        android:layout_gravity="center"/>
+        android:layout_marginTop="@dimen/dp171"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_text_view" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/error_message_text_view"
+        style="@style/Medium22TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp16"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/placeholder_image_view" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp171"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text_view" />
+</androidx.constraintlayout.widget.ConstraintLayout>

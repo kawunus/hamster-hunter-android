@@ -7,11 +7,16 @@
     <!--поиск-->
     <string name="job_search">Поиск вакансий</string>
     <string name="enter_your_request">Введите запрос</string>
-    <string name="no_job_found">Таких вакансий нет</string>
-    <string name="found_many">Найдено </string>
-    <string name="found_1">Найдена </string>
-    <string name="job"> вакансия</string>
-    <string name="jobs"> вакансий</string>
+    <string name="no_such_jobs">Таких вакансий нет</string>
+    <!-- пример использования resources.getQuantityString(R.plurals.found_jobs_plural, count, count)-->
+    <plurals name="found_jobs_plural">
+        <item quantity="one">Найдена %1$s вакансия</item>
+        <item quantity="two">Найдено %1$s вакансии</item>
+        <item quantity="few">Найдено %1$s вакансии</item>
+        <item quantity="many">Найдено %1$s вакансий</item>
+        <item quantity="other">Найдено %1$s вакансий</item>
+    </plurals>
+
     <!--фильтрация-->
     <string name="filtering_settings">Настройки фильтрации</string>
     <string name="job_location">Место работы</string>
@@ -19,6 +24,7 @@
     <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="enter_salary">Введите сумму</string>
     <string name="dont_show_results_without_salary">Не показывать без зарплаты</string>
+    <string name="search_only_in_titles">Искать только в заголовках вакансий</string>
     <!--выбор места работы-->
     <string name="choose_job_location">Выбор места работы</string>
     <string name="country">Страна</string>
@@ -41,6 +47,7 @@
     <string name="gel"> ლ</string>
     <string name="kgt"> с</string>
     <!--вакансии -->
+    <string name="job">Вакансия</string>
     <string name="from_title">От </string>
     <string name="from">от </string>
     <string name="to_title">До </string>
@@ -48,6 +55,8 @@
     <string name="no_salary_info">Зарплата не указана</string>
     <string name="required_experience">Требуемый опыт</string>
     <string name="job_description">Описание вакансии</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="key_skill_separator">"   •    %s\n"</string>
     <!--кнопки-->
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
@@ -56,6 +65,9 @@
     <string name="error_no_internet">Нет интернета</string>
     <string name="error_server">Ошибка сервера</string>
     <string name="error_job_not_found_or_deleted">Вакансия не найдена или удалена</string>
+    <string name="error_nothing_found_place">Не удалось получить\nсписок вакансий</string>
+    <string name="error_nothing_found">Не удалось получить\nсписок</string>
+    <string name="error_favorites_is_empty">Список пуст</string>
     <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
     <string name="dev1">Аксенов Александр Сергеевич</string>
@@ -64,4 +76,12 @@
     <string name="dev4">Марковцев Станислав Вадимович</string>
     <string name="dev5">Филиппова Светлана Владимировна</string>
     <string name="dev6">Шахов Сергей Геннадьевич</string>
+    <!-- шаблон для обьединение заголовка вакансии и региона -->
+    <string name="vacancy_name_and_location">%s, %s</string>
+    <string name="error_toast_no_internet">Проверьте подключение к интернету</string>
+    <string name="error_toast_server">Произошла ошибка</string>
+    <string name="bearer_token">Bearer %s</string>
+    <string name="search_screen">Экран поиска вакансий</string>
+    <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
+    <string name="content_description_filters">Фильтры</string>
 </resources>

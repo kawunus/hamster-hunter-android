@@ -71,6 +71,9 @@ dependencies {
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
 
+    //  Jetpack Paging 3 (для пагинации)
+    implementation(libs.paging.runtime)
+
     // region Unit tests
     testImplementation(libs.unitTests.junit)
     // endregion
