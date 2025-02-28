@@ -25,9 +25,9 @@ class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersReposi
         val searchRequest = VacanciesSearchRequest(
             text = expression,
             page = 0,
-            area = filters.area,
+            area = filters.area?.id,
             salary = filters.salary,
-            professionalRole = filters.professionalRole,
+            professionalRole = filters.industry?.id,
             onlyWithSalary = filters.onlyWithSalary,
             onlyInTitles = filters.onlyInTitles,
         )

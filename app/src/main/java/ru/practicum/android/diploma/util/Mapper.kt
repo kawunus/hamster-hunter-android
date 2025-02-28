@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.util
 
 import CountryDto
+import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.domain.models.Country
+import ru.practicum.android.diploma.filter.domain.models.Region
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.util.Constants.HTTP_NOT_FOUND
 import ru.practicum.android.diploma.vacancy.domain.model.ErrorType
@@ -29,5 +31,13 @@ fun CountryDto.toCountry(): Country {
     return Country(
         id = id,
         name = name ?: "Неизвестная страна"
+    )
+}
+
+fun RegionDto.toRegion(): Region {
+    return Region(
+        id = id,
+        name = name ?: "Неизвестный регион",
+        parentId = parentId
     )
 }
