@@ -218,7 +218,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         lifecycleScope.launch {
             refreshData(data)
             adapter.notifyDataSetChanged()
-            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
+//            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
             binding.apply {
                 llErrorContainer.hide()
                 notificationText.show()
@@ -304,7 +304,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SHOW_RECYCLER_DELAY = 200L
-
     }
 }
