@@ -49,9 +49,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var isClickAllowed = true
     private var lastPagingData: PagingData<Vacancy>? = null
 
-    // сохраняем текст поиска в переменную, чтобы по возвращению с экрана фильтров сделать новый поиск
-    private var searchText = ""
-
     override fun initViews() {
         // инициализируем наши вьюхи тут
         isClickAllowed = true
@@ -79,7 +76,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         ) { _, bundle ->
             val filtersChanged = bundle.getBoolean(FILTERS_CHANGED_BUNDLE_KEY)
             if (filtersChanged) {
-                viewModel.startSearch(searchText)
+                viewModel.startSearchWithLatestText()
             }
         }
     }
@@ -106,7 +103,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             onTextChanged = { text, _, _, _ ->
                 updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
-                    searchText = text.toString()
                     viewModel.searchWithDebounce(text.toString())
                 }
             },
