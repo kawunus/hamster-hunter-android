@@ -54,27 +54,25 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                     .navigateUp()
             }
             tetArea.setOnClickListener {
-                setFiltersChanged()
                 findNavController()
                     .navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
             }
             tetIndustry.setOnClickListener {
-                setFiltersChanged()
                 findNavController()
                     .navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
             }
 
             checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
-                setFiltersChanged()
                 viewModel.setOnlyWithSalary(isChecked)
             }
 
             checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
-                setFiltersChanged()
                 viewModel.setOnlyInTitles(isChecked)
             }
 
             btnApply.setOnClickListener {
+                // по нажатию применить, ставим флаг, что фильтры изменились
+                setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
                 findNavController()
                     .navigateUp()
             }
@@ -88,7 +86,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
                 if (!isTextUpdating) {
-                    setFiltersChanged()
                     handleSalaryText(text)
                 }
             }
@@ -174,9 +171,5 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun setResetBtnVisibility(anyFilterApplied: Boolean?) {
         binding.btnReset.isVisible = anyFilterApplied ?: false
-    }
-
-    private fun setFiltersChanged() {
-        setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
     }
 }
