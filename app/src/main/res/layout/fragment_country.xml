@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/Theme.PracticumAndroidDiploma"
     tools:context=".filter.presentation.ui.fragment.CountryFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Country Fragment"
-        android:layout_gravity="center"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp16" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp16" />
+
+    <Button
+        android:id="@+id/btn_back"
+        style="@style/HeadToolBarStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp64"
+        android:paddingStart="@dimen/zero"
+        android:text="@string/choose_country"
+        app:icon="@drawable/ic_arrow_back"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/dp16"
+        app:iconSize="@dimen/dp24"
+        app:iconTint="?attr/colorOnPrimary"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/zero"
+        android:layout_marginTop="@dimen/dp16"
+        android:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/btn_back"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_country_region_list" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
