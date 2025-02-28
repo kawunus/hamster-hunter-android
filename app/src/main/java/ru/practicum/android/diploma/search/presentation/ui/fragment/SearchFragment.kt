@@ -218,10 +218,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         lifecycleScope.launch {
             refreshData(data)
             adapter.notifyDataSetChanged()
-//            delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
             binding.apply {
                 llErrorContainer.hide()
-                notificationText.show()
                 ivPlaceholderMain.hide()
                 progressBar.hide()
                 recycler.show()
@@ -300,6 +298,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             }
         }
         return current
+    }
+
+    private fun showLog(tag: String = "HH DEBUG", msg: String) {
+        Log.d(tag, msg)
     }
 
     private companion object {
