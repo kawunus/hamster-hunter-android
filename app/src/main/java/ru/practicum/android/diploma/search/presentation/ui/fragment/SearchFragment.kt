@@ -300,10 +300,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         return current
     }
 
-    private fun showLog(tag: String = "HH DEBUG", msg: String) {
-        Log.d(tag, msg)
-    }
-
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
