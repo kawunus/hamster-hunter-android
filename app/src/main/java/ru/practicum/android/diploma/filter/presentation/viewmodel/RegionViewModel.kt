@@ -46,29 +46,34 @@ class RegionViewModel(
     fun loadRegions(countryId: String) {
         viewModelScope.launch {
             _screenState.value = RegionScreenState.Loading
-            getRegionsInteractor.getRegions(countryId)
-                .collect { resource ->
-                    Log.e("RegionSearch", "Код ответа: ${resource.code}")
-                    _screenState.value = when (resource.code) {
-                        Constants.HTTP_SUCCESS -> {
-                            val regions = resource.data ?: emptyList()
-                            _regions.value = regions
-                            RegionScreenState.Content
-                        }
+            val regionsFlow = if (countryId.isEmpty()) {
+                getRegionsInteractor.getAllRegions()
+            } else {
+                getRegionsInteractor.getRegions(countryId)
+            }
+            regionsFlow.collect { resource ->
+                Log.e("RegionSearch", "Код ответа: ${resource.code}")
+                _screenState.value = when (resource.code) {
+                    Constants.HTTP_SUCCESS -> {
+                        val regions = resource.data ?: emptyList()
+                        _regions.value = regions
+                        RegionScreenState.Content
+                    }
 
-                        -1 -> {
-                            _regions.value = emptyList()
-                            RegionScreenState.Error.NetworkError
-                        }
+                    -1 -> {
+                        _regions.value = emptyList()
+                        RegionScreenState.Error.NetworkError
+                    }
 
-                        else -> {
-                            _regions.value = emptyList()
-                            RegionScreenState.Error.ServerError
-                        }
+                    else -> {
+                        _regions.value = emptyList()
+                        RegionScreenState.Error.ServerError
                     }
                 }
+            }
         }
     }
+
 
     fun saveSelectedRegion(region: Region) {
         val currentFilters = filtersInteractor.readFilters()

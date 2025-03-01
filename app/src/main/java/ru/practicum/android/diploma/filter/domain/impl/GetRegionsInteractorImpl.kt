@@ -12,4 +12,9 @@ class GetRegionsInteractorImpl(
     override suspend fun getRegions(countryId: String): Flow<Resource<List<Region>>> {
         return regionsRepository.getRegions(countryId)
     }
+
+    override suspend fun getAllRegions(): Flow<Resource<List<Region>>> {
+        return regionsRepository.getAllRegions()
+    }
+
 }

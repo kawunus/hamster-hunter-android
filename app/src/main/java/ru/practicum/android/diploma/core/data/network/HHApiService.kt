@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
+import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
 import ru.practicum.android.diploma.search.data.network.model.DictionariesResponse
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
@@ -32,7 +33,12 @@ interface HHApiService {
     @GET("areas")
     suspend fun getCountries(): List<CountryDto>
 
-    // для получения списка регионов
+    // для получения списка регионов согласно стране
     @GET("areas/{area_id}")
     suspend fun getRegions(@Path("area_id") countryId: String): RegionsResponse
+
+    // для получения списка всех регионов
+    @GET("areas")
+    suspend fun getAllRegions(): List<RegionDto>
+
 }

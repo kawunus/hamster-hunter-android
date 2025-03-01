@@ -105,9 +105,8 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
 
     // загружаем список регионов при старте
     private fun loadInitialData() {
-
-        viewModel.loadRegions(countryId ?: "")
-
+        val countryId = viewModel.getParentId() ?: ""
+        viewModel.loadRegions(countryId)
     }
 
     // подписываемся на обновления списка регионов

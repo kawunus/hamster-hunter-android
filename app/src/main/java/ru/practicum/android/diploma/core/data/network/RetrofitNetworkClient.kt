@@ -8,6 +8,8 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.filter.data.dto.RegionDto
+import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
@@ -42,6 +44,7 @@ class RetrofitNetworkClient(
 
                     is CountriesRequest -> getCountries()
                     is RegionsRequest -> getRegions(dto.countryId)
+                    is AllRegionsRequest -> getAllRegions()
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
@@ -75,6 +78,20 @@ class RetrofitNetworkClient(
     private suspend fun getRegions(countryId: String): RegionsResponse {
         return hHApiService.getRegions(countryId)
     }
+
+    private suspend fun getAllRegions(): RegionsResponse {
+        val countries = hHApiService.getAllRegions()
+        val allRegions = mutableListOf<RegionDto>()
+        countries.forEach { country ->
+            val countryRegions = hHApiService.getRegions(country.id).regionsList
+            allRegions.addAll(countryRegions)
+        }
+        return RegionsResponse().apply {
+            resultCode = HTTP_SUCCESS
+            regionsList = allRegions
+        }
+    }
+
 
     private fun logError(e: Exception) {
         Log.d("DEBUG", "Ошибка в методе doRequest: ${e.message}")
