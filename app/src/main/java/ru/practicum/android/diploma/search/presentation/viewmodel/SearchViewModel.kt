@@ -128,6 +128,10 @@ class SearchViewModel(
         searchState.value = SearchScreenState.Default
     }
 
+    fun startSearchWithLatestText() {
+        startSearch(latestSearchText)
+    }
+
     private companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val LATEST_SEARCH_TEXT = "latestSearchText"
