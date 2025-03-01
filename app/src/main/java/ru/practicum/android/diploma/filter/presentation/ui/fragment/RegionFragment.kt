@@ -58,6 +58,7 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
     //  обрабатываем клик по региону в списке
     private fun setupRegionClickListener() {
         regionsAdapter.onItemClick = { region ->
+            viewModel.saveSelectedRegion(region)
             setFragmentResult(
                 REQUEST_KEY_REGION,
                 bundleOf(
