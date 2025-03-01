@@ -15,7 +15,6 @@ import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.toRegion
 import java.io.IOException
-import java.net.SocketTimeoutException
 
 class RegionsRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -34,33 +33,47 @@ class RegionsRepositoryImpl(
                 emit(Resource(data = emptyList(), code = -1))
             } else {
                 val response = networkClient.doRequest(request)
-                if (response !is RegionsResponse) {
-                    emit(Resource(data = emptyList(), code = Constants.HTTP_BAD_REQUEST))
+                if (response is RegionsResponse) {
+                    emit(handleRegionsResponse(response))
                 } else {
-                    val resource: Resource<List<Region>> = when (response.resultCode) {
-                        Constants.HTTP_SUCCESS -> {
-                            val regions = response.regionsList.map { it.toRegion() }
-                            Resource(data = regions, code = Constants.HTTP_SUCCESS)
-                        }
-
-                        Constants.HTTP_NOT_FOUND -> Resource(data = emptyList(), code = Constants.HTTP_NOT_FOUND)
-                        Constants.HTTP_BAD_REQUEST, Constants.HTTP_SERVER_ERROR ->
-                            Resource(data = emptyList(), code = Constants.HTTP_SERVER_ERROR)
-
-                        -1 -> Resource(data = emptyList(), code = -1)
-                        else -> Resource(data = emptyList(), code = response.resultCode)
-                    }
-                    emit(resource)
+                    emit(Resource(data = emptyList(), code = Constants.HTTP_BAD_REQUEST))
                 }
             }
-        } catch (e: SocketTimeoutException) {
-            Log.e(TAG, "Таймаут запроса: ${e.localizedMessage}", e)
-            emit(Resource(data = emptyList(), code = Constants.HTTP_SERVER_ERROR))
-        } catch (e: IOException) {
-            Log.e(TAG, "Ошибка сети: ${e.localizedMessage}", e)
-            emit(Resource(data = emptyList(), code = -1))
+        } catch (e: Exception) {
+            emit(handleError(e))
         }
     }
+
+    private fun handleRegionsResponse(response: RegionsResponse): Resource<List<Region>> {
+        return when (response.resultCode) {
+            Constants.HTTP_SUCCESS -> {
+                val regions = response.regionsList.map { it.toRegion() }
+                Resource(data = regions, code = Constants.HTTP_SUCCESS)
+            }
+
+            Constants.HTTP_NOT_FOUND -> Resource(data = emptyList(), code = Constants.HTTP_NOT_FOUND)
+            Constants.HTTP_BAD_REQUEST, Constants.HTTP_SERVER_ERROR ->
+                Resource(data = emptyList(), code = Constants.HTTP_SERVER_ERROR)
+
+            -1 -> Resource(data = emptyList(), code = -1)
+            else -> Resource(data = emptyList(), code = response.resultCode)
+        }
+    }
+
+    private fun handleError(e: Exception): Resource<List<Region>> {
+        return when (e) {
+            is IOException -> {
+                Log.e(TAG, "Ошибка сети: ${e.localizedMessage}", e)
+                Resource(data = emptyList(), code = -1)
+            }
+
+            else -> {
+                Log.e(TAG, "Неизвестная ошибка: ${e.localizedMessage}", e)
+                Resource(data = emptyList(), code = Constants.HTTP_SERVER_ERROR)
+            }
+        }
+    }
+
 
     private fun isConnected(): Boolean {
         return NetworkMonitor.isNetworkAvailable(context)
