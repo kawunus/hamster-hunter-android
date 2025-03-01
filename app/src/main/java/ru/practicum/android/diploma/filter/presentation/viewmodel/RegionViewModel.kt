@@ -74,7 +74,6 @@ class RegionViewModel(
         }
     }
 
-
     fun saveSelectedRegion(region: Region) {
         val currentFilters = filtersInteractor.readFilters()
         val country = currentFilters.area?.country

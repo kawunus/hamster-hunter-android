@@ -31,7 +31,7 @@ class CountriesRepositoryImpl(
         } catch (e: IOException) {
             Log.e("CountriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
             emit(Resource(data = null, code = -1))
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             Log.e("CountriesRepositoryImpl", "Другая ошибка: ${e.localizedMessage}", e)
             emit(Resource(data = null, code = Constants.HTTP_SERVER_ERROR))
         }

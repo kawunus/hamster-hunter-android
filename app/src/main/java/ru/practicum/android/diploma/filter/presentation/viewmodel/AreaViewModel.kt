@@ -35,7 +35,7 @@ class AreaViewModel(
 
     fun updateArea(newArea: Area) {
         val oldArea = _selectedArea.value
-        val isNewCountry = (oldArea?.country?.id != newArea.country?.id)
+        val isNewCountry = oldArea?.country?.id != newArea.country?.id
 
         if (isNewCountry) {
             _selectedArea.value = newArea.copy(

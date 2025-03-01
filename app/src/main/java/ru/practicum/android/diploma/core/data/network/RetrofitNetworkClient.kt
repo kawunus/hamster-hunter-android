@@ -92,7 +92,6 @@ class RetrofitNetworkClient(
         }
     }
 
-
     private fun logError(e: Exception) {
         Log.d("DEBUG", "Ошибка в методе doRequest: ${e.message}")
     }

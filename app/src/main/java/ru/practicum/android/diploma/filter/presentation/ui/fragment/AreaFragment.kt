@@ -59,8 +59,6 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
             binding.tetCountry.setText(countryName)
             binding.tetRegion.setText(regionName)
 
-
-
             if (!countryName.equals(countryNameField) or !regionName.equals(regionNameField)) {
                 countryNameField = countryName
                 regionNameField = regionName

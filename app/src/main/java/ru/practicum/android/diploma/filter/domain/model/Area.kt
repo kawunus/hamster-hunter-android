@@ -4,6 +4,6 @@ import ru.practicum.android.diploma.filter.domain.models.Country
 import ru.practicum.android.diploma.filter.domain.models.Region
 
 data class Area(
-    var country: Country?,
-    var region: Region?
+    val country: Country?,
+    val region: Region?
 )

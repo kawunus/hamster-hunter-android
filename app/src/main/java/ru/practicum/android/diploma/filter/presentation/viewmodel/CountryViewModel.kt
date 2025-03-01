@@ -15,7 +15,6 @@ import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.filter.presentation.model.CountriesState
 import ru.practicum.android.diploma.util.Constants
 
-
 class CountryViewModel(
     private val getCountriesUseCase: GetCountriesUseCase,
     private val filtersInteractor: FiltersInteractor
