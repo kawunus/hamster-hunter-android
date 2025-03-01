@@ -1,15 +1,22 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
+import ru.practicum.android.diploma.filter.domain.api.GetCountriesUseCase
 import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 
-class AreaViewModel(private val filtersInteractor: FiltersInteractor) : BaseViewModel() {
+class AreaViewModel(
+    private val filtersInteractor: FiltersInteractor,
+    private val getCountriesUseCase: GetCountriesUseCase
+) : BaseViewModel() {
 
-    // Храним всю информацию (countryId, regionId, countryName, regionName) в одном объекте
     private val _selectedArea = MutableLiveData<Area?>()
     val selectedArea: LiveData<Area?> = _selectedArea
 
@@ -17,7 +24,10 @@ class AreaViewModel(private val filtersInteractor: FiltersInteractor) : BaseView
         loadFilters()
     }
 
-    // Считываем из SharedPrefs уже сохранённые значения (страна и регион)
+    fun getActualFilterState() {
+        loadFilters()
+    }
+
     private fun loadFilters() {
         val filters = filtersInteractor.readFilters()
         _selectedArea.value = filters.area
@@ -25,18 +35,17 @@ class AreaViewModel(private val filtersInteractor: FiltersInteractor) : BaseView
 
     fun updateArea(newArea: Area) {
         val oldArea = _selectedArea.value
-        val isNewCountry = (oldArea?.countryId != newArea.countryId)
+        val isNewCountry = (oldArea?.country?.id != newArea.country?.id)
 
         if (isNewCountry) {
-            // Пользователь выбрал новую страну – обнуляем регион
             _selectedArea.value = newArea.copy(
-                regionId = null,
-                regionName = null
+                region = null
             )
         } else {
-            // Страна та же – меняем всё, что пришло в newArea (включая regionId/regionName)
             _selectedArea.value = newArea
         }
+
+        saveFilters()
     }
 
     fun saveFilters() {
@@ -45,5 +54,26 @@ class AreaViewModel(private val filtersInteractor: FiltersInteractor) : BaseView
                 area = _selectedArea.value
             )
         )
+    }
+
+    fun getCountryByRegion() {
+        viewModelScope.launch {
+            getCountriesUseCase.getCountries()
+                .catch { throwable ->
+                    Log.e(
+                        "CountriesSearch",
+                        "Непредвиденная ошибка или IOException: ${throwable.localizedMessage}",
+                        throwable
+                    )
+                }
+                .collect { resource ->
+                    val list = resource.data ?: emptyList()
+                    val country = list.find {
+                        it.id == selectedArea.value?.region?.parentId
+                    }
+                    val currentArea = selectedArea.value
+                    _selectedArea.value = currentArea?.copy(country = country)
+                }
+        }
     }
 }

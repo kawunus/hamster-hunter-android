@@ -66,7 +66,10 @@ class RetrofitNetworkClient(
     }
 
     private suspend fun getCountries(): CountriesResponse {
-        return hHApiService.getCountries()
+        val dtoList = hHApiService.getCountries()
+        return CountriesResponse().apply {
+            countriesList = dtoList
+        }
     }
 
     private suspend fun getRegions(countryId: String): RegionsResponse {

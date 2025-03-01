@@ -24,7 +24,7 @@ val viewModelModule = module {
 
     viewModelOf(::FieldViewModel)
 
-    viewModelOf(::CountryViewModel)
+    viewModel { AreaViewModel(get(), get()) }
 
-    viewModel { AreaViewModel(get()) }
+    viewModel { CountryViewModel(get(), get()) }
 }

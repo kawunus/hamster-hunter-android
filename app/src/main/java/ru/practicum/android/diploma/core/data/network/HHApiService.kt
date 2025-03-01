@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.core.data.network
 
-import CountriesResponse
+import CountryDto
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -30,7 +30,7 @@ interface HHApiService {
     ): DictionariesResponse
 
     @GET("areas")
-    suspend fun getCountries(): CountriesResponse
+    suspend fun getCountries(): List<CountryDto>
 
     // для получения списка регионов
     @GET("/areas/{area_id}")
