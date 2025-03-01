@@ -33,8 +33,6 @@ interface HHApiService {
     suspend fun getCountries(): List<CountryDto>
 
     // для получения списка регионов
-    @GET("/areas/{area_id}")
-    suspend fun getRegions(
-        @Path("area_id") countryId: String
-    ): RegionsResponse
+    @GET("areas/{area_id}")
+    suspend fun getRegions(@Path("area_id") countryId: String): RegionsResponse
 }
