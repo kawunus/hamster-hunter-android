@@ -19,6 +19,7 @@ class RegionsRepositoryImpl(
     override suspend fun getRegions(countryId: String): Flow<Resource<List<Region>>> = flow {
         try {
             var response = networkClient.doRequest(RegionsRequest(countryId))
+            Log.e("RegionSearch", "Repo код: ${response.resultCode}")
             if (response !is RegionsResponse) {
                 emit(Resource(data = null, code = Constants.HTTP_BAD_REQUEST))
             } else {

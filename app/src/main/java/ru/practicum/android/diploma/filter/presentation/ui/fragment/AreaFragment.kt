@@ -66,8 +66,10 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
                 regionNameField = regionName
                 if (!fieldCheckFlag) {
                     fieldCheckFlag = true
-                } else {
+                } else if (countryName.isNotEmpty() or regionName.isNotEmpty()) {
                     binding.btnSelect.isVisible = true
+                } else {
+                    binding.btnSelect.isVisible = false
                 }
             }
 

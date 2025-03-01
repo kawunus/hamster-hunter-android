@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,11 +39,16 @@ class RegionViewModel(
         emptyList()
     )
 
+    fun getParentId(): String? {
+        return filtersInteractor.readFilters().area?.country?.id
+    }
+
     fun loadRegions(countryId: String) {
         viewModelScope.launch {
             _screenState.value = RegionScreenState.Loading
             getRegionsInteractor.getRegions(countryId)
                 .collect { resource ->
+                    Log.e("RegionSearch", "Код ответа: ${resource.code}")
                     _screenState.value = when (resource.code) {
                         Constants.HTTP_SUCCESS -> {
                             val regions = resource.data ?: emptyList()
@@ -63,13 +69,14 @@ class RegionViewModel(
                 }
         }
     }
+
     fun saveSelectedRegion(region: Region) {
         val currentFilters = filtersInteractor.readFilters()
+        val country = currentFilters.area?.country
         val updatedFilters = currentFilters.copy(
             area = Area(
-                regionId = region.id,
-                regionName = region.name,
-                countryId = region.parentId
+                region = region,
+                country = country
             )
         )
         filtersInteractor.saveFilters(updatedFilters)

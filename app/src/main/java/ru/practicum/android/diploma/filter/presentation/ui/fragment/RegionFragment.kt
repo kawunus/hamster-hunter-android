@@ -41,9 +41,9 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
         observeScreenState()
     }
 
-    // получаем ID страны из аргументов фрагмента
+    // получаем ID страны из сохраненных фильтров
     private fun getArgumentsData() {
-        countryId = arguments?.getString(COUNTRY_ID_KEY)
+        countryId = viewModel.getParentId()
     }
 
     // настраиваем RecyclerView и его адаптер
@@ -105,9 +105,9 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
 
     // загружаем список регионов при старте
     private fun loadInitialData() {
-        countryId?.let {
-            viewModel.loadRegions(it)
-        }
+
+        viewModel.loadRegions(countryId ?: "")
+
     }
 
     // подписываемся на обновления списка регионов
