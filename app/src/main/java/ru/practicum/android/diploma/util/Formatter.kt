@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.util
 
 import android.content.Context
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.filter.domain.model.Area
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -40,5 +41,14 @@ private fun formatCurrency(currency: String, context: Context): String {
         else -> {
             currency
         }
+    }
+}
+
+fun formatLocationString(area: Area?): String {
+    return when {
+        area?.countryName.isNullOrEmpty() && area?.regionName.isNullOrEmpty() -> ""
+        area?.countryName.isNullOrEmpty() -> area?.regionName.orEmpty()
+        area?.regionName.isNullOrEmpty() -> area?.countryName.orEmpty()
+        else -> "${area?.countryName}, ${area?.regionName}"
     }
 }

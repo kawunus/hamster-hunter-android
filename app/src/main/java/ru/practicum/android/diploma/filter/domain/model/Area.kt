@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.filter.domain.model
 
 data class Area(
-    val id: String? = null,
-    val name: String? = null,
+    val countryId: String? = null,
+    var regionId: String? = null,
+    val countryName: String? = null,
+    var regionName: String? = null
 )

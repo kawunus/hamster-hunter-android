@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
+import ru.practicum.android.diploma.util.formatLocationString
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -126,7 +127,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun renderScreen(filterParameters: FilterParameters) {
         with(filterParameters) {
-            renderAreaFilter(area?.name)
+            renderAreaFilter(formatLocationString(area))
             renderIndustryFilter(industry?.name)
             renderSalaryFilter(salary)
             renderOnlyWithSalaryFilter(onlyWithSalary)
