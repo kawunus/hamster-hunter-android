@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.toCountry
 import java.io.IOException
+import java.net.SocketTimeoutException
 
 class CountriesRepositoryImpl(
     private val networkClient: HHApiService
@@ -31,10 +32,9 @@ class CountriesRepositoryImpl(
         } catch (e: IOException) {
             Log.e("CountriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
             emit(Resource(data = null, code = -1))
-        } catch (e: IOException) {
+        } catch (e: SocketTimeoutException) {
             Log.e("CountriesRepositoryImpl", "Другая ошибка: ${e.localizedMessage}", e)
             emit(Resource(data = null, code = Constants.HTTP_SERVER_ERROR))
         }
     }
 }
-
