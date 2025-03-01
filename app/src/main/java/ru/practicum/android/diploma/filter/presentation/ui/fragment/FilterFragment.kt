@@ -130,7 +130,15 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun renderScreen(filterParameters: FilterParameters) {
         with(filterParameters) {
-            renderAreaFilter(area?.name)
+            // Если есть имя региона, показываем его
+            // Если есть только страна, показываем страну
+            // Иначе показываем дефолтный текст
+            val areaName = when {
+                area?.regionName != null -> area.regionName
+                area?.countryName != null -> area.countryName
+                else -> null
+            }
+            renderAreaFilter(areaName)
             renderIndustryFilter(industry?.name)
             renderSalaryFilter(salary)
             renderOnlyWithSalaryFilter(onlyWithSalary)
