@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
@@ -39,8 +40,12 @@ class RegionsRepositoryImpl(
                     emit(Resource(data = emptyList(), code = Constants.HTTP_BAD_REQUEST))
                 }
             }
-        } catch (e: Exception) {
-            emit(handleError(e))
+        } catch (e: IOException) {
+            Log.e(TAG, "Ошибка сети: ${e.localizedMessage}", e)
+            emit(Resource(data = emptyList(), code = -1))
+        } catch (e: HttpException) {
+            Log.e(TAG, "Неизвестная ошибка: ${e.localizedMessage}", e)
+            emit(Resource(data = emptyList(), code = Constants.HTTP_SERVER_ERROR))
         }
     }
 
@@ -59,21 +64,6 @@ class RegionsRepositoryImpl(
             else -> Resource(data = emptyList(), code = response.resultCode)
         }
     }
-
-    private fun handleError(e: Exception): Resource<List<Region>> {
-        return when (e) {
-            is IOException -> {
-                Log.e(TAG, "Ошибка сети: ${e.localizedMessage}", e)
-                Resource(data = emptyList(), code = -1)
-            }
-
-            else -> {
-                Log.e(TAG, "Неизвестная ошибка: ${e.localizedMessage}", e)
-                Resource(data = emptyList(), code = Constants.HTTP_SERVER_ERROR)
-            }
-        }
-    }
-
 
     private fun isConnected(): Boolean {
         return NetworkMonitor.isNetworkAvailable(context)
