@@ -4,5 +4,5 @@ data class Area(
     val countryId: String? = null,
     val regionId: String? = null,
     val countryName: String? = null,
-    var regionName: String? = null
+    val regionName: String? = null
 )

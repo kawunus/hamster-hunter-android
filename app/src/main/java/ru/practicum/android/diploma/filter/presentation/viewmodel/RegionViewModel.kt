@@ -24,8 +24,11 @@ class RegionViewModel(
 
     private val _searchQuery = MutableStateFlow("")
     val filteredRegions = combine(_regions, _searchQuery) { regions, query ->
-        if (query.isEmpty()) regions
-        else regions.filter { it.name?.contains(query, ignoreCase = true) == true }
+        if (query.isEmpty()) {
+            regions
+        } else {
+            regions.filter { it.name?.contains(query, ignoreCase = true) == true }
+        }
     }.stateIn(
         viewModelScope,
         SharingStarted.Lazily,
