@@ -1,14 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/Theme.PracticumAndroidDiploma"
     tools:context=".filter.presentation.ui.fragment.IndustryFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Field Fragment"
-        android:layout_gravity="center"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/dp16" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dp16" />
+
+    <Button
+        android:id="@+id/btn_back"
+        style="@style/HeadToolBarStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp64"
+        android:paddingStart="@dimen/zero"
+        android:text="@string/choose_industry"
+        app:icon="@drawable/ic_arrow_back"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/dp16"
+        app:iconSize="@dimen/dp24"
+        app:iconTint="?attr/colorOnPrimary"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/edittext_search"
+        style="@style/EditSearchTextStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp8"
+        android:hint="@string/enter_region"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border"
+        app:layout_constraintTop_toBottomOf="@id/btn_back" />
+
+    <ImageButton
+        android:id="@+id/btn_clear"
+        style="@style/EditSearchClearButton"
+        android:layout_width="@dimen/dp40"
+        android:layout_height="@dimen/dp40"
+        android:layout_marginEnd="@dimen/dp4"
+        android:contentDescription="@string/reset"
+        app:layout_constraintBottom_toBottomOf="@id/edittext_search"
+        app:layout_constraintEnd_toEndOf="@id/edittext_search"
+        app:layout_constraintTop_toTopOf="@id/edittext_search" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/choose_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edittext_search" />
+
+    <Button
+        android:id="@+id/choose_button"
+        style="@style/ApplyButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp24"
+        android:enabled="true"
+        android:paddingVertical="@dimen/dp20"
+        android:text="@string/select"
+        android:textSize="@dimen/sp16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/right_border"
+        app:layout_constraintStart_toStartOf="@id/left_border" />
+
+    <LinearLayout
+        android:id="@+id/ll_error_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_search">
+
+        <ImageView
+            android:id="@+id/iv_error_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp224"
+            android:src="@drawable/placeholder_not_found" />
+
+        <TextView
+            android:id="@+id/tv_error_text"
+            style="@style/Medium22TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp16"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/dp46"
+            android:text="@string/no_found_industry" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/dp36"
+        android:layout_height="@dimen/dp36"
+        android:indeterminateTint="@color/blue"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
