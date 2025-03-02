@@ -6,7 +6,6 @@ import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import ru.practicum.android.diploma.core.data.network.HHApiService
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
 import ru.practicum.android.diploma.filter.domain.api.CountriesRepository
