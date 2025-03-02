@@ -70,15 +70,6 @@ class RetrofitNetworkClient(
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
-    // старая редакция
-//    private suspend fun getCountries(): CountriesResponse {
-//        val dtoList = hHApiService.getCountries()
-//        return CountriesResponse().apply {
-//            countriesList = dtoList
-//        }
-//    }
-
-    // новая редакция
     private suspend fun getCountries(): CountriesResponse {
         val areas = hHApiService.getAreas()
         val countries = areas.filter { it.parentId == null }

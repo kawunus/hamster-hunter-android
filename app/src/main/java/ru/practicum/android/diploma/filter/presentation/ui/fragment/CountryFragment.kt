@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -11,6 +10,8 @@ import ru.practicum.android.diploma.filter.domain.model.Country
 import ru.practicum.android.diploma.filter.presentation.model.CountriesState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.CountryAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.CountryViewModel
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 
 class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
     FragmentCountryBinding::inflate
@@ -57,12 +58,12 @@ class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
 
     private fun showLoadingState() {
         hideAllViews()
-        binding.progressBar.isVisible = true
+        binding.progressBar.show()
     }
 
     private fun showSuccessState(countries: List<Country>) {
         hideAllViews()
-        binding.recycler.isVisible = true
+        binding.recycler.show()
         adapter.setData(countries)
     }
 
@@ -71,15 +72,15 @@ class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
         textRes: Int
     ) {
         hideAllViews()
-        binding.llErrorContainer.isVisible = true
+        binding.llErrorContainer.show()
         binding.ivErrorImage.setImageResource(placeholderDrawable)
         binding.tvErrorText.setText(textRes)
     }
 
     private fun hideAllViews() {
-        binding.progressBar.isVisible = false
-        binding.recycler.isVisible = false
-        binding.llErrorContainer.isVisible = false
+        binding.progressBar.hide()
+        binding.recycler.hide()
+        binding.llErrorContainer.hide()
     }
 }
 
