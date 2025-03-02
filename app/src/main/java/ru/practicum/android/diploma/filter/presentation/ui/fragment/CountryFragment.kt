@@ -67,8 +67,7 @@ class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
     }
 
     private fun showPlaceholder(
-        placeholderDrawable: Int,
-        textRes: Int
+        placeholderDrawable: Int, textRes: Int
     ) {
         hideAllViews()
         binding.llErrorContainer.isVisible = true

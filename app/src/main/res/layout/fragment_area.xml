@@ -41,18 +41,18 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_country"
-        app:boxBackgroundColor="?attr/colorPrimary"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp16"
         android:hint="@string/country"
         android:textColorHint="@color/gray"
+        app:boxBackgroundColor="?attr/colorPrimary"
+        app:boxStrokeColor="@null"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
-        app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,28 +64,28 @@
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:background="@null"
+            android:clickable="true"
             android:cursorVisible="false"
             android:focusable="false"
             android:inputType="none"
-            android:clickable="true"
+            android:text=""
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_region"
-        app:boxBackgroundColor="?attr/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/region"
         android:textColorHint="@color/gray"
+        app:boxBackgroundColor="?attr/colorPrimary"
+        app:boxStrokeColor="@null"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
-        app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,26 +97,27 @@
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:background="@null"
+            android:clickable="true"
             android:cursorVisible="false"
             android:focusable="false"
             android:inputType="none"
-            android:clickable="true"
+            android:text=""
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_select"
         style="@style/ApplyButtonStyle"
-        android:layout_width="326dp"
-        android:layout_height="59dp"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/dp60"
+        android:layout_marginHorizontal="@dimen/dp16"
         android:layout_marginBottom="@dimen/dp24"
         android:text="@string/select"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
