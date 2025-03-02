@@ -62,12 +62,15 @@
         app:layout_constraintTop_toTopOf="@id/edittext_search" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp8"
         app:layout_constraintBottom_toTopOf="@id/choose_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edittext_search" />
+        app:layout_constraintTop_toBottomOf="@id/edittext_search"
+        tools:listitem="@layout/item_industry" />
 
     <Button
         android:id="@+id/choose_button"
@@ -117,7 +120,7 @@
         android:layout_width="@dimen/dp36"
         android:layout_height="@dimen/dp36"
         android:indeterminateTint="@color/blue"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

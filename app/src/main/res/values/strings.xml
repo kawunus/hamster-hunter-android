@@ -86,4 +86,5 @@
     <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
     <string name="content_description_filters">Фильтры</string>
     <string name="no_found_industry">Такой отрасли нет</string>
+    <string name="industry_placeholder">Отрасль</string>
 </resources>
