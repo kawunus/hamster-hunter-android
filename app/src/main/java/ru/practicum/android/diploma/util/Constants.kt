@@ -3,6 +3,8 @@ package ru.practicum.android.diploma.util
 object Constants {
     const val EMPTY_STRING = ""
     const val PUNCTUATION = ", "
+    const val FILTERS_CHANGED_REQUEST_KEY = "filters_changed"
+    const val FILTERS_CHANGED_BUNDLE_KEY = "filters_changed"
 
     // Network constants
     const val HTTP_SUCCESS = 200
