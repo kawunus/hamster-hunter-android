@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.Country
@@ -34,7 +33,7 @@ class CountryViewModel(
                         "Непредвиденная ошибка или IOException: ${throwable.localizedMessage}",
                         throwable
                     )
-                    _uiState.value = CountriesState.NetworkError(R.string.error_no_internet.toString())
+                    _uiState.value = CountriesState.NetworkError
                 }
                 .collect { resource ->
                     when (resource.code) {
@@ -44,15 +43,15 @@ class CountryViewModel(
                         }
 
                         Constants.HTTP_NOT_FOUND -> {
-                            _uiState.value = CountriesState.ServerError(R.string.error_server.toString())
+                            _uiState.value = CountriesState.ServerError
                         }
 
                         -1 -> {
-                            _uiState.value = CountriesState.NetworkError(R.string.error_no_internet.toString())
+                            _uiState.value = CountriesState.NetworkError
                         }
 
                         else -> {
-                            _uiState.value = CountriesState.ServerError(R.string.error_server.toString())
+                            _uiState.value = CountriesState.ServerError
                         }
                     }
                 }

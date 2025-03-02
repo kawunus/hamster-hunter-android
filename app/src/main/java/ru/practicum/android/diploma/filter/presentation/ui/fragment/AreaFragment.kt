@@ -1,6 +1,11 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
+import android.content.res.ColorStateList
+import android.content.res.Configuration
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
@@ -49,6 +54,9 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
             viewModel.saveFilters()
             findNavController().navigateUp()
         }
+
+        // TextWatcher для tetCountry и tetRegion
+        setTextChangedListeners()
     }
 
     override fun subscribe() {
@@ -115,6 +123,44 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
             binding.tilRegion.setEndIconOnClickListener {
                 findNavController().navigate(R.id.action_areaFragment_to_regionFragment)
             }
+        }
+    }
+
+    private fun setTextChangedListeners() {
+        binding.tetCountry.addTextChangedListener(createTextWatcher(binding.tilCountry))
+        binding.tetRegion.addTextChangedListener(createTextWatcher(binding.tilRegion))
+    }
+
+    private fun createTextWatcher(textInputLayout: TextInputLayout): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                updateHintTextColor(textInputLayout, s)
+            }
+        }
+    }
+
+    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {
+        with(textInputLayout) {
+            defaultHintTextColor = ColorStateList.valueOf(
+                resources.getColor(
+                    if (text.isNullOrBlank()) {
+                        R.color.gray
+                    } else {
+                        if (isDarkTheme()) R.color.white else R.color.black
+                    },
+                    null
+                )
+            )
+        }
+    }
+
+    // Проверка темы (светлая/темная)
+    private fun isDarkTheme(): Boolean {
+        return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            else -> false
         }
     }
 
