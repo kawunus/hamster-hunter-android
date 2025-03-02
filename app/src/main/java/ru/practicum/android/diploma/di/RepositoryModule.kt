@@ -24,9 +24,9 @@ val repositoryModule = module {
 
     singleOf(::VacancyDetailsRepositoryImpl) { bind<VacancyDetailsRepository>() }
 
-    singleOf(::CountriesRepositoryImpl) { bind<CountriesRepository>() }
-
     singleOf(::FiltersRepositoryImpl) { bind<FiltersRepository>() }
+
+    singleOf(::CountriesRepositoryImpl) { bind<CountriesRepository>() }
 
     singleOf(::RegionsRepositoryImpl) { bind<RegionsRepository>() }
 

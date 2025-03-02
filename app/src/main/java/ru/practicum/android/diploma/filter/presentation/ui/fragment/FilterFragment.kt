@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
+import ru.practicum.android.diploma.util.formatLocationString
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -130,15 +131,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun renderScreen(filterParameters: FilterParameters) {
         with(filterParameters) {
-            // Если есть имя региона, показываем его
-            // Если есть только страна, показываем страну
-            // Иначе показываем дефолтный текст
-            val areaName = when {
-                area?.regionName != null -> area.regionName
-                area?.countryName != null -> area.countryName
-                else -> null
-            }
-            renderAreaFilter(areaName)
+            renderAreaFilter(formatLocationString(area))
             renderIndustryFilter(industry?.name)
             renderSalaryFilter(salary)
             renderOnlyWithSalaryFilter(onlyWithSalary)

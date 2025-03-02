@@ -40,7 +40,7 @@
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_job_location"
+        android:id="@+id/til_country"
         app:boxBackgroundColor="?attr/colorPrimary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@id/btn_back">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tet_job_location"
+            android:id="@+id/tet_country"
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_industry"
+        android:id="@+id/til_region"
         app:boxBackgroundColor="?attr/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,10 +90,10 @@
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_job_location">
+        app:layout_constraintTop_toBottomOf="@id/til_country">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tet_industry"
+            android:id="@+id/tet_region"
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,6 +105,18 @@
             android:clickable="true"
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_select"
+        style="@style/ApplyButtonStyle"
+        android:layout_width="326dp"
+        android:layout_height="59dp"
+        android:layout_marginBottom="@dimen/dp24"
+        android:text="@string/select"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
