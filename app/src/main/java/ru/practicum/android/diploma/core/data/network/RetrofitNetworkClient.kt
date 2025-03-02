@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
@@ -20,6 +21,7 @@ import ru.practicum.android.diploma.util.Constants.HTTP_BAD_REQUEST
 import ru.practicum.android.diploma.util.Constants.HTTP_SERVER_ERROR
 import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.NetworkMonitor
+import ru.practicum.android.diploma.util.toCountryDto
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 
 class RetrofitNetworkClient(
@@ -68,10 +70,20 @@ class RetrofitNetworkClient(
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
+    // старая редакция
+//    private suspend fun getCountries(): CountriesResponse {
+//        val dtoList = hHApiService.getCountries()
+//        return CountriesResponse().apply {
+//            countriesList = dtoList
+//        }
+//    }
+
+    // новая редакция
     private suspend fun getCountries(): CountriesResponse {
-        val dtoList = hHApiService.getCountries()
+        val areas = hHApiService.getAreas()
+        val countries = areas.filter { it.parentId == null }
         return CountriesResponse().apply {
-            countriesList = dtoList
+            countriesList = countries.map { area: AreaDto -> area.toCountryDto() }
         }
     }
 
@@ -80,7 +92,8 @@ class RetrofitNetworkClient(
     }
 
     private suspend fun getAllRegions(): RegionsResponse {
-        val countries = hHApiService.getAllRegions()
+        // тут меняю только getAllRegions на getAreas
+        val countries = hHApiService.getAreas()
         val allRegions = mutableListOf<RegionDto>()
         countries.forEach { country ->
             val countryRegions = hHApiService.getRegions(country.id).regionsList

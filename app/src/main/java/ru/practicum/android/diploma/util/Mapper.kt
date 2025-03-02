@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.util
 
 import CountryDto
+import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.domain.model.Country
 import ru.practicum.android.diploma.filter.domain.model.Region
@@ -41,3 +42,12 @@ fun RegionDto.toRegion(): Region {
         parentId = parentId
     )
 }
+
+fun AreaDto.toCountryDto(): CountryDto {
+    return CountryDto(
+        id = id,
+        parentId = parentId,
+        name = name
+    )
+}
+
