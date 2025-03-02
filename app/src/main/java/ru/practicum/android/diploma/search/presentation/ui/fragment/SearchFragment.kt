@@ -72,7 +72,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             viewLifecycleOwner
         ) { _, bundle ->
             val filtersChanged = bundle.getBoolean(FILTERS_CHANGED_BUNDLE_KEY)
-            if (filtersChanged) {
+            if (filtersChanged && viewModel.getSearchState().value != Default) {
                 viewModel.startSearchWithLatestText()
             }
         }
@@ -81,6 +81,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.checkIfAnyFilterApplied()
+        hideNotificationIfNoNeedIt()
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
@@ -276,6 +277,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
+    private fun hideNotificationIfNoNeedIt() {
+        binding.notificationText.apply {
+            if (viewModel.getSearchState().value == Default) {
+                hide()
+            }
+        }
+    }
     private fun renderFilterButton(anyFilterApplied: Boolean?) {
         val iconRes = when (anyFilterApplied) {
             true -> R.drawable.ic_filter_on
