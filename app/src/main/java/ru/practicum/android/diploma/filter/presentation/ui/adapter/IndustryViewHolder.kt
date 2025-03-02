@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.presentation.ui.adapter
 
-
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemIndustryBinding
 import ru.practicum.android.diploma.filter.domain.model.Industry
