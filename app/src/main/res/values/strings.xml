@@ -85,4 +85,5 @@
     <string name="search_screen">Экран поиска вакансий</string>
     <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
     <string name="content_description_filters">Фильтры</string>
+    <string name="not_region">Такого региона нет</string>
 </resources>

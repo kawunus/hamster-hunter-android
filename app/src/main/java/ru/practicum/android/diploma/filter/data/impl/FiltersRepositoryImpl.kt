@@ -27,8 +27,8 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
     override fun checkIfAnyFilterApplied(): Boolean {
         val filters = readFilters()
         with(filters) {
-            val parametersList = listOf(area, industry, salary, onlyWithSalary, onlyInTitles)
-            return parametersList.any { it != null }
+            val requiredParametersList = listOf(area, industry, salary)
+            return requiredParametersList.any { it != null } || onlyWithSalary == true || onlyInTitles == true
         }
     }
 
