@@ -7,7 +7,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentCountryBinding
-import ru.practicum.android.diploma.filter.domain.models.Country
+import ru.practicum.android.diploma.filter.domain.model.Country
 import ru.practicum.android.diploma.filter.presentation.model.CountriesState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.CountryAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.CountryViewModel

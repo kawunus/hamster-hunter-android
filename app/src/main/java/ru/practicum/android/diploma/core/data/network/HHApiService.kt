@@ -40,5 +40,4 @@ interface HHApiService {
     // для получения списка всех регионов
     @GET("areas")
     suspend fun getAllRegions(): List<RegionDto>
-
 }

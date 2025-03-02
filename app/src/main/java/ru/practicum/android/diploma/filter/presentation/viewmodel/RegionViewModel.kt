@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.filter.domain.api.GetRegionsInteractor
+import ru.practicum.android.diploma.filter.domain.usecase.GetRegionsInteractor
 import ru.practicum.android.diploma.filter.domain.model.Area
-import ru.practicum.android.diploma.filter.domain.models.Region
+import ru.practicum.android.diploma.filter.domain.model.Region
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.util.Constants
 

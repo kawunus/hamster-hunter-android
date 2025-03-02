@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.filter.domain.api.GetCountriesUseCase
 import ru.practicum.android.diploma.filter.domain.model.Area
-import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
+import ru.practicum.android.diploma.filter.domain.usecase.GetCountriesUseCase
 
 class AreaViewModel(
     private val filtersInteractor: FiltersInteractor,
@@ -49,8 +48,9 @@ class AreaViewModel(
     }
 
     fun saveFilters() {
+        val currentFilters = filtersInteractor.readFilters()
         filtersInteractor.saveFilters(
-            FilterParameters(
+            currentFilters.copy(
                 area = _selectedArea.value
             )
         )

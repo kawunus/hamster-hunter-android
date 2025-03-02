@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.filter.presentation.model
 
-import ru.practicum.android.diploma.filter.domain.models.Country
+import ru.practicum.android.diploma.filter.domain.model.Country
 
 sealed class CountriesState {
     object Loading : CountriesState()

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.di
 
-import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavoritesViewModel
@@ -23,9 +22,10 @@ val viewModelModule = module {
 
     viewModelOf(::FieldViewModel)
 
-    viewModel { AreaViewModel(get(), get()) }
+    viewModelOf(::AreaViewModel)
+
+    viewModelOf(::CountryViewModel)
 
     viewModelOf(::RegionViewModel)
 
-    viewModel { CountryViewModel(get(), get()) }
 }

@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
 import ru.practicum.android.diploma.filter.domain.api.RegionsRepository
-import ru.practicum.android.diploma.filter.domain.models.Region
+import ru.practicum.android.diploma.filter.domain.model.Region
 import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.Resource
