@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.ui.fragment
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -50,7 +51,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
-        // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
@@ -59,13 +59,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
-        // подписка на данные от viewModel
         with(viewModel) {
             getSearchState().observe(viewLifecycleOwner) { renderScreen(it) }
 
             getFoundCount().observe(viewLifecycleOwner) { showFoundCount(it) }
-
-            getPagingDataLiveData().observe(viewLifecycleOwner) { refreshData(it) }
 
             getAnyFilterApplied().observe(viewLifecycleOwner) { renderFilterButton(it) }
         }
@@ -91,7 +88,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             lifecycleScope.launch {
                 lastPagingData = pagingData
                 adapter.clear() // Принудительно очищаем адаптер
-                delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
                 adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
             }
         }
@@ -104,6 +100,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
+                } else {
+                    setDefaultScreen()
                 }
             },
         )
@@ -124,8 +122,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun setupClearButtonClickListener() {
         binding.buttonClear.setOnClickListener {
             handleClearButtonClick()
-            viewModel.cancelSearchDebounce()
-            viewModel.setDefaultScreen()
+            setDefaultScreen()
         }
         binding.buttonFilter.setOnClickListener {
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
@@ -152,6 +149,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 }
                 false
             }
+        }
+    }
+
+    private fun setDefaultScreen() {
+        viewModel.apply {
+            cancelSearchDebounce()
+            setDefaultScreen()
         }
     }
 
@@ -184,7 +188,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             is Default -> showDefaultScreen()
             is Error -> showError(state)
             is Loading -> showLoading()
-            is SearchResults -> showSearchResults()
+            is SearchResults -> showSearchResults(state.data)
         }
     }
 
@@ -221,13 +225,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun showSearchResults() {
-        binding.apply {
-            llErrorContainer.hide()
-            notificationText.show()
-            ivPlaceholderMain.hide()
-            recycler.show()
-            progressBar.hide()
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showSearchResults(data: PagingData<Vacancy>) {
+        lifecycleScope.launch {
+            refreshData(data)
+            adapter.notifyDataSetChanged()
+            binding.apply {
+                llErrorContainer.hide()
+                ivPlaceholderMain.hide()
+                progressBar.hide()
+                recycler.show()
+            }
         }
     }
 
@@ -306,7 +314,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SHOW_RECYCLER_DELAY = 200L
-
     }
 }
