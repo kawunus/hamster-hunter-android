@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
@@ -181,54 +182,33 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun setupTextWatchers() {
-        val areaTextWatcher = object : TextWatcher {
+        binding.tetArea.addTextChangedListener(createTextWatcher(binding.tilArea))
+        binding.tetIndustry.addTextChangedListener(createTextWatcher(binding.tilIndustry))
+    }
+
+    private fun createTextWatcher(textInputLayout: TextInputLayout): TextWatcher {
+        return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
-                with(binding.tilArea) {
-                    if (s.isNullOrBlank()) {
-                        defaultHintTextColor = ColorStateList.valueOf(resources.getColor(R.color.gray, null))
-                    } else {
-                        defaultHintTextColor = ColorStateList.valueOf(
-                            resources.getColor(
-                                if (isDarkTheme()) {
-                                    R.color.white
-                                } else {
-                                    R.color.black
-                                },
-                                null
-                            )
-                        )
-                    }
-                }
+                updateHintTextColor(textInputLayout, s)
             }
         }
+    }
 
-        val industryTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                with(binding.tilIndustry) {
-                    if (s.isNullOrBlank()) {
-                        defaultHintTextColor = ColorStateList.valueOf(resources.getColor(R.color.gray, null))
+    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {
+        with(textInputLayout) {
+            defaultHintTextColor = ColorStateList.valueOf(
+                resources.getColor(
+                    if (text.isNullOrBlank()) {
+                        R.color.gray
                     } else {
-                        defaultHintTextColor = ColorStateList.valueOf(
-                            resources.getColor(
-                                if (isDarkTheme()) {
-                                    R.color.white
-                                } else {
-                                    R.color.black
-                                },
-                                null
-                            )
-                        )
-                    }
-                }
-            }
+                        if (isDarkTheme()) R.color.white else R.color.black
+                    },
+                    null
+                )
+            )
         }
-
-        binding.tetArea.addTextChangedListener(areaTextWatcher)
-        binding.tetIndustry.addTextChangedListener(industryTextWatcher)
     }
 
     // Проверка темы (светлая/темная)

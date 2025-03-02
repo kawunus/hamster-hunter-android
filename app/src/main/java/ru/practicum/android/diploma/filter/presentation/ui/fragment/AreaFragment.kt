@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
@@ -125,56 +126,34 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
         }
     }
 
-    // Добавляем TextWatcher для tetCountry и tetRegion
     private fun setTextChangedListeners() {
-        val countryTextWatcher = object : TextWatcher {
+        binding.tetCountry.addTextChangedListener(createTextWatcher(binding.tilCountry))
+        binding.tetRegion.addTextChangedListener(createTextWatcher(binding.tilRegion))
+    }
+
+    private fun createTextWatcher(textInputLayout: TextInputLayout): TextWatcher {
+        return object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
-                with(binding.tilCountry) {
-                    if (s.isNullOrBlank()) {
-                        defaultHintTextColor = ColorStateList.valueOf(resources.getColor(R.color.gray, null))
-                    } else {
-                        defaultHintTextColor = ColorStateList.valueOf(
-                            resources.getColor(
-                                if (isDarkTheme()) {
-                                    R.color.white
-                                } else {
-                                    R.color.black
-                                },
-                                null
-                            )
-                        )
-                    }
-                }
+                updateHintTextColor(textInputLayout, s)
             }
         }
+    }
 
-        val regionTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                with(binding.tilRegion) {
-                    if (s.isNullOrBlank()) {
-                        defaultHintTextColor = ColorStateList.valueOf(resources.getColor(R.color.gray, null))
+    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {
+        with(textInputLayout) {
+            defaultHintTextColor = ColorStateList.valueOf(
+                resources.getColor(
+                    if (text.isNullOrBlank()) {
+                        R.color.gray
                     } else {
-                        defaultHintTextColor = ColorStateList.valueOf(
-                            resources.getColor(
-                                if (isDarkTheme()) {
-                                    R.color.white
-                                } else {
-                                    R.color.black
-                                },
-                                null
-                            )
-                        )
-                    }
-                }
-            }
+                        if (isDarkTheme()) R.color.white else R.color.black
+                    },
+                    null
+                )
+            )
         }
-
-        binding.tetCountry.addTextChangedListener(countryTextWatcher)
-        binding.tetRegion.addTextChangedListener(regionTextWatcher)
     }
 
     // Проверка темы (светлая/темная)
