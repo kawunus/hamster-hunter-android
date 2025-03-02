@@ -108,8 +108,7 @@ class RetrofitNetworkClient(
         }
     }
 
-    private suspend fun getAllIndustries(): IndustriesResponse{
-
+    private suspend fun getAllIndustries(): IndustriesResponse {
         val industriesResponse = hHApiService.getIndustries()
         return industriesResponse
     }

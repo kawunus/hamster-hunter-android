@@ -16,7 +16,8 @@ import ru.practicum.android.diploma.util.Resource
 import java.io.IOException
 
 class IndustriesRepositoryImpl(
-    private val networkClient: RetrofitNetworkClient, private val context: Context
+    private val networkClient: RetrofitNetworkClient,
+    private val context: Context
 ) : IndustriesRepository {
 
     override suspend fun getAllIndustries(): Flow<Resource<List<Industry>>> = flow {
