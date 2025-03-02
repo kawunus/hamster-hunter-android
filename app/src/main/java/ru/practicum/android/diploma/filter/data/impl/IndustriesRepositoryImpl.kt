@@ -27,13 +27,7 @@ class IndustriesRepositoryImpl(
             try {
                 val industriesResponse = networkClient.doRequest(IndustriesRequest) as IndustriesResponse
 
-                val industriesList: List<Industry> = industriesResponse.industriesList.flatMap { category ->
-                    category.industries.map { industryDto ->
-                        Industry(id = industryDto.id, name = industryDto.name)
-                    }
-                }.sortedBy { it.name }
-
-                emit(Resource(data = industriesList, code = Constants.HTTP_SUCCESS))
+                emit(Resource(data = convertResponseToList(industriesResponse), code = Constants.HTTP_SUCCESS))
             } catch (e: IOException) {
                 Log.e("IndustriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
                 emit(Resource(data = null, code = -1))
@@ -52,5 +46,13 @@ class IndustriesRepositoryImpl(
 
     private fun isConnected(): Boolean {
         return NetworkMonitor.isNetworkAvailable(context)
+    }
+
+    private fun convertResponseToList(response: IndustriesResponse): List<Industry> {
+        return response.industriesList.flatMap { category ->
+            category.industries.map { industryDto ->
+                Industry(id = industryDto.id, name = industryDto.name)
+            }
+        }.sortedBy { it.name }
     }
 }
