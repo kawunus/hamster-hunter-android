@@ -11,6 +11,8 @@ import ru.practicum.android.diploma.filter.domain.impl.FiltersInteractorImpl
 import ru.practicum.android.diploma.filter.domain.impl.GetRegionsInteractorImpl
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.filter.domain.impl.GetCountriesUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.impl.IndustriesInteractorImpl
+import ru.practicum.android.diploma.filter.domain.usecase.IndustriesInteractor
 import ru.practicum.android.diploma.search.domain.impl.VacanciesSearchInteractorImpl
 import ru.practicum.android.diploma.search.domain.usecase.VacanciesSearchInteractor
 import ru.practicum.android.diploma.vacancy.domain.impl.VacancyDetailsInteractorImpl
@@ -28,4 +30,6 @@ val interactorModule = module {
     singleOf(::GetRegionsInteractorImpl) { bind<GetRegionsInteractor>() }
 
     singleOf(::GetCountriesUseCaseImpl) { bind<GetCountriesUseCase>() }
+
+    singleOf(::IndustriesInteractorImpl) { bind<IndustriesInteractor>() }
 }
