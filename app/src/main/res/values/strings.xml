@@ -87,4 +87,5 @@
     <string name="content_description_filters">Фильтры</string>
     <string name="no_found_industry">Такой отрасли нет</string>
     <string name="industry_placeholder">Отрасль</string>
+    <string name="not_region">Такого региона нет</string>
 </resources>

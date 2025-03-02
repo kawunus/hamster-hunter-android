@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:theme="@style/Theme.PracticumAndroidDiploma"
-    tools:context=".filter.presentation.ui.fragment.FilterFragment">
+    tools:context=".filter.presentation.ui.fragment.AreaFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_border"
@@ -40,19 +40,20 @@
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_job_location"
-        app:boxBackgroundColor="?attr/colorPrimary"
-        android:layout_width="0dp"
+        android:id="@+id/til_country"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp16"
         android:hint="@string/country"
         android:textColorHint="@color/gray"
+        app:boxBackgroundColor="?attr/colorPrimary"
+        app:boxStrokeColor="@null"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
-        app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,51 +61,65 @@
         app:layout_constraintTop_toBottomOf="@id/btn_back">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tet_job_location"
+            android:id="@+id/tet_country"
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:background="@null"
+            android:clickable="true"
             android:cursorVisible="false"
             android:focusable="false"
             android:inputType="none"
-            android:clickable="true"
+            android:text=""
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_industry"
-        app:boxBackgroundColor="?attr/colorPrimary"
+        android:id="@+id/til_region"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/region"
         android:textColorHint="@color/gray"
+        app:boxBackgroundColor="?attr/colorPrimary"
+        app:boxStrokeColor="@null"
+        app:boxStrokeWidth="@dimen/zero"
+        app:boxStrokeWidthFocused="@dimen/zero"
         app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
-        app:boxStrokeColor="@null"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
         app:hintAnimationEnabled="true"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_job_location">
+        app:layout_constraintTop_toBottomOf="@id/til_country">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tet_industry"
+            android:id="@+id/tet_region"
             style="@style/Regular16TextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
             android:background="@null"
+            android:clickable="true"
             android:cursorVisible="false"
             android:focusable="false"
             android:inputType="none"
-            android:clickable="true"
+            android:text=""
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_select"
+        style="@style/ApplyButtonStyle"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/dp60"
+        android:layout_marginHorizontal="@dimen/dp16"
+        android:layout_marginBottom="@dimen/dp24"
+        android:text="@string/select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
