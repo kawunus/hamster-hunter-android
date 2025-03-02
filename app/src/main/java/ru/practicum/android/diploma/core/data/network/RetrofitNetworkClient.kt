@@ -83,7 +83,6 @@ class RetrofitNetworkClient(
     }
 
     private suspend fun getAllRegions(): RegionsResponse {
-        // тут меняю только getAllRegions на getAreas
         val countries = hHApiService.getAreas()
         val allRegions = mutableListOf<RegionDto>()
         countries.forEach { country ->
