@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ItemCountryRegionListBinding
-import ru.practicum.android.diploma.filter.domain.models.Region
+import ru.practicum.android.diploma.filter.domain.model.Region
 
 class RegionsAdapter : RecyclerView.Adapter<RegionsAdapter.RegionsHolder>() {
     private var regionsList = ArrayList<Region>()

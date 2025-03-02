@@ -25,8 +25,7 @@ class VacanciesSearchRepositoryImpl(private val filtersRepository: FiltersReposi
         val searchRequest = VacanciesSearchRequest(
             text = expression,
             page = 0,
-            // сначала проверяем regionId, если его нет - берем countryId
-            area = filters.area?.regionId ?: filters.area?.countryId,
+            area = filters.area?.region?.id ?: filters.area?.country?.id,
             salary = filters.salary,
             professionalRole = filters.industry?.id,
             onlyWithSalary = filters.onlyWithSalary,

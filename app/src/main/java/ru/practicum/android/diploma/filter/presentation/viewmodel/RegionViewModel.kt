@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -8,10 +9,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.filter.domain.api.GetRegionsInteractor
 import ru.practicum.android.diploma.filter.domain.model.Area
-import ru.practicum.android.diploma.filter.domain.models.Region
+import ru.practicum.android.diploma.filter.domain.model.Region
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
+import ru.practicum.android.diploma.filter.domain.usecase.GetRegionsInteractor
 import ru.practicum.android.diploma.util.Constants
 
 class RegionViewModel(
@@ -20,7 +21,6 @@ class RegionViewModel(
 ) : BaseViewModel() {
 
     private val _regions = MutableStateFlow<List<Region>>(emptyList())
-    val regions = _regions.asStateFlow()
 
     private val _screenState = MutableStateFlow<RegionScreenState>(RegionScreenState.Loading)
     val screenState = _screenState.asStateFlow()
@@ -38,38 +38,48 @@ class RegionViewModel(
         emptyList()
     )
 
+    fun getParentId(): String? {
+        return filtersInteractor.readFilters().area?.country?.id
+    }
+
     fun loadRegions(countryId: String) {
         viewModelScope.launch {
             _screenState.value = RegionScreenState.Loading
-            getRegionsInteractor.getRegions(countryId)
-                .collect { resource ->
-                    _screenState.value = when (resource.code) {
-                        Constants.HTTP_SUCCESS -> {
-                            val regions = resource.data ?: emptyList()
-                            _regions.value = regions
-                            RegionScreenState.Content
-                        }
+            val regionsFlow = if (countryId.isEmpty()) {
+                getRegionsInteractor.getAllRegions()
+            } else {
+                getRegionsInteractor.getRegions(countryId)
+            }
+            regionsFlow.collect { resource ->
+                Log.e("RegionSearch", "Код ответа: ${resource.code}")
+                _screenState.value = when (resource.code) {
+                    Constants.HTTP_SUCCESS -> {
+                        val regions = resource.data ?: emptyList()
+                        _regions.value = regions
+                        RegionScreenState.Content
+                    }
 
-                        -1 -> {
-                            _regions.value = emptyList()
-                            RegionScreenState.Error.NetworkError
-                        }
+                    -1 -> {
+                        _regions.value = emptyList()
+                        RegionScreenState.Error.NetworkError
+                    }
 
-                        else -> {
-                            _regions.value = emptyList()
-                            RegionScreenState.Error.ServerError
-                        }
+                    else -> {
+                        _regions.value = emptyList()
+                        RegionScreenState.Error.ServerError
                     }
                 }
+            }
         }
     }
+
     fun saveSelectedRegion(region: Region) {
         val currentFilters = filtersInteractor.readFilters()
+        val country = currentFilters.area?.country
         val updatedFilters = currentFilters.copy(
             area = Area(
-                regionId = region.id,
-                regionName = region.name,
-                countryId = region.parentId
+                region = region,
+                country = country
             )
         )
         filtersInteractor.saveFilters(updatedFilters)

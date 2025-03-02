@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import android.os.Bundle
 import androidx.core.bundle.bundleOf
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +15,8 @@ import ru.practicum.android.diploma.databinding.FragmentRegionBinding
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.RegionsAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionScreenState
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionViewModel
+import ru.practicum.android.diploma.util.hide
+import ru.practicum.android.diploma.util.show
 
 class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
     inflate = FragmentRegionBinding::inflate
@@ -41,9 +42,9 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
         observeScreenState()
     }
 
-    // получаем ID страны из аргументов фрагмента
+    // получаем ID страны из сохраненных фильтров
     private fun getArgumentsData() {
-        countryId = arguments?.getString(COUNTRY_ID_KEY)
+        countryId = viewModel.getParentId()
     }
 
     // настраиваем RecyclerView и его адаптер
@@ -105,9 +106,8 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
 
     // загружаем список регионов при старте
     private fun loadInitialData() {
-        countryId?.let {
-            viewModel.loadRegions(it)
-        }
+        val countryId = viewModel.getParentId() ?: ""
+        viewModel.loadRegions(countryId)
     }
 
     // подписываемся на обновления списка регионов
@@ -119,22 +119,22 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
                     when {
                         edittextSearch.text.isNullOrEmpty() -> {
                             // Показываем полный список при пустом поиске
-                            llErrorContainer.isVisible = false
-                            recycler.isVisible = true
+                            llErrorContainer.hide()
+                            recycler.show()
                         }
 
                         regions.isEmpty() -> {
                             // Показываем ошибку поиска
-                            llErrorContainer.isVisible = true
-                            recycler.isVisible = false
+                            llErrorContainer.show()
+                            recycler.hide()
                             ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
                             tvErrorText.setText(R.string.not_region)
                         }
 
                         else -> {
                             // Показываем результаты поиска
-                            llErrorContainer.isVisible = false
-                            recycler.isVisible = true
+                            llErrorContainer.hide()
+                            recycler.show()
                         }
                     }
                 }
@@ -156,29 +156,29 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
         binding.apply {
             when (state) {
                 RegionScreenState.Loading -> {
-                    progressBar.isVisible = true
-                    llErrorContainer.isVisible = false
-                    recycler.isVisible = false
+                    progressBar.show()
+                    llErrorContainer.hide()
+                    recycler.hide()
                 }
 
                 RegionScreenState.Content -> {
-                    progressBar.isVisible = false
-                    llErrorContainer.isVisible = false
-                    recycler.isVisible = true
+                    progressBar.hide()
+                    llErrorContainer.hide()
+                    recycler.show()
                 }
 
                 is RegionScreenState.Error.NetworkError -> {
-                    progressBar.isVisible = false
-                    llErrorContainer.isVisible = true
-                    recycler.isVisible = false
+                    progressBar.hide()
+                    llErrorContainer.show()
+                    recycler.hide()
                     ivErrorImage.setImageResource(R.drawable.placeholder_network_error)
                     tvErrorText.setText(R.string.error_no_internet)
                 }
 
                 is RegionScreenState.Error.ServerError -> {
-                    progressBar.isVisible = false
-                    llErrorContainer.isVisible = true
-                    recycler.isVisible = false
+                    progressBar.hide()
+                    llErrorContainer.show()
+                    recycler.hide()
                     ivErrorImage.setImageResource(R.drawable.placeholder_not_found_regions)
                     tvErrorText.setText(R.string.error_nothing_found)
                 }

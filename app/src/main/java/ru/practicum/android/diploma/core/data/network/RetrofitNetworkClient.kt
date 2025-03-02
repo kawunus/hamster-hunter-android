@@ -8,6 +8,9 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.filter.data.dto.AreaDto
+import ru.practicum.android.diploma.filter.data.dto.RegionDto
+import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
@@ -18,6 +21,7 @@ import ru.practicum.android.diploma.util.Constants.HTTP_BAD_REQUEST
 import ru.practicum.android.diploma.util.Constants.HTTP_SERVER_ERROR
 import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.NetworkMonitor
+import ru.practicum.android.diploma.util.toCountryDto
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 
 class RetrofitNetworkClient(
@@ -42,6 +46,7 @@ class RetrofitNetworkClient(
 
                     is CountriesRequest -> getCountries()
                     is RegionsRequest -> getRegions(dto.countryId)
+                    is AllRegionsRequest -> getAllRegions()
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
@@ -65,12 +70,39 @@ class RetrofitNetworkClient(
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
+    // старая редакция
+//    private suspend fun getCountries(): CountriesResponse {
+//        val dtoList = hHApiService.getCountries()
+//        return CountriesResponse().apply {
+//            countriesList = dtoList
+//        }
+//    }
+
+    // новая редакция
     private suspend fun getCountries(): CountriesResponse {
-        return hHApiService.getCountries()
+        val areas = hHApiService.getAreas()
+        val countries = areas.filter { it.parentId == null }
+        return CountriesResponse().apply {
+            countriesList = countries.map { area: AreaDto -> area.toCountryDto() }
+        }
     }
 
     private suspend fun getRegions(countryId: String): RegionsResponse {
         return hHApiService.getRegions(countryId)
+    }
+
+    private suspend fun getAllRegions(): RegionsResponse {
+        // тут меняю только getAllRegions на getAreas
+        val countries = hHApiService.getAreas()
+        val allRegions = mutableListOf<RegionDto>()
+        countries.forEach { country ->
+            val countryRegions = hHApiService.getRegions(country.id).regionsList
+            allRegions.addAll(countryRegions)
+        }
+        return RegionsResponse().apply {
+            resultCode = HTTP_SUCCESS
+            regionsList = allRegions
+        }
     }
 
     private fun logError(e: Exception) {
