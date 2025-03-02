@@ -9,7 +9,6 @@
         style="@style/Regular16TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/dp20_5"
         android:layout_marginStart="@dimen/dp16"
         android:text="@string/industry_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp12"
         app:buttonTint="@color/blue"
-
+        android:layout_marginVertical="@dimen/dp18"
         android:minWidth="0dp"
         android:minHeight="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
