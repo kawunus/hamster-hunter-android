@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
-import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.filter.domain.usecase.GetIndustriesUseCase
@@ -25,6 +24,12 @@ class IndustryViewModel(
     private val _selectedIndustry = MutableLiveData<Industry?>(null)
     val selectedIndustry: LiveData<Industry?> = _selectedIndustry
 
+    private val allIndustries = mutableListOf<Industry>() // Полный список отраслей
+    private val _filteredIndustries = MutableLiveData<List<Industry>>() // Отфильтрованный список
+    val filteredIndustries: LiveData<List<Industry>> = _filteredIndustries
+
+    private var currentSearchQuery: String = ""
+
     fun loadIndustries() {
         _uiState.value = IndustriesState.Loading
 
@@ -32,7 +37,7 @@ class IndustryViewModel(
             getIndustriesUseCase.getAllIndustries().catch { throwable ->
                 Log.e(
                     "IndustriesSearch",
-                    "Непредвиденная ошибка или IOException: ${throwable.localizedMessage}",
+                    "Ошибка загрузки данных: ${throwable.localizedMessage}",
                     throwable
                 )
                 _uiState.value = IndustriesState.NetworkError
@@ -40,15 +45,16 @@ class IndustryViewModel(
                 when (resource.code) {
                     Constants.HTTP_SUCCESS -> {
                         val list = resource.data ?: emptyList()
+                        allIndustries.clear()
+                        allIndustries.addAll(list)
+
+                        updateSearchQuery(currentSearchQuery)
+
                         _uiState.value = IndustriesState.Success(list)
                     }
 
-                    Constants.HTTP_NOT_FOUND -> {
+                    Constants.HTTP_NOT_FOUND, -1 -> {
                         _uiState.value = IndustriesState.ServerError
-                    }
-
-                    -1 -> {
-                        _uiState.value = IndustriesState.NetworkError
                     }
 
                     else -> {
@@ -65,9 +71,18 @@ class IndustryViewModel(
 
     fun saveSelectedIndustryToFilters() {
         val currentFilters = filtersInteractor.readFilters()
-        val updatedFilters = currentFilters.copy(
-            industry = _selectedIndustry.value
-        )
+        val updatedFilters = currentFilters.copy(industry = _selectedIndustry.value)
         filtersInteractor.saveFilters(updatedFilters)
     }
+
+    fun updateSearchQuery(query: String) {
+        currentSearchQuery = query.trim().lowercase()
+
+        _filteredIndustries.value = if (currentSearchQuery.isEmpty()) {
+            allIndustries
+        } else {
+            allIndustries.filter { it.name!!.lowercase().contains(currentSearchQuery) }
+        }
+    }
 }
+

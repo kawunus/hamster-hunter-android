@@ -1,13 +1,12 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
-import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
-import ru.practicum.android.diploma.filter.domain.model.Country
 import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.filter.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.IndustryAdapter
@@ -27,21 +26,29 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     }
 
     override fun initViews(): Unit = with(binding) {
-        btnBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
-
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = this@IndustryFragment.adapter
+        }
+
+        setupSearchTextWatcher()
+        viewModel.loadIndustries()
+        setupClickListeners()
+    }
+
+    private fun setupClickListeners() = with(binding){
+        btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        btnClear.setOnClickListener {
+            binding.edittextSearch.text?.clear()
         }
 
         chooseButton.setOnClickListener {
             viewModel.saveSelectedIndustryToFilters()
             findNavController().popBackStack()
         }
-
-        viewModel.loadIndustries()
     }
 
     override fun subscribe() {
@@ -51,6 +58,10 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
 
         viewModel.selectedIndustry.observe(viewLifecycleOwner) { selectedIndustry ->
             renderSelectButton(selectedIndustry)
+        }
+
+        viewModel.filteredIndustries.observe(viewLifecycleOwner) { industries ->
+            adapter.saveData(industries)
         }
     }
 
@@ -106,5 +117,18 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
         progressBar.hide()
         recyclerView.hide()
         llErrorContainer.hide()
+    }
+
+    private fun setupSearchTextWatcher() = with(binding) {
+        edittextSearch.addTextChangedListener { text ->
+            updateClearButtonIcon(text)
+            viewModel.updateSearchQuery(text?.toString() ?: "")
+        }
+    }
+
+    private fun updateClearButtonIcon(text: CharSequence?) = with(binding) {
+        btnClear.setImageResource(
+            if (text?.isNotEmpty() == true) R.drawable.edit_text_clear_button else R.drawable.ic_search
+        )
     }
 }
