@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -93,11 +94,34 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     private fun setupSalaryTextWatcher() {
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
+                updateSalaryHintColor(text)
                 if (!isTextUpdating) {
                     handleSalaryText(text)
                 }
             }
         )
+    }
+
+    private fun updateSalaryHintColor(text: CharSequence?) {
+        val hintStates = arrayOf(
+            intArrayOf(android.R.attr.state_focused),
+            intArrayOf()
+        )
+        val emptyColor = intArrayOf(
+            ContextCompat.getColor(requireContext(), R.color.blue),
+            ContextCompat.getColor(requireContext(), R.color.focus_tint)
+        )
+        val valuedColor = intArrayOf(
+            ContextCompat.getColor(requireContext(), R.color.blue),
+            ContextCompat.getColor(requireContext(), R.color.black)
+        )
+        val hintColorList = ColorStateList(hintStates, emptyColor)
+        val hintColorValuedList = ColorStateList(hintStates, valuedColor)
+        if (text.isNullOrEmpty()) {
+            binding.tilSalary.defaultHintTextColor = hintColorList
+        } else {
+            binding.tilSalary.defaultHintTextColor = hintColorValuedList
+        }
     }
 
     // обработка нажатия на кнопку очистки
@@ -163,6 +187,8 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                 isTextUpdating = false
             }
         }
+        clearButtonVisibilityManager(salaryText)
+
     }
 
     private fun renderOnlyWithSalaryFilter(onlyWithSalary: Boolean?) {
