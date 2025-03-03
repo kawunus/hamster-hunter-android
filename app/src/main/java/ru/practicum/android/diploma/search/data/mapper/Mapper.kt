@@ -3,9 +3,9 @@ package ru.practicum.android.diploma.search.data.mapper
 import ru.practicum.android.diploma.search.data.dto.VacancyDto
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.AREA
+import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.INDUSTRY
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.ONLY_WITH_SALARY
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.PAGE
-import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.PROFESSIONAL_ROLE
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.SALARY
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.SEARCH_FIELD
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest.Companion.TEXT
@@ -31,7 +31,7 @@ fun VacanciesSearchRequest.toQueryMap(
         TEXT to text,
         PAGE to page.toString(),
         AREA to area,
-        PROFESSIONAL_ROLE to professionalRole,
+        INDUSTRY to industry,
         SALARY to salary?.toString(),
         ONLY_WITH_SALARY to onlyWithSalary?.toString(),
         SEARCH_FIELD to titleSearchField.takeIf { onlyInTitles == true }
