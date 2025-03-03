@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
+import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
+import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 
 class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel() {
@@ -61,6 +63,14 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
         updateFilters { it.copy(salary = salary) }
     }
 
+    fun setArea(area: Area?) {
+        updateFilters { it.copy(area = area) }
+    }
+
+    fun setIndustry(industry: Industry?) {
+        updateFilters { it.copy(industry = industry) }
+    }
+
     fun setOnlyWithSalary(onlyWithSalary: Boolean) {
         updateFilters { it.copy(onlyWithSalary = onlyWithSalary) }
     }
@@ -75,13 +85,13 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
 
     private fun checkIfAnyFilterApplied() {
         savedFilters.value?.let { filters ->
-            val parametersList = listOf(
-                filters.area,
-                filters.industry,
-                filters.salary,
-            )
-            anyFilterApplied.value =
-                parametersList.any { it != null } || filters.onlyWithSalary == true || filters.onlyInTitles == true
+            with(filters) {
+                val requiredParametersList =
+                    listOf(industry, area?.takeIf { it.country != null || it.region != null }, salary)
+
+                anyFilterApplied.value =
+                    requiredParametersList.any { it != null } || onlyWithSalary == true || onlyInTitles == true
+            }
         }
     }
 }
