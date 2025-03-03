@@ -54,8 +54,6 @@ class IndustryViewModel(
         }
     }
 
-
-
     fun selectIndustry(industry: Industry) {
         _selectedIndustry.value = industry
         saveSelectedIndustryToFilters()
