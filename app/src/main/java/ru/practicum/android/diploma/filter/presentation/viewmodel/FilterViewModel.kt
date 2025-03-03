@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
+import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
+import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 
 class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel() {
@@ -59,6 +61,14 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
 
     fun setSalary(salary: Int?) {
         updateFilters { it.copy(salary = salary) }
+    }
+
+    fun setArea(area: Area?) {
+        updateFilters { it.copy(area = area) }
+    }
+
+    fun setIndustry(industry: Industry?) {
+        updateFilters { it.copy(industry = industry) }
     }
 
     fun setOnlyWithSalary(onlyWithSalary: Boolean) {
