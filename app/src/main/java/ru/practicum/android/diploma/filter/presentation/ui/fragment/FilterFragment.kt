@@ -163,6 +163,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                 isTextUpdating = false
             }
         }
+        clearButtonVisibilityManager(salaryText)
     }
 
     private fun renderOnlyWithSalaryFilter(onlyWithSalary: Boolean?) {
