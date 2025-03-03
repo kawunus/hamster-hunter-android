@@ -24,6 +24,7 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
     }
 
     private val asyncListDiffer = AsyncListDiffer(this, diffUtil)
+
     private var selectedIndustryId: String? = null
 
     fun saveData(industriesList: List<Industry>) {
@@ -32,7 +33,7 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val binding = ItemIndustryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return IndustryViewHolder(binding, onItemClick)
+        return IndustryViewHolder(binding)
 
     }
 
@@ -40,10 +41,17 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
         val industry = asyncListDiffer.currentList[position]
-        holder.bind(industry, industry.id == selectedIndustryId) { selectedIndustry ->
-            selectedIndustryId = selectedIndustry.id
-            notifyDataSetChanged()
-            onItemClick(selectedIndustry)
+        holder.bind(industry, industry.id == selectedIndustryId) {
+            val previousSelectedId = selectedIndustryId
+            selectedIndustryId = industry.id
+
+            asyncListDiffer.currentList.indexOfFirst { it.id == previousSelectedId }
+                .takeIf { it != -1 }
+                ?.let { notifyItemChanged(it) }
+
+            notifyItemChanged(holder.bindingAdapterPosition)
+
+            onItemClick(industry)
         }
     }
 
