@@ -21,31 +21,27 @@ class IndustriesRepositoryImpl(
 ) : IndustriesRepository {
 
     override suspend fun getAllIndustries(): Flow<Resource<List<Industry>>> = flow {
-        if (!isConnected()) {
-            emit(Resource(data = null, code = -1))
-        } else {
-            try {
-                val industriesResponse = networkClient.doRequest(IndustriesRequest) as IndustriesResponse
+        try {
+            val industriesResponse =
+                networkClient.doRequest(IndustriesRequest) as IndustriesResponse
 
-                emit(Resource(data = convertResponseToList(industriesResponse), code = Constants.HTTP_SUCCESS))
-            } catch (e: IOException) {
-                Log.e("IndustriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
-                emit(Resource(data = null, code = -1))
-            } catch (e: HttpException) {
-                val code = e.code()
-                Log.e("IndustriesRepositoryImpl", "HTTP ошибка: Код $code", e)
-                emit(
-                    Resource(
-                        data = null,
-                        code = Constants.HTTP_SERVER_ERROR
-                    )
+            emit(
+                Resource(
+                    data = convertResponseToList(industriesResponse), code = Constants.HTTP_SUCCESS
                 )
-            }
+            )
+        } catch (e: IOException) {
+            Log.e("IndustriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
+            emit(Resource(data = null, code = -1))
+        } catch (e: HttpException) {
+            val code = e.code()
+            Log.e("IndustriesRepositoryImpl", "HTTP ошибка: Код $code", e)
+            emit(
+                Resource(
+                    data = null, code = Constants.HTTP_SERVER_ERROR
+                )
+            )
         }
-    }
-
-    private fun isConnected(): Boolean {
-        return NetworkMonitor.isNetworkAvailable(context)
     }
 
     private fun convertResponseToList(response: IndustriesResponse): List<Industry> {
