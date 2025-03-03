@@ -85,13 +85,13 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
 
     private fun checkIfAnyFilterApplied() {
         savedFilters.value?.let { filters ->
-            val parametersList = listOf(
-                filters.area,
-                filters.industry,
-                filters.salary,
-            )
-            anyFilterApplied.value =
-                parametersList.any { it != null } || filters.onlyWithSalary == true || filters.onlyInTitles == true
+            with(filters) {
+                val requiredParametersList =
+                    listOf(industry, area?.takeIf { it.country != null || it.region != null }, salary)
+
+                anyFilterApplied.value =
+                    requiredParametersList.any { it != null } || onlyWithSalary == true || onlyInTitles == true
+            }
         }
     }
 }
