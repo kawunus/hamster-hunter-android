@@ -142,11 +142,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         val salaryText = text.toString()
         val salary = salaryText.toIntOrNull() // если salary превысит Int.MAX_VALUE, вернётся null
 
-        if (salary != null && salary >= 0) {
+        if (salary != null && salary > 0) {
             viewModel.setSalary(salary)
         } else {
             // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
-            Toast.makeText(requireContext(), "Введите число от 0 до 2 147 483 647", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Введите число больше 0 и меньше 2 147 483 647", Toast.LENGTH_SHORT).show()
         }
 
     }
