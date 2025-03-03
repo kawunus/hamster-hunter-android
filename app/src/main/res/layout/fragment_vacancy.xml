@@ -46,14 +46,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp8"
         android:layout_marginEnd="@dimen/dp8"
-        android:background="?attr/colorPrimary"
+        android:background="@color/transparent"
         android:contentDescription="@string/favorite"
         android:paddingHorizontal="@dimen/dp12"
         android:paddingVertical="@dimen/dp12"
         android:src="@drawable/ic_favorites_off"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnPrimary" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/button_share"
