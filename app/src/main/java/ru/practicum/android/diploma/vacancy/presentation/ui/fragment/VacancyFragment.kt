@@ -44,7 +44,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     private fun bindButtons() = with(binding) {
         buttonBack.setOnClickListener { findNavController().navigateUp() }
         buttonShare.setOnClickListener { viewModel.shareVacancyUrl() }
-        buttonLike.setOnClickListener { viewModel.likeControl() }
+        buttonLike.setOnClickListener { viewModel.favoritesHandler() }
     }
 
     private fun renderVacancyInfo(vacancyDetails: VacancyDetails) = with(binding) {
@@ -129,7 +129,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             keySkillsText += getString(R.string.key_skill_separator, i)
         }
         keySkills.text = keySkillsText
-        keySkillsTitle.isVisible = currentKeySkills.size != 0
+        keySkillsTitle.isVisible = currentKeySkills.isNotEmpty()
     }
 
     private fun showEmploymentFormAndWorkFormat(employmentForm: String, currentWorkFormat: List<String>) =

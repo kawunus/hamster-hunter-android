@@ -12,8 +12,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
+import ru.practicum.android.diploma.filter.presentation.model.RegionScreenState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.RegionsAdapter
-import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionScreenState
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionViewModel
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.presentation.viewmodel
+package ru.practicum.android.diploma.search.presentation.model
 
 import androidx.paging.PagingData
 import ru.practicum.android.diploma.search.domain.model.Vacancy

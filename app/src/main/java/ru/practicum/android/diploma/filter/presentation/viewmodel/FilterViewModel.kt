@@ -14,7 +14,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     private val savedFilters = MutableLiveData(FilterParameters())
     fun getSavedFilters(): LiveData<FilterParameters> = savedFilters
 
-    // для отслеживания первоначальных фильтров и управления видимостью кнопки"Применить"
+    // для отслеживания первоначальных фильтров и управления видимостью кнопки "Применить"
     private var initialFilters: FilterParameters? = null
     private val filterWasChanged = MutableLiveData(false)
     fun getFilterWasChanged(): LiveData<Boolean> = filterWasChanged
@@ -41,7 +41,7 @@ class FilterViewModel(private val interactor: FiltersInteractor) : BaseViewModel
     private fun updateFilters(update: (FilterParameters) -> FilterParameters) {
         // если сохранённых фильтров ещё не было - создаём обьект FilterParameters null-значениями
         val currentFilters = savedFilters.value ?: FilterParameters()
-        val newFilters = update(currentFilters) // применеяем лямбду update к сохранённым ранеее фильтрам
+        val newFilters = update(currentFilters)
         savedFilters.value = newFilters
         checkIfAnyFilterApplied()
         checkIFilterWasChanged()

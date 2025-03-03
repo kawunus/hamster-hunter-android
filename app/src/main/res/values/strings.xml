@@ -83,9 +83,11 @@
     <string name="error_toast_server">Произошла ошибка</string>
     <string name="bearer_token">Bearer %s</string>
     <string name="search_screen">Экран поиска вакансий</string>
-    <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
-    <string name="content_description_filters">Фильтры</string>
     <string name="no_found_industry">Такой отрасли нет</string>
     <string name="industry_placeholder">Отрасль</string>
     <string name="not_region">Такого региона нет</string>
+    <!-- content descriptions -->
+    <string name="search_error">Ошибка при попытке поиска вакансий</string>
+    <string name="filters">Фильтры</string>
+    <string name="logotype">Логотип фирмы</string>
 </resources>
