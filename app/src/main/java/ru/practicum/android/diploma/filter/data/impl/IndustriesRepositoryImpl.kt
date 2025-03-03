@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.data.impl
 
-import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,13 +10,11 @@ import ru.practicum.android.diploma.filter.data.network.model.IndustriesResponse
 import ru.practicum.android.diploma.filter.domain.api.IndustriesRepository
 import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.util.Constants
-import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.Resource
 import java.io.IOException
 
 class IndustriesRepositoryImpl(
     private val networkClient: RetrofitNetworkClient,
-    private val context: Context
 ) : IndustriesRepository {
 
     override suspend fun getAllIndustries(): Flow<Resource<List<Industry>>> = flow {
