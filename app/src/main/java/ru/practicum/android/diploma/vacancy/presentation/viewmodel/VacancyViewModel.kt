@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.vacancy.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.favorites.domain.usecase.FavoriteVacancyInteractor
@@ -17,7 +18,7 @@ class VacancyViewModel(
     private val vacancyDetailsInteractor: VacancyDetailsInteractor,
     private val vacancyId: String
 ) : BaseViewModel() {
-    private val vacancyDetailsLiveData = MutableLiveData<VacancyDetailsState>()
+    private val vacancyDetailsLiveData = MutableLiveData<VacancyDetailsState>(VacancyDetailsState.Loading)
     private val vacancyIsLikedLiveData = MutableLiveData<Boolean?>(null)
     fun observeIsLikedLiveData(): LiveData<Boolean?> = vacancyIsLikedLiveData
     fun observeVacancyDetailsState(): LiveData<VacancyDetailsState> = vacancyDetailsLiveData
@@ -41,6 +42,7 @@ class VacancyViewModel(
 
     private suspend fun initIsVacancyInFavorite() {
         vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
+        delay(START_SCREEN_DELAY)
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
         vacancyIsLikedLiveData.postValue(isLiked)
         if (isLiked) {
@@ -87,6 +89,10 @@ class VacancyViewModel(
         if (prevState is VacancyDetailsState.VacancyInfo) {
             vacancyDetailsInteractor.openVacancyShare(prevState.details.alternateUrl)
         }
+    }
+
+    private companion object {
+        const val START_SCREEN_DELAY: Long = 500
     }
 
 }
