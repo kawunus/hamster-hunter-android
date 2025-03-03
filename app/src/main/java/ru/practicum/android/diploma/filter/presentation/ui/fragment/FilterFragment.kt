@@ -188,7 +188,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             }
         }
         clearButtonVisibilityManager(salaryText)
-//        updateSalaryHintColor()
 
     }
 
