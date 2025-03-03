@@ -5,7 +5,7 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.favorites.presentation.viewmodel.FavoritesViewModel
 import ru.practicum.android.diploma.filter.presentation.viewmodel.AreaViewModel
 import ru.practicum.android.diploma.filter.presentation.viewmodel.CountryViewModel
-import ru.practicum.android.diploma.filter.presentation.viewmodel.FieldViewModel
+import ru.practicum.android.diploma.filter.presentation.viewmodel.IndustryViewModel
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionViewModel
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
@@ -20,7 +20,7 @@ val viewModelModule = module {
 
     viewModelOf(::FilterViewModel)
 
-    viewModelOf(::FieldViewModel)
+    viewModelOf(::IndustryViewModel)
 
     viewModelOf(::AreaViewModel)
 

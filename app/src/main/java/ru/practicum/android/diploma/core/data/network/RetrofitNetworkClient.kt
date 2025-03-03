@@ -110,7 +110,10 @@ class RetrofitNetworkClient(
 
     private suspend fun getAllIndustries(): IndustriesResponse {
         val industriesResponse = hHApiService.getIndustries()
-        return industriesResponse
+        return IndustriesResponse().apply {
+            resultCode = HTTP_SUCCESS
+            industriesList = industriesResponse
+        }
     }
 
     private fun logError(e: Exception) {
