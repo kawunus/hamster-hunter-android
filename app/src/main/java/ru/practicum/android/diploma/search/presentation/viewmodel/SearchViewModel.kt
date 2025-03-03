@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.core.data.network.exception.NoInternetExcept
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.search.domain.usecase.VacanciesSearchInteractor
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState
 import ru.practicum.android.diploma.util.Constants.EMPTY_STRING
 import ru.practicum.android.diploma.util.debounce
 

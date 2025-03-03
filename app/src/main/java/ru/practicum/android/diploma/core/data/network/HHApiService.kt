@@ -30,18 +30,9 @@ interface HHApiService {
         @Header("User-Agent") userAgent: String,
     ): DictionariesResponse
 
-//    @GET("areas")
-//    suspend fun getCountries(): List<CountryDto>
-
-    // для получения списка регионов согласно стране
     @GET("areas/{area_id}")
     suspend fun getRegions(@Path("area_id") countryId: String): RegionsResponse
 
-    // для получения списка всех регионов
-//    @GET("areas")
-//    suspend fun getAllRegions(): List<RegionDto>
-
-    // едный запрос для стран и всех регионов
     @GET("areas")
     suspend fun getAreas(): List<AreaDto>
 

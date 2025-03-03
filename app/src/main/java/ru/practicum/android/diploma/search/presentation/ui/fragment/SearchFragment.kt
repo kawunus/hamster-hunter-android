@@ -19,16 +19,16 @@ import ru.practicum.android.diploma.core.data.network.exception.NoInternetExcept
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.Default
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.Error
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.Loading
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.NetworkError
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.NothingFound
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.SearchResults
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPagingAdapter
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Default
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Error
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Loading
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.NetworkError
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.NothingFound
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.SearchResults
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
@@ -72,7 +72,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             viewLifecycleOwner
         ) { _, bundle ->
             val filtersChanged = bundle.getBoolean(FILTERS_CHANGED_BUNDLE_KEY)
-            if (filtersChanged) {
+            if (filtersChanged && viewModel.getSearchState().value != Default) {
                 viewModel.startSearchWithLatestText()
             }
         }
@@ -81,6 +81,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.checkIfAnyFilterApplied()
+        hideNotificationIfNoNeedIt()
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
@@ -276,6 +277,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
+    private fun hideNotificationIfNoNeedIt() {
+        binding.notificationText.apply {
+            if (viewModel.getSearchState().value == Default) {
+                hide()
+            }
+        }
+    }
     private fun renderFilterButton(anyFilterApplied: Boolean?) {
         val iconRes = when (anyFilterApplied) {
             true -> R.drawable.ic_filter_on

@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.Region
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.filter.domain.usecase.GetRegionsInteractor
+import ru.practicum.android.diploma.filter.presentation.model.RegionScreenState
 import ru.practicum.android.diploma.util.Constants
 
 class RegionViewModel(
