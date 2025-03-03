@@ -10,25 +10,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp16"
+        android:breakStrategy="high_quality"
+        android:maxLines="4"
         android:text="@string/industry_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/radio_button"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:breakStrategy="high_quality"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioButton
         android:id="@+id/radio_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp12"
-        app:buttonTint="@color/blue"
         android:layout_marginVertical="@dimen/dp18"
+        android:layout_marginEnd="@dimen/dp12"
         android:minWidth="0dp"
         android:minHeight="0dp"
+        app:buttonTint="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
