@@ -22,6 +22,9 @@ class IndustryViewModel(
     private val _uiState = MutableLiveData<IndustriesState>()
     val uiState: LiveData<IndustriesState> = _uiState
 
+    private val _selectedIndustry = MutableLiveData<Industry?>(null)
+    val selectedIndustry: LiveData<Industry?> = _selectedIndustry
+
     fun loadIndustries() {
         _uiState.value = IndustriesState.Loading
 
@@ -57,9 +60,13 @@ class IndustryViewModel(
     }
 
     fun selectIndustry(industry: Industry) {
+        _selectedIndustry.value = industry
+    }
+
+    fun saveSelectedIndustryToFilters() {
         val currentFilters = filtersInteractor.readFilters()
         val updatedFilters = currentFilters.copy(
-            industry = industry
+            industry = _selectedIndustry.value
         )
         filtersInteractor.saveFilters(updatedFilters)
     }

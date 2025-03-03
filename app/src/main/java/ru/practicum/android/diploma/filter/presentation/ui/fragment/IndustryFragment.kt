@@ -36,12 +36,21 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
             this.adapter = this@IndustryFragment.adapter
         }
 
+        chooseButton.setOnClickListener {
+            viewModel.saveSelectedIndustryToFilters()
+            findNavController().popBackStack()
+        }
+
         viewModel.loadIndustries()
     }
 
-    override fun subscribe() = with(binding) {
+    override fun subscribe() {
         viewModel.uiState.observe(viewLifecycleOwner) { state ->
             renderState(state)
+        }
+
+        viewModel.selectedIndustry.observe(viewLifecycleOwner) { selectedIndustry ->
+            renderSelectButton(selectedIndustry)
         }
     }
 
@@ -59,6 +68,16 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
             )
 
             is IndustriesState.Success -> showSuccessState(state.industriesList)
+        }
+    }
+
+    private fun renderSelectButton(industry: Industry?) = with(binding) {
+        if (industry == null) {
+            chooseButton.hide()
+            chooseButton.isEnabled = false
+        } else {
+            chooseButton.show()
+            chooseButton.isEnabled = true
         }
     }
 
