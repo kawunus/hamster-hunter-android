@@ -12,6 +12,8 @@ import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
+import ru.practicum.android.diploma.filter.data.network.model.IndustriesRequest
+import ru.practicum.android.diploma.filter.data.network.model.IndustriesResponse
 import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
@@ -47,6 +49,7 @@ class RetrofitNetworkClient(
                     is CountriesRequest -> getCountries()
                     is RegionsRequest -> getRegions(dto.countryId)
                     is AllRegionsRequest -> getAllRegions()
+                    is IndustriesRequest -> getAllIndustries()
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
@@ -103,6 +106,11 @@ class RetrofitNetworkClient(
             resultCode = HTTP_SUCCESS
             regionsList = allRegions
         }
+    }
+
+    private suspend fun getAllIndustries(): IndustriesResponse {
+        val industriesResponse = hHApiService.getIndustries()
+        return industriesResponse
     }
 
     private fun logError(e: Exception) {
