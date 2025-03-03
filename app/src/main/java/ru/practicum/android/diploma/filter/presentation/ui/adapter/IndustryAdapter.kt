@@ -43,7 +43,6 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
             ?.let { notifyItemChanged(it) }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val binding = ItemIndustryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return IndustryViewHolder(binding)

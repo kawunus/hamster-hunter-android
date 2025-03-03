@@ -36,7 +36,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
         setupClickListeners()
     }
 
-    private fun setupClickListeners() = with(binding){
+    private fun setupClickListeners() = with(binding) {
         btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
