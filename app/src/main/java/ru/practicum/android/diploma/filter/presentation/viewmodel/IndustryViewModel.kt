@@ -75,7 +75,7 @@ class IndustryViewModel(
         }
     }
 
-    fun loadSelectedIndustry() {
+    private fun loadSelectedIndustry() {
         _selectedIndustry.value = filtersInteractor.readFilters().industry
     }
 }
