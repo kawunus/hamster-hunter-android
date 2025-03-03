@@ -50,6 +50,7 @@
         app:boxStrokeColor="@null"
         app:boxStrokeWidth="@dimen/zero"
         app:boxStrokeWidthFocused="@dimen/zero"
+        app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
         app:hintAnimationEnabled="true"
@@ -72,17 +73,6 @@
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/iv_arrow_area"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:padding="@dimen/dp12"
-        android:src="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="@+id/til_area"
-        app:layout_constraintEnd_toEndOf="@+id/til_area"
-        app:layout_constraintTop_toTopOf="@+id/til_area"
-        app:tint="?attr/colorOnPrimary" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_industry"
@@ -95,6 +85,7 @@
         app:boxStrokeColor="@null"
         app:boxStrokeWidth="@dimen/zero"
         app:boxStrokeWidthFocused="@dimen/zero"
+        app:endIconDrawable="@drawable/ic_arrow_forward"
         app:endIconMode="custom"
         app:endIconTint="?attr/colorOnPrimary"
         app:hintAnimationEnabled="true"
@@ -117,17 +108,6 @@
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/iv_arrow_industry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:padding="@dimen/dp12"
-        android:src="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="@+id/til_industry"
-        app:layout_constraintEnd_toEndOf="@+id/til_industry"
-        app:layout_constraintTop_toTopOf="@+id/til_industry"
-        app:tint="?attr/colorOnPrimary" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_salary"
@@ -136,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp24"
         android:hint="@string/expected_salary"
+        android:minHeight="@dimen/dp52"
         android:textColorHint="@color/focus_tint"
         app:boxBackgroundColor="?attr/customColorEditText"
         app:boxCollapsedPaddingTop="@dimen/dp4"
@@ -215,13 +196,13 @@
         style="@style/ApplyButtonStyle"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp8"
         android:paddingVertical="@dimen/dp20"
         android:visibility="visible"
-        android:layout_marginBottom="@dimen/dp8"
-        app:layout_goneMarginBottom="@dimen/dp24"
         app:layout_constraintBottom_toTopOf="@+id/btn_reset"
         app:layout_constraintEnd_toEndOf="@+id/right_border"
-        app:layout_constraintStart_toStartOf="@+id/left_border" />
+        app:layout_constraintStart_toStartOf="@+id/left_border"
+        app:layout_goneMarginBottom="@dimen/dp24" />
 
     <Button
         android:id="@+id/btn_reset"

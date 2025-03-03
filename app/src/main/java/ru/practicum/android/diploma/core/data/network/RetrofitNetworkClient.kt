@@ -12,6 +12,8 @@ import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.CountriesRequest
+import ru.practicum.android.diploma.filter.data.network.model.IndustriesRequest
+import ru.practicum.android.diploma.filter.data.network.model.IndustriesResponse
 import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
 import ru.practicum.android.diploma.search.data.mapper.toQueryMap
@@ -47,6 +49,7 @@ class RetrofitNetworkClient(
                     is CountriesRequest -> getCountries()
                     is RegionsRequest -> getRegions(dto.countryId)
                     is AllRegionsRequest -> getAllRegions()
+                    is IndustriesRequest -> getAllIndustries()
                     else -> Response().apply { resultCode = HTTP_BAD_REQUEST }
                 }
                 response.apply { resultCode = HTTP_SUCCESS }
@@ -70,15 +73,6 @@ class RetrofitNetworkClient(
         return hHApiService.search(USER_AGENT, queryMap)
     }
 
-    // старая редакция
-//    private suspend fun getCountries(): CountriesResponse {
-//        val dtoList = hHApiService.getCountries()
-//        return CountriesResponse().apply {
-//            countriesList = dtoList
-//        }
-//    }
-
-    // новая редакция
     private suspend fun getCountries(): CountriesResponse {
         val areas = hHApiService.getAreas()
         val countries = areas.filter { it.parentId == null }
@@ -92,7 +86,6 @@ class RetrofitNetworkClient(
     }
 
     private suspend fun getAllRegions(): RegionsResponse {
-        // тут меняю только getAllRegions на getAreas
         val countries = hHApiService.getAreas()
         val allRegions = mutableListOf<RegionDto>()
         countries.forEach { country ->
@@ -102,6 +95,14 @@ class RetrofitNetworkClient(
         return RegionsResponse().apply {
             resultCode = HTTP_SUCCESS
             regionsList = allRegions
+        }
+    }
+
+    private suspend fun getAllIndustries(): IndustriesResponse {
+        val industriesResponse = hHApiService.getIndustries()
+        return IndustriesResponse().apply {
+            resultCode = HTTP_SUCCESS
+            industriesList = industriesResponse
         }
     }
 

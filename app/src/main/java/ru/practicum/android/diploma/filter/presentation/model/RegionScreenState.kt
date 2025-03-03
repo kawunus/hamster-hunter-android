@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.presentation.viewmodel
+package ru.practicum.android.diploma.filter.presentation.model
 
 sealed interface RegionScreenState {
     data object Loading : RegionScreenState

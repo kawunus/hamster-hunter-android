@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -142,11 +143,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         val salaryText = text.toString()
         val salary = salaryText.toIntOrNull() // если salary превысит Int.MAX_VALUE, вернётся null
 
-        if (salary != null && salary >= 0) {
+        if (salary != null && salary > 0) {
             viewModel.setSalary(salary)
         } else {
             // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
-            Toast.makeText(requireContext(), "Введите число от 0 до 2 147 483 647", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Введите число больше 0 и меньше 2 147 483 647", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -170,12 +171,14 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         }
     }
 
-    private fun renderAreaFilter(area: String?) {
-        binding.tetArea.setText(area)
+    private fun renderAreaFilter(areaName: String?) {
+        binding.tetArea.setText(areaName)
+        updateAreaIcon(areaName)
     }
 
-    private fun renderIndustryFilter(industry: String?) {
-        binding.tetIndustry.setText(industry)
+    private fun renderIndustryFilter(industryName: String?) {
+        binding.tetIndustry.setText(industryName)
+        updateIndustryIcon(industryName)
     }
 
     private fun renderSalaryFilter(salary: Int?) {
@@ -234,6 +237,40 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
                     null
                 )
             )
+        }
+    }
+
+    private fun updateAreaIcon(areaName: String?) {
+        binding.tilArea.apply {
+            if (!areaName.isNullOrEmpty()) {
+                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
+                setEndIconOnClickListener {
+                    viewModel.setArea(null)
+                }
+            } else {
+                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
+                setEndIconOnClickListener {
+                    findNavController()
+                        .navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
+                }
+            }
+        }
+    }
+
+    private fun updateIndustryIcon(industryName: String?) {
+        binding.tilIndustry.apply {
+            if (!industryName.isNullOrEmpty()) {
+                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
+                setEndIconOnClickListener {
+                    viewModel.setIndustry(null)
+                }
+            } else {
+                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
+                setEndIconOnClickListener {
+                    findNavController()
+                        .navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
+                }
+            }
         }
     }
 

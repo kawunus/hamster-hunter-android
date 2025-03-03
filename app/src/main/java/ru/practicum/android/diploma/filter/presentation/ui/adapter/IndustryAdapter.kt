@@ -20,25 +20,50 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
         override fun areContentsTheSame(oldItem: Industry, newItem: Industry): Boolean {
             return oldItem == newItem
         }
-
     }
 
     private val asyncListDiffer = AsyncListDiffer(this, diffUtil)
+
+    private var selectedIndustryId: String? = null
 
     fun saveData(industriesList: List<Industry>) {
         asyncListDiffer.submitList(industriesList)
     }
 
+    fun setSelectedIndustry(id: String?) {
+        val previousSelectedId = selectedIndustryId
+        selectedIndustryId = id
+
+        asyncListDiffer.currentList.indexOfFirst { it.id == previousSelectedId }
+            .takeIf { it != -1 }
+            ?.let { notifyItemChanged(it) }
+
+        asyncListDiffer.currentList.indexOfFirst { it.id == selectedIndustryId }
+            .takeIf { it != -1 }
+            ?.let { notifyItemChanged(it) }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IndustryViewHolder {
         val binding = ItemIndustryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return IndustryViewHolder(binding, onItemClick)
-
+        return IndustryViewHolder(binding)
     }
 
     override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        holder.bind(asyncListDiffer.currentList[position])
-    }
+        val industry = asyncListDiffer.currentList[position]
+        holder.bind(industry, industry.id == selectedIndustryId) {
+            val previousSelectedId = selectedIndustryId
+            selectedIndustryId = industry.id
 
+            asyncListDiffer.currentList.indexOfFirst { it.id == previousSelectedId }
+                .takeIf { it != -1 }
+                ?.let { notifyItemChanged(it) }
+
+            notifyItemChanged(holder.bindingAdapterPosition)
+
+            onItemClick(industry)
+        }
+    }
 }
+
