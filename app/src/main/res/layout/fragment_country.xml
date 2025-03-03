@@ -79,7 +79,7 @@
             android:id="@+id/iv_error_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp224"
-            android:contentDescription="@string/content_description_search_error"
+            android:contentDescription="@string/search_error"
             android:src="@drawable/placeholder_network_error" />
 
         <TextView
