@@ -24,7 +24,8 @@ class IndustriesRepositoryImpl(
 
             emit(
                 Resource(
-                    data = convertResponseToList(industriesResponse), code = Constants.HTTP_SUCCESS
+                    data = convertResponseToList(industriesResponse),
+                    code = Constants.HTTP_SUCCESS
                 )
             )
         } catch (e: IOException) {
@@ -35,7 +36,8 @@ class IndustriesRepositoryImpl(
             Log.e("IndustriesRepositoryImpl", "HTTP ошибка: Код $code", e)
             emit(
                 Resource(
-                    data = null, code = Constants.HTTP_SERVER_ERROR
+                    data = null,
+                    code = Constants.HTTP_SERVER_ERROR
                 )
             )
         }
