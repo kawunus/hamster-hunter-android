@@ -58,6 +58,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
 
         viewModel.selectedIndustry.observe(viewLifecycleOwner) { selectedIndustry ->
             renderSelectButton(selectedIndustry)
+            adapter.setSelectedIndustry(selectedIndustry?.id)
         }
 
         viewModel.filteredIndustries.observe(viewLifecycleOwner) { industries ->

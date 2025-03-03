@@ -32,14 +32,11 @@ class IndustryViewModel(
 
     fun loadIndustries() {
         _uiState.value = IndustriesState.Loading
+        loadSelectedIndustry()
 
         viewModelScope.launch {
             getIndustriesUseCase.getAllIndustries().catch { throwable ->
-                Log.e(
-                    "IndustriesSearch",
-                    "Ошибка загрузки данных: ${throwable.localizedMessage}",
-                    throwable
-                )
+                Log.e("IndustriesSearch", "Ошибка загрузки: ${throwable.localizedMessage}", throwable)
                 _uiState.value = IndustriesState.NetworkError
             }.collect { resource ->
                 when (resource.code) {
@@ -47,26 +44,21 @@ class IndustryViewModel(
                         val list = resource.data ?: emptyList()
                         allIndustries.clear()
                         allIndustries.addAll(list)
-
-                        updateSearchQuery(currentSearchQuery)
-
+                        _filteredIndustries.value = list
                         _uiState.value = IndustriesState.Success(list)
                     }
-
-                    Constants.HTTP_NOT_FOUND, -1 -> {
-                        _uiState.value = IndustriesState.ServerError
-                    }
-
-                    else -> {
-                        _uiState.value = IndustriesState.ServerError
-                    }
+                    Constants.HTTP_NOT_FOUND, -1 -> _uiState.value = IndustriesState.NetworkError
+                    else -> _uiState.value = IndustriesState.ServerError
                 }
             }
         }
     }
 
+
+
     fun selectIndustry(industry: Industry) {
         _selectedIndustry.value = industry
+        saveSelectedIndustryToFilters()
     }
 
     fun saveSelectedIndustryToFilters() {
@@ -84,5 +76,10 @@ class IndustryViewModel(
             allIndustries.filter { it.name!!.lowercase().contains(currentSearchQuery) }
         }
     }
+
+    fun loadSelectedIndustry() {
+        _selectedIndustry.value = filtersInteractor.readFilters().industry
+    }
+
 }
 
