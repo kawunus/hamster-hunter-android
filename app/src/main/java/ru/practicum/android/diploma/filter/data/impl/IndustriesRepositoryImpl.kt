@@ -21,13 +21,14 @@ class IndustriesRepositoryImpl(
         try {
             val industriesResponse =
                 networkClient.doRequest(IndustriesRequest) as IndustriesResponse
-
-            emit(
-                Resource(
-                    data = convertResponseToList(industriesResponse),
-                    code = Constants.HTTP_SUCCESS
+            if (industriesResponse.resultCode == Constants.HTTP_SUCCESS) {
+                emit(
+                    Resource(
+                        data = convertResponseToList(industriesResponse),
+                        code = industriesResponse.resultCode
+                    )
                 )
-            )
+            }
         } catch (e: IOException) {
             Log.e("IndustriesRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
             emit(Resource(data = null, code = -1))
