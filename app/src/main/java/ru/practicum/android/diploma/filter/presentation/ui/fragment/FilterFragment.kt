@@ -17,9 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
-import ru.practicum.android.diploma.filter.domain.model.Area
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
-import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
@@ -247,7 +245,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             if (!areaName.isNullOrEmpty()) {
                 endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
                 setEndIconOnClickListener {
-                    viewModel.setArea(Area(country = null, region = null))
+                    viewModel.setArea(null)
                 }
             } else {
                 endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
@@ -264,7 +262,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             if (!industryName.isNullOrEmpty()) {
                 endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
                 setEndIconOnClickListener {
-                    viewModel.setIndustry(Industry(id = null, name = null))
+                    viewModel.setIndustry(null)
                 }
             } else {
                 endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
