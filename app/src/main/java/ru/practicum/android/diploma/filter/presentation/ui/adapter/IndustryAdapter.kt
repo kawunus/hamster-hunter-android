@@ -24,6 +24,7 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
     }
 
     private val asyncListDiffer = AsyncListDiffer(this, diffUtil)
+    private var selectedIndustryId: String? = null
 
     fun saveData(industriesList: List<Industry>) {
         asyncListDiffer.submitList(industriesList)
@@ -38,7 +39,12 @@ class IndustryAdapter(private val onItemClick: ((industry: Industry) -> Unit)) :
     override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
     override fun onBindViewHolder(holder: IndustryViewHolder, position: Int) {
-        holder.bind(asyncListDiffer.currentList[position])
+        val industry = asyncListDiffer.currentList[position]
+        holder.bind(industry, industry.id == selectedIndustryId) { selectedIndustry ->
+            selectedIndustryId = selectedIndustry.id
+            notifyDataSetChanged()
+            onItemClick(selectedIndustry)
+        }
     }
 
 }

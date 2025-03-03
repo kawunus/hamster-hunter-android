@@ -9,13 +9,17 @@ class IndustryViewHolder(
     private val onItemClicked: (Industry) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(industry: Industry) {
-        // Устанавливаем название отрасли
+    fun bind(industry: Industry, isSelected: Boolean, onItemSelected: (Industry) -> Unit) {
         binding.industryName.text = industry.name
+        binding.radioButton.isChecked = isSelected
 
-        // По клику на весь элемент списка
-        binding.radioButton.setOnClickListener {
-            onItemClicked(industry)
+        val clickListener = {
+            if (!isSelected) {
+                onItemSelected(industry)
+            }
         }
+
+        binding.radioButton.setOnClickListener { clickListener() }
+        binding.root.setOnClickListener { clickListener() }
     }
 }
