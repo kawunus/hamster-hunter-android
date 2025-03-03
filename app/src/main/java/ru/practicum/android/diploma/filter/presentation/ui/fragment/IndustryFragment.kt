@@ -21,7 +21,8 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     override val viewModel: IndustryViewModel by viewModel()
 
     private val adapter by lazy {
-        IndustryAdapter {
+        IndustryAdapter { industry ->
+            viewModel.selectIndustry(industry)
         }
     }
 
