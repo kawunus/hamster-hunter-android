@@ -111,7 +111,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
 
     private fun showLoadingState() = with(binding) {
         hideAllViews()
-        progressBar.show(),
+        progressBar.show()
     }
 
     private fun showSuccessState(industriesList: List<Industry>) = with(binding) {
