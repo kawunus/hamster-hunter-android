@@ -1,0 +1,10 @@
+package ru.practicum.android.diploma.filter.presentation.model
+
+import ru.practicum.android.diploma.filter.domain.model.Industry
+
+sealed class IndustriesState {
+    data object Loading : IndustriesState()
+    data class Success(val industriesList: List<Industry>) : IndustriesState()
+    data object NetworkError : IndustriesState()
+    data object ServerError : IndustriesState()
+}
