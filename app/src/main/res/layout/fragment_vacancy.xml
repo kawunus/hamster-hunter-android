@@ -178,7 +178,8 @@
                         android:layout_height="@dimen/dp48"
                         android:layout_gravity="center"
                         android:scaleType="center"
-                        android:src="@drawable/placeholder_32px" />
+                        android:src="@drawable/placeholder_32px"
+                        android:contentDescription="@string/logotype" />
 
                 </com.google.android.material.card.MaterialCardView>
 
