@@ -31,6 +31,7 @@ import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPaging
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
+import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.formatNumber
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
@@ -47,10 +48,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
     private val loadStateAdapter = VacancyLoadStateAdapter()
     private var isClickAllowed = true
+    private var isToastAllowed = true
     private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
         isClickAllowed = true
+        isToastAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
         setEditTextActionListener()
@@ -177,6 +180,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 // ошибки при загрузке страниц
                 loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
                     showPagingError(loadState.append as? LoadState.Error ?: loadState.prepend as LoadState.Error)
+                    lifecycleScope.launch {
+                        waitForInternetAndRetry()
+                    }
                 }
             }
         }
@@ -296,11 +302,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun showPagingError(error: LoadState.Error) {
-        val message = when (error.error) {
-            is NoInternetException -> getString(R.string.error_toast_no_internet)
-            else -> getString(R.string.error_toast_server)
+        if (toastDebounce()) {
+            val message = when (error.error) {
+                is NoInternetException -> getString(R.string.error_toast_no_internet)
+                else -> getString(R.string.error_toast_server)
+            }
+            showToast(message)
         }
-        showToast(message)
     }
 
     private fun showToast(text: String) {
@@ -319,7 +327,27 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         return current
     }
 
+    private fun toastDebounce(): Boolean {
+        val current = isToastAllowed
+        if (isToastAllowed) {
+            isToastAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(TOAST_DEBOUNCE_DELAY)
+                isToastAllowed = true
+            }
+        }
+        return current
+    }
+
+    private suspend fun waitForInternetAndRetry() {
+        while (!NetworkMonitor.isNetworkAvailable(requireContext())) {
+            delay(2000) // Проверяем каждые 2 секунды
+        }
+        adapter.retry() // Повторяем загрузку, когда интернет появился
+    }
+
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val TOAST_DEBOUNCE_DELAY = 2000L
     }
 }
