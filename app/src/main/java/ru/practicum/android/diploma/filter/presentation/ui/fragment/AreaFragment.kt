@@ -123,11 +123,13 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
         binding.tetCountry.addTextChangedListener(
             afterTextChanged = { s ->
                 updateHintTextColor(binding.tilCountry, s)
-            })
+            }
+        )
         binding.tetRegion.addTextChangedListener(
             afterTextChanged = { s ->
                 updateHintTextColor(binding.tilRegion, s)
-            })
+            }
+        )
     }
 
     private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {
