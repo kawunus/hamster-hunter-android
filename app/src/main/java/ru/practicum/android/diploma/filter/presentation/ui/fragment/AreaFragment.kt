@@ -74,18 +74,20 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
                 viewModel.getCountryByRegion()
             }
         }
+
+        viewModel.isAcceptable.observe(viewLifecycleOwner) { isAcceptable ->
+            if (!isAcceptable) {
+                binding.btnSelect.show()
+            } else {
+                binding.btnSelect.hide()
+            }
+        }
     }
 
     private fun updateFieldsAndButtonVisibility(countryName: String, regionName: String) {
         binding.tetCountry.setText(countryName)
         binding.tetRegion.setText(regionName)
-
-        if (!viewModel.areFiltersEqual(countryName, regionName)) {
-            binding.btnSelect.show()
-        } else {
-            binding.btnSelect.hide()
-        }
-
+        viewModel.areFiltersEqual(countryName, regionName)
     }
 
     private fun updateCountryIcon(countryName: String) {
@@ -120,16 +122,12 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
     }
 
     private fun setTextChangedListeners() {
-        binding.tetCountry.addTextChangedListener(
-            afterTextChanged = { s ->
-                updateHintTextColor(binding.tilCountry, s)
-            }
-        )
-        binding.tetRegion.addTextChangedListener(
-            afterTextChanged = { s ->
-                updateHintTextColor(binding.tilRegion, s)
-            }
-        )
+        binding.tetCountry.addTextChangedListener(afterTextChanged = { s ->
+            updateHintTextColor(binding.tilCountry, s)
+        })
+        binding.tetRegion.addTextChangedListener(afterTextChanged = { s ->
+            updateHintTextColor(binding.tilRegion, s)
+        })
     }
 
     private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {
@@ -140,8 +138,7 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
                         R.color.gray
                     } else {
                         if (isDarkTheme()) R.color.white else R.color.black
-                    },
-                    null
+                    }, null
                 )
             )
         }
