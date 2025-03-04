@@ -57,7 +57,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         viewModel.checkSavedFilters()
     }
 
-    // настройка слушателя нажатий
     private fun setClickListeners() {
         binding.apply {
             btnBack.setOnClickListener {
@@ -82,7 +81,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             }
 
             btnApply.setOnClickListener {
-                // по нажатию применить, ставим флаг, что фильтры изменились
                 setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
                 findNavController()
                     .navigateUp()
@@ -92,7 +90,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         }
     }
 
-    // настройка отслеживания изменений текста
     private fun setupSalaryTextWatcher() {
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
@@ -126,7 +123,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         }
     }
 
-    // обработка нажатия на кнопку очистки
     private fun handleClearButtonClick() {
         binding.btnClear.setOnClickListener {
             binding.tetSalary.text?.clear()
@@ -135,25 +131,21 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun handleSalaryText(text: CharSequence?) {
         clearButtonVisibilityManager(text)
-        // Проверяем, что текст не null и не пустой
         if (text.isNullOrEmpty()) {
             viewModel.setSalary(null)
             return
         }
 
         val salaryText = text.toString()
-        val salary = salaryText.toIntOrNull() // если salary превысит Int.MAX_VALUE, вернётся null
+        val salary = salaryText.toIntOrNull()
 
         if (salary != null && salary > 0) {
             viewModel.setSalary(salary)
         } else {
-            // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
             Toast.makeText(requireContext(), getString(R.string.error_too_big_salary), Toast.LENGTH_SHORT).show()
         }
-
     }
 
-    // отображение иконки очистки
     private fun clearButtonVisibilityManager(text: CharSequence?) {
         if (text?.isNotEmpty() == true) {
             binding.btnClear.show()
@@ -275,7 +267,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         }
     }
 
-    // Проверка темы (светлая/темная)
     private fun isDarkTheme(): Boolean {
         return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> true
