@@ -6,7 +6,6 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.IndustryCategoryDto
-import ru.practicum.android.diploma.filter.data.network.model.IndustriesResponse
 import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
 import ru.practicum.android.diploma.search.data.network.model.DictionariesResponse
 import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
