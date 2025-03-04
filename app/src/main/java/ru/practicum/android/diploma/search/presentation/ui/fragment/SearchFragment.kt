@@ -341,7 +341,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private suspend fun waitForInternetAndRetry() {
         while (!NetworkMonitor.isNetworkAvailable(requireContext())) {
-            delay(2000) // Проверяем каждые 2 секунды
+            delay(TOAST_DEBOUNCE_DELAY)
         }
         adapter.retry() // Повторяем загрузку, когда интернет появился
     }
