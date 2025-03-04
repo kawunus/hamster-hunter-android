@@ -1,3 +1,6 @@
+package ru.practicum.android.diploma.filter.presentation.ui
+
+import android.content.Context
 import android.content.res.ColorStateList
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
@@ -14,7 +17,11 @@ import ru.practicum.android.diploma.util.formatLocationString
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
-class FilterUiHelper(private val binding: FragmentFilterBinding, private val viewModel: FilterViewModel) {
+class FilterUiHelper(
+    private val binding: FragmentFilterBinding,
+    private val viewModel: FilterViewModel,
+    private val context: Context
+) {
 
     private var isTextUpdating = false
 
@@ -35,12 +42,12 @@ class FilterUiHelper(private val binding: FragmentFilterBinding, private val vie
             intArrayOf()
         )
         val emptyColor = intArrayOf(
-            ContextCompat.getColor(binding.root.context, R.color.blue),
-            ContextCompat.getColor(binding.root.context, R.color.focus_tint)
+            ContextCompat.getColor(context, R.color.blue),
+            ContextCompat.getColor(context, R.color.focus_tint)
         )
         val valuedColor = intArrayOf(
-            ContextCompat.getColor(binding.root.context, R.color.blue),
-            ContextCompat.getColor(binding.root.context, R.color.black)
+            ContextCompat.getColor(context, R.color.blue),
+            ContextCompat.getColor(context, R.color.black)
         )
         val hintColorList = ColorStateList(hintStates, emptyColor)
         val hintColorValuedList = ColorStateList(hintStates, valuedColor)
@@ -65,8 +72,8 @@ class FilterUiHelper(private val binding: FragmentFilterBinding, private val vie
             viewModel.setSalary(salary)
         } else {
             Toast.makeText(
-                binding.root.context,
-                binding.root.context.getString(R.string.error_too_big_salary),
+                context,
+                context.getString(R.string.error_too_big_salary),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -117,12 +124,12 @@ class FilterUiHelper(private val binding: FragmentFilterBinding, private val vie
     private fun updateAreaIcon(areaName: String?) {
         binding.tilArea.apply {
             if (!areaName.isNullOrEmpty()) {
-                endIconDrawable = AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_close)
+                endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_close)
                 setEndIconOnClickListener {
                     viewModel.setArea(null)
                 }
             } else {
-                endIconDrawable = AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_arrow_forward)
+                endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_arrow_forward)
                 setEndIconOnClickListener {
                     findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
                 }
@@ -133,12 +140,12 @@ class FilterUiHelper(private val binding: FragmentFilterBinding, private val vie
     private fun updateIndustryIcon(industryName: String?) {
         binding.tilIndustry.apply {
             if (!industryName.isNullOrEmpty()) {
-                endIconDrawable = AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_close)
+                endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_close)
                 setEndIconOnClickListener {
                     viewModel.setIndustry(null)
                 }
             } else {
-                endIconDrawable = AppCompatResources.getDrawable(binding.root.context, R.drawable.ic_arrow_forward)
+                endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_arrow_forward)
                 setEndIconOnClickListener {
                     findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
                 }
