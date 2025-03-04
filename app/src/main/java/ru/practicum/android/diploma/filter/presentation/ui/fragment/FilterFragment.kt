@@ -74,7 +74,9 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
                 updateSalaryHintColor(text)
-                if (!isTextUpdating) handleSalaryText(text)
+                if (!isTextUpdating) {
+                    handleSalaryText(text)
+                }
             }
         )
     }
@@ -172,14 +174,17 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) = with(textInputLayout) {
         defaultHintTextColor = ColorStateList.valueOf(
             resources.getColor(
-                if (text.isNullOrBlank()) R.color.gray
-                else if (isDarkTheme()) R.color.white
-                else R.color.black,
+                if (text.isNullOrBlank()) {
+                    R.color.gray
+                } else if (isDarkTheme()) {
+                    R.color.white
+                } else {
+                    R.color.black
+                },
                 null
             )
         )
     }
-
 
     private fun updateAreaIcon(areaName: String?) {
         updateIcon(
@@ -207,7 +212,11 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     ) = with(layout) {
         endIconDrawable = AppCompatResources.getDrawable(
             requireContext(),
-            if (isEmpty) R.drawable.ic_arrow_forward else R.drawable.ic_close
+            if (isEmpty) {
+                R.drawable.ic_arrow_forward
+            } else {
+                R.drawable.ic_close
+            }
         )
         setEndIconOnClickListener { if (isEmpty) onNavigate() else onClear() }
     }
