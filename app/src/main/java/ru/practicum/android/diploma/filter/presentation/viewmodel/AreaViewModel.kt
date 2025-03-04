@@ -72,7 +72,6 @@ class AreaViewModel(
     }
 
     fun areFiltersEqual(countryName: String?, regionName: String?): Boolean {
-
         var country = countryName
         var region = regionName
 

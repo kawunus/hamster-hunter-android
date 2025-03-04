@@ -12,12 +12,7 @@
         tools:layout="@layout/fragment_country">
         <action
             android:id="@+id/action_countryFragment_to_areaFragment"
-            app:destination="@id/areaFragment">
-            <argument
-                android:name="country"
-                app:argType="ru.practicum.android.diploma.filter.domain.model.Country"
-                app:nullable="true" />
-        </action>
+            app:destination="@id/areaFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -52,12 +47,7 @@
         tools:layout="@layout/fragment_region">
         <action
             android:id="@+id/action_regionFragment_to_areaFragment"
-            app:destination="@id/areaFragment">
-            <argument
-                android:name="region"
-                app:argType="ru.practicum.android.diploma.filter.domain.model.Region"
-                app:nullable="true" />
-        </action>
+            app:destination="@id/areaFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
