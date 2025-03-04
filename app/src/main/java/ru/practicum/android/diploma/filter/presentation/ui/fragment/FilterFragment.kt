@@ -23,8 +23,6 @@ import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
 import ru.practicum.android.diploma.util.formatLocationString
-import ru.practicum.android.diploma.util.hide
-import ru.practicum.android.diploma.util.show
 
 class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     inflate = FragmentFilterBinding::inflate
@@ -40,16 +38,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         setupTextWatchers()
     }
 
-    override fun subscribe() {
-        with(viewModel) {
-            getSavedFilters().observe(viewLifecycleOwner) { renderScreen(it) }
-            getFilterWasChanged().observe(viewLifecycleOwner) {
-                setApplyBtnVisibility(it)
-            }
-            getAnyFilterApplied().observe(viewLifecycleOwner) {
-                setResetBtnVisibility(it)
-            }
-        }
+    override fun subscribe() = with(viewModel) {
+        getSavedFilters().observe(viewLifecycleOwner) { renderScreen(it) }
+        getFilterWasChanged().observe(viewLifecycleOwner) { setApplyBtnVisibility(it) }
+        getAnyFilterApplied().observe(viewLifecycleOwner) { setResetBtnVisibility(it) }
     }
 
     override fun onResume() {
@@ -57,76 +49,55 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         viewModel.checkSavedFilters()
     }
 
-    private fun setClickListeners() {
-        binding.apply {
-            btnBack.setOnClickListener {
-                findNavController()
-                    .navigateUp()
-            }
-            tetArea.setOnClickListener {
-                findNavController()
-                    .navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
-            }
-            tetIndustry.setOnClickListener {
-                findNavController()
-                    .navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
-            }
-
-            checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setOnlyWithSalary(isChecked)
-            }
-
-            checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setOnlyInTitles(isChecked)
-            }
-
-            btnApply.setOnClickListener {
-                setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
-                findNavController()
-                    .navigateUp()
-            }
-
-            btnReset.setOnClickListener { viewModel.clearFilters() }
+    private fun setClickListeners() = with(binding) {
+        btnBack.setOnClickListener { findNavController().navigateUp() }
+        tetArea.setOnClickListener {
+            findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
         }
+        tetIndustry.setOnClickListener {
+            findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
+        }
+        checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setOnlyWithSalary(isChecked)
+        }
+        checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setOnlyInTitles(isChecked)
+        }
+        btnApply.setOnClickListener {
+            setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
+            findNavController().navigateUp()
+        }
+        btnReset.setOnClickListener { viewModel.clearFilters() }
     }
 
     private fun setupSalaryTextWatcher() {
         binding.tetSalary.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
                 updateSalaryHintColor(text)
-                if (!isTextUpdating) {
-                    handleSalaryText(text)
-                }
+                if (!isTextUpdating) handleSalaryText(text)
             }
         )
     }
 
     private fun updateSalaryHintColor(text: CharSequence?) {
-        val hintStates = arrayOf(
-            intArrayOf(android.R.attr.state_focused),
-            intArrayOf()
+        val (emptyColor, valuedColor) = arrayOf(
+            intArrayOf(
+                ContextCompat.getColor(requireContext(), R.color.blue),
+                ContextCompat.getColor(requireContext(), R.color.focus_tint)
+            ),
+            intArrayOf(
+                ContextCompat.getColor(requireContext(), R.color.blue),
+                ContextCompat.getColor(requireContext(), R.color.black)
+            )
         )
-        val emptyColor = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.blue),
-            ContextCompat.getColor(requireContext(), R.color.focus_tint)
+        binding.tilSalary.defaultHintTextColor = ColorStateList(
+            arrayOf(intArrayOf(android.R.attr.state_focused), intArrayOf()),
+            if (text.isNullOrEmpty()) emptyColor else valuedColor
         )
-        val valuedColor = intArrayOf(
-            ContextCompat.getColor(requireContext(), R.color.blue),
-            ContextCompat.getColor(requireContext(), R.color.black)
-        )
-        val hintColorList = ColorStateList(hintStates, emptyColor)
-        val hintColorValuedList = ColorStateList(hintStates, valuedColor)
-        if (text.isNullOrEmpty()) {
-            binding.tilSalary.defaultHintTextColor = hintColorList
-        } else {
-            binding.tilSalary.defaultHintTextColor = hintColorValuedList
-        }
     }
 
     private fun handleClearButtonClick() {
-        binding.btnClear.setOnClickListener {
-            binding.tetSalary.text?.clear()
-        }
+        binding.btnClear.setOnClickListener { binding.tetSalary.text?.clear() }
     }
 
     private fun handleSalaryText(text: CharSequence?) {
@@ -135,10 +106,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             viewModel.setSalary(null)
             return
         }
-
-        val salaryText = text.toString()
-        val salary = salaryText.toIntOrNull()
-
+        val salary = text.toString().toIntOrNull()
         if (salary != null && salary > 0) {
             viewModel.setSalary(salary)
         } else {
@@ -147,22 +115,16 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun clearButtonVisibilityManager(text: CharSequence?) {
-        if (text?.isNotEmpty() == true) {
-            binding.btnClear.show()
-        } else {
-            binding.btnClear.hide()
-        }
+        binding.btnClear.isVisible = !text.isNullOrEmpty()
     }
 
-    private fun renderScreen(filterParameters: FilterParameters) {
-        binding.apply {
-            with(filterParameters) {
-                renderAreaFilter(formatLocationString(area))
-                renderIndustryFilter(industry?.name)
-                renderSalaryFilter(salary)
-                checkBoxSalary.isChecked = onlyWithSalary ?: false
-                checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
-            }
+    private fun renderScreen(filterParameters: FilterParameters) = with(binding) {
+        with(filterParameters) {
+            renderAreaFilter(formatLocationString(area))
+            renderIndustryFilter(industry?.name)
+            renderSalaryFilter(salary)
+            checkBoxSalary.isChecked = onlyWithSalary ?: false
+            checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
         }
     }
 
@@ -178,12 +140,10 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     private fun renderSalaryFilter(salary: Int?) {
         val salaryText = salary?.toString() ?: Constants.EMPTY_STRING
-        binding.tetSalary.apply {
-            if (text.toString() != salaryText) {
-                isTextUpdating = true
-                setText(salaryText)
-                isTextUpdating = false
-            }
+        if (binding.tetSalary.text.toString() != salaryText) {
+            isTextUpdating = true
+            binding.tetSalary.setText(salaryText)
+            isTextUpdating = false
         }
         clearButtonVisibilityManager(salaryText)
     }
@@ -201,69 +161,59 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         binding.tetIndustry.addTextChangedListener(createTextWatcher(binding.tilIndustry))
     }
 
-    private fun createTextWatcher(textInputLayout: TextInputLayout): TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                updateHintTextColor(textInputLayout, s)
-            }
+    private fun createTextWatcher(textInputLayout: TextInputLayout) = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+        override fun afterTextChanged(s: Editable?) {
+            updateHintTextColor(textInputLayout, s)
         }
     }
 
-    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {
-        with(textInputLayout) {
-            defaultHintTextColor = ColorStateList.valueOf(
-                resources.getColor(
-                    if (text.isNullOrBlank()) {
-                        R.color.gray
-                    } else {
-                        if (isDarkTheme()) R.color.white else R.color.black
-                    },
-                    null
-                )
+    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) = with(textInputLayout) {
+        defaultHintTextColor = ColorStateList.valueOf(
+            resources.getColor(
+                if (text.isNullOrBlank()) R.color.gray
+                else if (isDarkTheme()) R.color.white
+                else R.color.black,
+                null
             )
-        }
+        )
     }
+
 
     private fun updateAreaIcon(areaName: String?) {
-        binding.tilArea.apply {
-            if (!areaName.isNullOrEmpty()) {
-                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
-                setEndIconOnClickListener {
-                    viewModel.setArea(null)
-                }
-            } else {
-                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
-                setEndIconOnClickListener {
-                    findNavController()
-                        .navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
-                }
-            }
-        }
+        updateIcon(
+            areaName.isNullOrEmpty(),
+            binding.tilArea,
+            { viewModel.setArea(null) },
+            { findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment()) }
+        )
     }
 
     private fun updateIndustryIcon(industryName: String?) {
-        binding.tilIndustry.apply {
-            if (!industryName.isNullOrEmpty()) {
-                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
-                setEndIconOnClickListener {
-                    viewModel.setIndustry(null)
-                }
-            } else {
-                endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
-                setEndIconOnClickListener {
-                    findNavController()
-                        .navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
-                }
-            }
-        }
+        updateIcon(
+            industryName.isNullOrEmpty(),
+            binding.tilIndustry,
+            { viewModel.setIndustry(null) },
+            { findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment()) }
+        )
+    }
+
+    private fun updateIcon(
+        isEmpty: Boolean,
+        layout: TextInputLayout,
+        onClear: () -> Unit,
+        onNavigate: () -> Unit
+    ) = with(layout) {
+        endIconDrawable = AppCompatResources.getDrawable(
+            requireContext(),
+            if (isEmpty) R.drawable.ic_arrow_forward else R.drawable.ic_close
+        )
+        setEndIconOnClickListener { if (isEmpty) onNavigate() else onClear() }
     }
 
     private fun isDarkTheme(): Boolean {
-        return when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            else -> false
-        }
+        return (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+            Configuration.UI_MODE_NIGHT_YES
     }
 }
