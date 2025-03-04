@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.filter.domain.model.Area
+import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.domain.usecase.FiltersInteractor
 import ru.practicum.android.diploma.filter.domain.usecase.GetCountriesUseCase
 
@@ -28,8 +29,8 @@ class AreaViewModel(
     }
 
     private fun loadFilters() {
-        val filters = filtersInteractor.readFilters()
-        _selectedArea.value = filters.area
+        val tempFilters = filtersInteractor.readTempFilters().area
+        _selectedArea.value = tempFilters ?: filtersInteractor.readFilters().area
     }
 
     fun updateArea(newArea: Area) {
@@ -44,7 +45,7 @@ class AreaViewModel(
             _selectedArea.value = newArea
         }
 
-        saveFilters()
+        saveTempFilters()
     }
 
     fun saveFilters() {
@@ -54,6 +55,20 @@ class AreaViewModel(
                 area = _selectedArea.value
             )
         )
+        clearTempFilters()
+    }
+
+    private fun saveTempFilters() {
+        val currentFilters = filtersInteractor.readTempFilters()
+        filtersInteractor.saveTempFilters(
+            currentFilters.copy(
+                area = _selectedArea.value
+            )
+        )
+    }
+
+    private fun clearTempFilters() {
+        filtersInteractor.saveTempFilters(FilterParameters())
     }
 
     fun getCountryByRegion() {

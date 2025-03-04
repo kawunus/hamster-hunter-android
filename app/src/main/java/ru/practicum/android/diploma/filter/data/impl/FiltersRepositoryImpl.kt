@@ -16,8 +16,22 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
             .apply()
     }
 
+    override fun saveTempFilters(filters: FilterParameters) {
+        sharedPreferences.edit()
+            .putString(SHARED_PREFS_TEMP_FILTERS_KEY, gson.toJson(filters))
+            .apply()
+    }
+
     override fun readFilters(): FilterParameters {
         val filtersJson = sharedPreferences.getString(SHARED_PREFS_FILTERS_KEY, null)
+        return when {
+            filtersJson != null -> gson.fromJson(filtersJson, filterParametersType)
+            else -> FilterParameters()
+        }
+    }
+
+    override fun readTempFilters(): FilterParameters {
+        val filtersJson = sharedPreferences.getString(SHARED_PREFS_TEMP_FILTERS_KEY, null)
         return when {
             filtersJson != null -> gson.fromJson(filtersJson, filterParametersType)
             else -> FilterParameters()
@@ -40,5 +54,6 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
     private companion object {
         private val filterParametersType = object : TypeToken<FilterParameters>() {}.type
         const val SHARED_PREFS_FILTERS_KEY = "key_for_saved_filters"
+        const val SHARED_PREFS_TEMP_FILTERS_KEY = "key_for_saved_filters"
     }
 }

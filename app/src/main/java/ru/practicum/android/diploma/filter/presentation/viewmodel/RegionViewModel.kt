@@ -75,7 +75,7 @@ class RegionViewModel(
     }
 
     fun saveSelectedRegion(region: Region) {
-        val currentFilters = filtersInteractor.readFilters()
+        val currentFilters = filtersInteractor.readTempFilters()
         val country = currentFilters.area?.country
         val updatedFilters = currentFilters.copy(
             area = Area(
@@ -83,7 +83,7 @@ class RegionViewModel(
                 country = country
             )
         )
-        filtersInteractor.saveFilters(updatedFilters)
+        filtersInteractor.saveTempFilters(updatedFilters)
     }
 
     fun updateSearchQuery(query: String) {
