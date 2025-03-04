@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.ui.fragment
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
@@ -184,7 +183,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     private fun renderScreen(state: SearchScreenState) {
-        Log.d("DEBUG", "SearchScreenState = $state")
         when (state) {
             is Default -> showDefaultScreen()
             is Error -> showError(state)

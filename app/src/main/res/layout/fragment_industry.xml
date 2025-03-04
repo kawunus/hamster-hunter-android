@@ -48,7 +48,6 @@
         android:hint="@string/enter_industry"
         android:minHeight="@dimen/dp56"
         app:layout_constraintEnd_toEndOf="@id/right_border"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/left_border"
         app:layout_constraintTop_toBottomOf="@id/btn_back" />
 
