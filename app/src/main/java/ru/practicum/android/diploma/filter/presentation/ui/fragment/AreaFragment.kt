@@ -25,7 +25,7 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
 
     override fun initViews() {
         binding.btnBack.setOnClickListener {
-            viewModel.saveFilters()
+            viewModel.clearTempFilters()
             findNavController().navigateUp()
         }
 

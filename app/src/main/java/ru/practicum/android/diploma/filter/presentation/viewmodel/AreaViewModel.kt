@@ -67,7 +67,7 @@ class AreaViewModel(
         )
     }
 
-    private fun clearTempFilters() {
+    fun clearTempFilters() {
         filtersInteractor.saveTempFilters(FilterParameters())
     }
 

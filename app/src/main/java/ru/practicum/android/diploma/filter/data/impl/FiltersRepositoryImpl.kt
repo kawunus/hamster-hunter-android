@@ -54,6 +54,6 @@ class FiltersRepositoryImpl(sharedPrefsStorage: SharedPrefsStorage, private val 
     private companion object {
         private val filterParametersType = object : TypeToken<FilterParameters>() {}.type
         const val SHARED_PREFS_FILTERS_KEY = "key_for_saved_filters"
-        const val SHARED_PREFS_TEMP_FILTERS_KEY = "key_for_saved_filters"
+        const val SHARED_PREFS_TEMP_FILTERS_KEY = "key_for_temp_filters"
     }
 }
