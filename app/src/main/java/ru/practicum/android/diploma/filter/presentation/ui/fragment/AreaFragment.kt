@@ -83,16 +83,12 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
         binding.tetCountry.setText(countryName)
         binding.tetRegion.setText(regionName)
 
-        if (countryName != countryNameField || regionName != regionNameField) {
-
-            if((countryNameField != countryName) or (regionNameField != regionName)) {
-                countryNameField = countryName
-                regionNameField = regionName
-                binding.btnSelect.show()
-            } else {
-                binding.btnSelect.hide()
-            }
+        if (!viewModel.areFiltersEqual(countryName, regionName)) {
+            binding.btnSelect.show()
+        } else {
+            binding.btnSelect.hide()
         }
+
     }
 
     private fun updateCountryIcon(countryName: String) {

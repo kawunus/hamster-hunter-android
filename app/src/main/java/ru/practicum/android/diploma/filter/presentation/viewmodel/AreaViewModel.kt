@@ -71,8 +71,14 @@ class AreaViewModel(
         filtersInteractor.saveTempFilters(FilterParameters(area = null))
     }
 
-    fun areFiltersEqual() : Boolean {
-        return filtersInteractor.readFilters().area?.country?.name == filtersInteractor.readTempFilters().area?.country?.name
+    fun areFiltersEqual(countryName: String?, regionName: String?): Boolean {
+        val equal = (filtersInteractor.readFilters().area?.country?.name == countryName) and
+            (filtersInteractor.readFilters().area?.region?.name == regionName)
+
+        Log.d("equality111", "$equal")
+        Log.d("equality111", "${filtersInteractor.readFilters().area?.region?.name} ${regionName}")
+
+        return equal
     }
 
     fun getCountryByRegion() {
