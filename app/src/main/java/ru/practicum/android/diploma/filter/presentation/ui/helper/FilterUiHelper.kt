@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.presentation.ui
+package ru.practicum.android.diploma.filter.presentation.ui.helper
 
 import android.content.Context
 import android.content.res.ColorStateList

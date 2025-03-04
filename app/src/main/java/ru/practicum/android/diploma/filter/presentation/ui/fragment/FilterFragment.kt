@@ -15,7 +15,7 @@ import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
-import ru.practicum.android.diploma.filter.presentation.ui.FilterUiHelper
+import ru.practicum.android.diploma.filter.presentation.ui.helper.FilterUiHelper
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
