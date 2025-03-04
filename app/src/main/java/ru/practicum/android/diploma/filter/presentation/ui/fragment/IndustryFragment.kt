@@ -11,6 +11,7 @@ import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.filter.presentation.model.IndustriesState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.IndustryAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.IndustryViewModel
+import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -129,7 +130,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     private fun setupSearchTextWatcher() = with(binding) {
         edittextSearch.addTextChangedListener { text ->
             updateClearButtonIcon(text)
-            viewModel.updateSearchQuery(text?.toString() ?: "")
+            viewModel.updateSearchQuery(text?.toString() ?: Constants.EMPTY_STRING)
         }
     }
 

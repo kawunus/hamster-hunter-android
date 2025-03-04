@@ -177,7 +177,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
 
         val formattedHtml = htmlString
-            ?.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0") ?: ""
+            ?.replace(Regex(getString(R.string.description_regex_li)), getString(R.string.description_li_replacement))
+            ?: Constants.EMPTY_STRING
 
         return HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
     }

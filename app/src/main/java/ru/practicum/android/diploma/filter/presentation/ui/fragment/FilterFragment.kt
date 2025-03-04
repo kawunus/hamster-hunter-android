@@ -19,6 +19,7 @@ import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.filter.domain.model.FilterParameters
 import ru.practicum.android.diploma.filter.presentation.viewmodel.FilterViewModel
+import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
 import ru.practicum.android.diploma.util.formatLocationString
@@ -147,7 +148,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             viewModel.setSalary(salary)
         } else {
             // Обработка случая, когда число превышает Int.MAX_VALUE или не является числом
-            Toast.makeText(requireContext(), "Введите число больше 0 и меньше 2 147 483 647", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_too_big_salary), Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -182,7 +183,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun renderSalaryFilter(salary: Int?) {
-        val salaryText = salary?.toString() ?: ""
+        val salaryText = salary?.toString() ?: Constants.EMPTY_STRING
         binding.tetSalary.apply {
             if (text.toString() != salaryText) {
                 isTextUpdating = true

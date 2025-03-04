@@ -34,7 +34,7 @@
     <TextView
         android:id="@+id/vacancy_name_and_location"
         style="@style/Medium22TextStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp12"
         tools:text="Android-разработчик, Москва"
@@ -45,7 +45,7 @@
     <TextView
         android:id="@+id/company_name"
         style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
@@ -58,7 +58,7 @@
     <TextView
         android:id="@+id/salary"
         style="@style/Regular16TextStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         tools:text="от 150 000 до 250 000 ₽"
         app:layout_constraintEnd_toEndOf="parent"

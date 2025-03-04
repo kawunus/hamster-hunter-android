@@ -40,74 +40,48 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_area"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/PickedFilterTextInputLayoutStyle"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp16"
         android:hint="@string/job_location"
-        android:textColorHint="@color/gray"
-        app:boxBackgroundColor="?attr/colorPrimary"
-        app:boxStrokeColor="@null"
-        app:boxStrokeWidth="@dimen/zero"
-        app:boxStrokeWidthFocused="@dimen/zero"
-        app:endIconDrawable="@drawable/ic_arrow_forward"
-        app:endIconMode="custom"
-        app:endIconTint="?attr/colorOnPrimary"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
+        app:boxCollapsedPaddingTop="@dimen/dp12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_back">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tet_area"
-            style="@style/Regular16TextStyle"
+            style="@style/PickedFilterTextInputEditTextStyle"
+            android:minHeight="@dimen/dp60"
+            android:paddingBottom="@dimen/dp12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:clickable="true"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:inputType="none"
             android:text=""
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_industry"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/PickedFilterTextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/industry"
-        android:textColorHint="@color/gray"
-        app:boxBackgroundColor="?attr/colorPrimary"
-        app:boxStrokeColor="@null"
-        app:boxStrokeWidth="@dimen/zero"
-        app:boxStrokeWidthFocused="@dimen/zero"
-        app:endIconDrawable="@drawable/ic_arrow_forward"
-        app:endIconMode="custom"
-        app:endIconTint="?attr/colorOnPrimary"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
+        app:boxCollapsedPaddingTop="@dimen/dp12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_area">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tet_industry"
-            style="@style/Regular16TextStyle"
+            style="@style/PickedFilterTextInputEditTextStyle"
+            android:minHeight="@dimen/dp60"
+            android:paddingBottom="@dimen/dp12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:clickable="true"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:inputType="none"
             android:text=""
             android:textColor="?attr/colorOnPrimary" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_salary"
@@ -116,10 +90,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp24"
         android:hint="@string/expected_salary"
-        android:minHeight="@dimen/dp52"
+        app:boxCollapsedPaddingTop="@dimen/dp8"
         android:textColorHint="@color/focus_tint"
         app:boxBackgroundColor="?attr/customColorEditText"
-        app:boxCollapsedPaddingTop="@dimen/dp4"
+        app:hintTextAppearance="@style/Regular12TextStyle"
         app:boxCornerRadiusBottomEnd="@dimen/dp12"
         app:boxCornerRadiusBottomStart="@dimen/dp12"
         app:boxCornerRadiusTopEnd="@dimen/dp12"
@@ -138,6 +112,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tet_salary"
             style="@style/Regular16TextStyle"
+            android:minHeight="@dimen/dp52"
+            android:paddingBottom="@dimen/dp8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -166,6 +142,7 @@
         style="@style/Regular16TextStyle"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp60"
         android:layout_marginTop="@dimen/dp24"
         android:button="@null"
         android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
@@ -181,6 +158,7 @@
         style="@style/Regular16TextStyle"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp60"
         android:layout_marginTop="@dimen/dp24"
         android:button="@null"
         android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
@@ -215,6 +193,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/right_border"
         app:layout_constraintStart_toStartOf="@+id/left_border" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
