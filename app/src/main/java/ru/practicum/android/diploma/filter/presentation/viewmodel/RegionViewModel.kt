@@ -40,7 +40,7 @@ class RegionViewModel(
     )
 
     fun getParentId(): String? {
-        return filtersInteractor.readFilters().area?.country?.id
+        return filtersInteractor.readTempFilters().area?.country?.id ?: filtersInteractor.readFilters().area?.country?.id
     }
 
     fun loadRegions(countryId: String) {
