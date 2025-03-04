@@ -55,7 +55,7 @@ class RegionViewModel(
                 Log.e("RegionSearch", "Код ответа: ${resource.code}")
                 _screenState.value = when (resource.code) {
                     Constants.HTTP_SUCCESS -> {
-                        val regions = resource.data ?: emptyList()
+                        val regions = resource.data?.sortedBy { it.name } ?: emptyList()
                         _regions.value = regions
                         RegionScreenState.Content
                     }
