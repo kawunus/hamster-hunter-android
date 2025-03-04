@@ -222,7 +222,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun isDarkTheme(): Boolean {
-        return (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
             Configuration.UI_MODE_NIGHT_YES
     }
 }
