@@ -2,8 +2,6 @@ package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import android.content.res.ColorStateList
 import android.content.res.Configuration
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -32,7 +30,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
 
     override fun initViews() {
         setClickListeners()
-        setupSalaryTextWatcher()
         handleClearButtonClick()
         viewModel.checkSavedFilters()
         setupTextWatchers()
@@ -49,36 +46,27 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         viewModel.checkSavedFilters()
     }
 
-    private fun setClickListeners() = with(binding) {
-        btnBack.setOnClickListener { findNavController().navigateUp() }
-        tetArea.setOnClickListener {
-            findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
-        }
-        tetIndustry.setOnClickListener {
-            findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
-        }
-        checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setOnlyWithSalary(isChecked)
-        }
-        checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setOnlyInTitles(isChecked)
-        }
-        btnApply.setOnClickListener {
-            setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
-            findNavController().navigateUp()
-        }
-        btnReset.setOnClickListener { viewModel.clearFilters() }
-    }
-
-    private fun setupSalaryTextWatcher() {
-        binding.tetSalary.addTextChangedListener(
-            onTextChanged = { text, _, _, _ ->
-                updateSalaryHintColor(text)
-                if (!isTextUpdating) {
-                    handleSalaryText(text)
-                }
+    private fun setClickListeners() {
+        binding.apply {
+            btnBack.setOnClickListener { findNavController().navigateUp() }
+            tetArea.setOnClickListener {
+                findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
             }
-        )
+            tetIndustry.setOnClickListener {
+                findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
+            }
+            checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.setOnlyWithSalary(isChecked)
+            }
+            checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.setOnlyInTitles(isChecked)
+            }
+            btnApply.setOnClickListener {
+                setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
+                findNavController().navigateUp()
+            }
+            btnReset.setOnClickListener { viewModel.clearFilters() }
+        }
     }
 
     private fun updateSalaryHintColor(text: CharSequence?) {
@@ -120,13 +108,15 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         binding.btnClear.isVisible = !text.isNullOrEmpty()
     }
 
-    private fun renderScreen(filterParameters: FilterParameters) = with(binding) {
-        with(filterParameters) {
-            renderAreaFilter(formatLocationString(area))
-            renderIndustryFilter(industry?.name)
-            renderSalaryFilter(salary)
-            checkBoxSalary.isChecked = onlyWithSalary ?: false
-            checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
+    private fun renderScreen(filterParameters: FilterParameters) {
+        binding.apply {
+            with(filterParameters) {
+                renderAreaFilter(formatLocationString(area))
+                renderIndustryFilter(industry?.name)
+                renderSalaryFilter(salary)
+                checkBoxSalary.isChecked = onlyWithSalary ?: false
+                checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
+            }
         }
     }
 
@@ -159,19 +149,29 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun setupTextWatchers() {
-        binding.tetArea.addTextChangedListener(createTextWatcher(binding.tilArea))
-        binding.tetIndustry.addTextChangedListener(createTextWatcher(binding.tilIndustry))
-    }
-
-    private fun createTextWatcher(textInputLayout: TextInputLayout) = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-        override fun afterTextChanged(s: Editable?) {
-            updateHintTextColor(textInputLayout, s)
+        binding.apply {
+            tetArea.addTextChangedListener(
+                onTextChanged = { text, _, _, _ ->
+                    updateHintTextColor(binding.tilArea, text)
+                }
+            )
+            tetIndustry.addTextChangedListener(
+                onTextChanged = { text, _, _, _ ->
+                    updateHintTextColor(binding.tilIndustry, text)
+                }
+            )
+            tetSalary.addTextChangedListener(
+                onTextChanged = { text, _, _, _ ->
+                    updateSalaryHintColor(text)
+                    if (!isTextUpdating) {
+                        handleSalaryText(text)
+                    }
+                }
+            )
         }
     }
 
-    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) = with(textInputLayout) {
+    private fun updateHintTextColor(textInputLayout: TextInputLayout, text: CharSequence?) = with(textInputLayout) {
         defaultHintTextColor = ColorStateList.valueOf(
             resources.getColor(
                 if (text.isNullOrBlank()) {
