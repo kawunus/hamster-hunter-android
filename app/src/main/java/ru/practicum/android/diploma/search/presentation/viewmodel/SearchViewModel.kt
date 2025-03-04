@@ -123,6 +123,7 @@ class SearchViewModel(
     }
 
     fun startSearchWithLatestText() {
+        cancelSearchDebounce()
         startSearch(latestSearchText)
     }
 
