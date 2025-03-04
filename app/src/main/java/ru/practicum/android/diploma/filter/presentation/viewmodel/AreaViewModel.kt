@@ -20,7 +20,7 @@ class AreaViewModel(
     private val _selectedArea = MutableLiveData<Area?>()
     val selectedArea: LiveData<Area?> = _selectedArea
     private val _isAcceptable = MutableLiveData(true)
-    val isAcceptable:LiveData<Boolean> =_isAcceptable
+    val isAcceptable: LiveData<Boolean> = _isAcceptable
 
     init {
         loadFilters()
@@ -33,6 +33,7 @@ class AreaViewModel(
     private fun loadFilters() {
         val tempFilters = filtersInteractor.readTempFilters().area
         _selectedArea.value = tempFilters ?: filtersInteractor.readFilters().area
+        saveTempFilters()
     }
 
     fun updateArea(newArea: Area) {
@@ -73,7 +74,7 @@ class AreaViewModel(
         filtersInteractor.saveTempFilters(FilterParameters(area = null))
     }
 
-    fun areFiltersEqual(countryName: String?, regionName: String?)   {
+    fun areFiltersEqual(countryName: String?, regionName: String?) {
         var country = countryName
         var region = regionName
 
