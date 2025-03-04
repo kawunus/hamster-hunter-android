@@ -47,7 +47,7 @@ private fun formatCurrency(currency: String, context: Context): String {
 fun formatLocationString(area: Area?): String {
     return when {
         area?.country?.name.isNullOrEmpty() && area?.region?.name.isNullOrEmpty() -> ""
-        area?.country?.name.isNullOrEmpty() -> area?.region?.name.orEmpty()
+        area?.country?.name.isNullOrEmpty() -> ""
         area?.region?.name.isNullOrEmpty() -> area?.country?.name.orEmpty()
         else -> "${area?.country?.name}, ${area?.region?.name}"
     }

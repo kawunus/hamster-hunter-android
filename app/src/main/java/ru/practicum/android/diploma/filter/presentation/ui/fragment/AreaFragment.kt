@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,8 +25,10 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
 
     override fun initViews() {
         binding.btnBack.setOnClickListener {
+            viewModel.saveFilters()
             findNavController().navigateUp()
         }
+
 
         binding.tetCountry.setOnClickListener {
             findNavController().navigate(R.id.action_areaFragment_to_countryFragment)
@@ -99,12 +102,13 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
 
     private fun updateCountryIcon(countryName: String) {
         if (countryName.isNotEmpty()) {
-            binding.tilCountry.endIconDrawable = requireContext().getDrawable(R.drawable.ic_close)
+            binding.tilCountry.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
             binding.tilCountry.setEndIconOnClickListener {
                 viewModel.updateArea(Area(country = null, region = null))
             }
         } else {
-            binding.tilCountry.endIconDrawable = requireContext().getDrawable(R.drawable.ic_arrow_forward)
+            binding.tilCountry.endIconDrawable =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
             binding.tilCountry.setEndIconOnClickListener {
                 findNavController().navigate(R.id.action_areaFragment_to_countryFragment)
             }
@@ -113,13 +117,14 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
 
     private fun updateRegionIcon(regionName: String) {
         if (regionName.isNotEmpty()) {
-            binding.tilRegion.endIconDrawable = requireContext().getDrawable(R.drawable.ic_close)
+            binding.tilRegion.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
             binding.tilRegion.setEndIconOnClickListener {
                 val currentArea = viewModel.selectedArea.value
                 viewModel.updateArea(currentArea?.copy(region = null) ?: Area(null, null))
             }
         } else {
-            binding.tilRegion.endIconDrawable = requireContext().getDrawable(R.drawable.ic_arrow_forward)
+            binding.tilRegion.endIconDrawable =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_forward)
             binding.tilRegion.setEndIconOnClickListener {
                 findNavController().navigate(R.id.action_areaFragment_to_regionFragment)
             }
