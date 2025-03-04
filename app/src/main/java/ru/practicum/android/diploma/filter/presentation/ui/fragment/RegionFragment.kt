@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.databinding.FragmentRegionBinding
 import ru.practicum.android.diploma.filter.presentation.model.RegionScreenState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.RegionsAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionViewModel
+import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -88,7 +89,7 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
         binding.edittextSearch.addTextChangedListener(
             onTextChanged = { text, _, _, _ ->
                 updateClearButtonIcon(text)
-                viewModel.updateSearchQuery(text?.toString() ?: "")
+                viewModel.updateSearchQuery(text?.toString() ?: Constants.EMPTY_STRING)
             },
         )
     }
@@ -106,7 +107,7 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
 
     // загружаем список регионов при старте
     private fun loadInitialData() {
-        val countryId = viewModel.getParentId() ?: ""
+        val countryId = viewModel.getParentId() ?: Constants.EMPTY_STRING
         viewModel.loadRegions(countryId)
     }
 
@@ -191,6 +192,5 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
         const val BUNDLE_KEY_REGION_ID = "bundle_key_region_id" // ключ для ID выбранного региона
         const val BUNDLE_KEY_REGION_NAME = "bundle_key_region_name" // ключ для названия выбранного региона
         const val BUNDLE_KEY_PARENT_ID = "bundle_key_parent_id" // ключ для ID родительской страны
-        const val COUNTRY_ID_KEY = "country_id" // ключ для получения ID страны из аргументов
     }
 }

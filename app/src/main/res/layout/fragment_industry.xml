@@ -46,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp8"
         android:hint="@string/enter_industry"
+        android:minHeight="@dimen/dp56"
         app:layout_constraintEnd_toEndOf="@id/right_border"
         app:layout_constraintStart_toStartOf="@id/left_border"
         app:layout_constraintTop_toBottomOf="@id/btn_back" />
@@ -63,9 +64,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp8"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        android:layout_marginTop="@dimen/dp16"
         app:layout_constraintBottom_toTopOf="@id/choose_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +76,7 @@
     <Button
         android:id="@+id/choose_button"
         style="@style/ApplyButtonStyle"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp24"
         android:enabled="true"

@@ -22,9 +22,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/zero"
         android:layout_marginTop="@dimen/dp16"
         app:layout_constraintTop_toBottomOf="@id/title_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_vacancy" />
 
     <ImageView
@@ -50,8 +51,8 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="@dimen/dp36"
+        android:layout_height="@dimen/dp36"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp171"
         android:indeterminateTint="@color/blue"
