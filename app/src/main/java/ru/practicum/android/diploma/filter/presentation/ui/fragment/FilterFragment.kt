@@ -155,12 +155,14 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
     }
 
     private fun renderScreen(filterParameters: FilterParameters) {
-        with(filterParameters) {
-            renderAreaFilter(formatLocationString(area))
-            renderIndustryFilter(industry?.name)
-            renderSalaryFilter(salary)
-            renderOnlyWithSalaryFilter(onlyWithSalary)
-            renderOnlyInTitlesFilter(onlyInTitles)
+        binding.apply {
+            with(filterParameters) {
+                renderAreaFilter(formatLocationString(area))
+                renderIndustryFilter(industry?.name)
+                renderSalaryFilter(salary)
+                checkBoxSalary.isChecked = onlyWithSalary ?: false
+                checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
+            }
         }
     }
 
@@ -184,15 +186,6 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
             }
         }
         clearButtonVisibilityManager(salaryText)
-
-    }
-
-    private fun renderOnlyWithSalaryFilter(onlyWithSalary: Boolean?) {
-        binding.checkBoxSalary.isChecked = onlyWithSalary ?: false
-    }
-
-    private fun renderOnlyInTitlesFilter(onlyInTitles: Boolean?) {
-        binding.checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
     }
 
     private fun setApplyBtnVisibility(filterWasChanged: Boolean) {
