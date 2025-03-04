@@ -42,12 +42,24 @@ class VacancyViewModel(
 
     private suspend fun initIsVacancyInFavorite() {
         vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
-        delay(START_SCREEN_DELAY)
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
         vacancyIsLikedLiveData.postValue(isLiked)
+        delay(START_SCREEN_DELAY)
+        // Если вакансия в избранном, то вначале пробуем получить ее из интернета
         if (isLiked) {
-            val vacancy = favoriteVacancyInteractor.getVacancyById(vacancyId)
-            vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancy.toVacancyDetails()))
+            vacancyDetailsInteractor.findVacancy(vacancyId).collect { pair ->
+                // Если получили, то сохраняем ее в БД и сразу же получаем из БД
+                if (pair.first != null) {
+                    favoriteVacancyInteractor.addVacancyToFavorites(pair.first!!.toFavoritesVacancy())
+                    val vacancyFromBD = favoriteVacancyInteractor.getVacancyById(pair.first!!.id).toVacancyDetails()
+                    processResult(vacancyFromBD, null)
+                    // Иначе получаем из БД
+                } else {
+                    val vacancy = favoriteVacancyInteractor.getVacancyById(vacancyId)
+                    vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancy.toVacancyDetails()))
+                }
+            }
+            // Если вакансия не в избранном, получаем из сети
         } else {
             vacancyDetailsInteractor.findVacancy(vacancyId).collect { pair ->
                 processResult(pair.first, pair.second)

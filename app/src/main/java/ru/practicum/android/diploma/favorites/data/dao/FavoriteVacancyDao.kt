@@ -23,4 +23,7 @@ interface FavoriteVacancyDao {
 
     @Query("SELECT * FROM favorite_vacancies WHERE id = :vacancyId")
     suspend fun getVacancyById(vacancyId: String): FavoriteVacancyEntity
+
+    @Query("UPDATE favorite_vacancies SET added_at = :newAddedAt WHERE id = :vacancyId")
+    suspend fun updateAddedAt(vacancyId: String, newAddedAt: Long)
 }
