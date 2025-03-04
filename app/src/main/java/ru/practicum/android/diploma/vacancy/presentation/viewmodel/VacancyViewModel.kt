@@ -3,10 +3,12 @@ package ru.practicum.android.diploma.vacancy.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.favorites.domain.usecase.FavoriteVacancyInteractor
-import ru.practicum.android.diploma.util.toVacancy
+import ru.practicum.android.diploma.util.toFavoritesVacancy
+import ru.practicum.android.diploma.util.toVacancyDetails
 import ru.practicum.android.diploma.vacancy.domain.model.ErrorType
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 import ru.practicum.android.diploma.vacancy.domain.usecase.VacancyDetailsInteractor
@@ -22,17 +24,14 @@ class VacancyViewModel(
     fun observeVacancyDetailsState(): LiveData<VacancyDetailsState> = vacancyDetailsLiveData
 
     init {
-        vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
         viewModelScope.launch {
-            vacancyDetailsInteractor.findVacancy(vacancyId).collect { pair ->
-                processResult(pair.first, pair.second)
-            }
+            initIsVacancyInFavorite()
         }
     }
 
     private suspend fun processResult(vacancyDetails: VacancyDetails?, errorMessage: ErrorType?) {
         if (vacancyDetails != null && errorMessage != ErrorType.NOT_FOUND) {
-            initIsVacancyInFavorite(vacancyDetails)
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancyDetails))
         } else if (vacancyDetails != null) {
             favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyDetails.id)
             vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
@@ -41,26 +40,34 @@ class VacancyViewModel(
         }
     }
 
-    private suspend fun initIsVacancyInFavorite(vacancyDetails: VacancyDetails) {
+    private suspend fun initIsVacancyInFavorite() {
+        vacancyDetailsLiveData.postValue(VacancyDetailsState.Loading)
+        delay(START_SCREEN_DELAY)
         val isLiked = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
         vacancyIsLikedLiveData.postValue(isLiked)
-        vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancyDetails))
+        if (isLiked) {
+            val vacancy = favoriteVacancyInteractor.getVacancyById(vacancyId)
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.VacancyInfo(vacancy.toVacancyDetails()))
+        } else {
+            vacancyDetailsInteractor.findVacancy(vacancyId).collect { pair ->
+                processResult(pair.first, pair.second)
+            }
+        }
     }
 
-    fun likeControl() {
+    fun favoritesHandler() {
         val previousState = vacancyDetailsLiveData.value
         if (previousState is VacancyDetailsState.VacancyInfo) {
             when (vacancyIsLikedLiveData.value) {
                 true -> deleteVacancyFromFavorites()
-                false -> addVacancyToFavorites(previousState.details)
-                else -> {}
+                else -> addVacancyToFavorites(previousState.details)
             }
         }
     }
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId.isNotEmpty()) {
-                favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toVacancy())
+                favoriteVacancyInteractor.addVacancyToFavorites(vacancy.toFavoritesVacancy())
                 val newLikeStatus = favoriteVacancyInteractor.isVacancyInFavorites(vacancyId)
                 vacancyIsLikedLiveData.postValue(newLikeStatus)
             }
@@ -82,6 +89,10 @@ class VacancyViewModel(
         if (prevState is VacancyDetailsState.VacancyInfo) {
             vacancyDetailsInteractor.openVacancyShare(prevState.details.alternateUrl)
         }
+    }
+
+    private companion object {
+        const val START_SCREEN_DELAY: Long = 500
     }
 
 }
