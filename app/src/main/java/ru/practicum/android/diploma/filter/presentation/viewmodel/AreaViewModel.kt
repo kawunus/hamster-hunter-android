@@ -68,7 +68,11 @@ class AreaViewModel(
     }
 
     fun clearTempFilters() {
-        filtersInteractor.saveTempFilters(FilterParameters())
+        filtersInteractor.saveTempFilters(FilterParameters(area = null))
+    }
+
+    fun areFiltersEqual() : Boolean {
+        return filtersInteractor.readFilters().area?.country?.name == filtersInteractor.readTempFilters().area?.country?.name
     }
 
     fun getCountryByRegion() {
