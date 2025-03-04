@@ -29,7 +29,6 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
             findNavController().navigateUp()
         }
 
-
         binding.tetCountry.setOnClickListener {
             findNavController().navigate(R.id.action_areaFragment_to_countryFragment)
         }
