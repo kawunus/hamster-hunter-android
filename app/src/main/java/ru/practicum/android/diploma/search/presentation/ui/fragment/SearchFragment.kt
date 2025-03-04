@@ -282,6 +282,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             }
         }
     }
+
     private fun renderFilterButton(anyFilterApplied: Boolean?) {
         val iconRes = when (anyFilterApplied) {
             true -> R.drawable.ic_filter_on
