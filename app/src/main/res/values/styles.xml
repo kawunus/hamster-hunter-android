@@ -138,4 +138,26 @@
         <item name="fontWeight">500</item>
     </style>
 
+    <style name="PickedFilterTextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextAppearance">@style/Regular12TextStyle</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="boxBackgroundColor">?attr/colorPrimary</item>
+        <item name="boxStrokeColor">@null</item>
+        <item name="boxStrokeWidth">@dimen/zero</item>
+        <item name="boxStrokeWidthFocused">@dimen/zero</item>
+        <item name="endIconDrawable">@drawable/ic_arrow_forward</item>
+        <item name="endIconMode">custom</item>
+        <item name="endIconTint">?attr/colorOnPrimary</item>
+        <item name="hintAnimationEnabled">true</item>
+        <item name="hintEnabled">true</item>
+    </style>
+
+    <style name="PickedFilterTextInputEditTextStyle" parent="@style/Regular16TextStyle">
+        <item name="background">@null</item>
+        <item name="android:clickable">true</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:inputType">none</item>
+    </style>
+
 </resources>
