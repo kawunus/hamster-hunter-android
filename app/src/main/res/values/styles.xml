@@ -157,7 +157,7 @@
         <item name="android:clickable">true</item>
         <item name="android:cursorVisible">false</item>
         <item name="android:focusable">false</item>
-        <item name="android:inputType">none</item>
+        <item name="android:inputType">textMultiLine|textNoSuggestions</item>
     </style>
 
 </resources>
