@@ -33,7 +33,8 @@ val dataModule = module {
     }
 // AppDatabase
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, HH_DATABASE_NAME).build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, HH_DATABASE_NAME)
+            .fallbackToDestructiveMigration().build()
     }
 // SharedPreferences
     single {
