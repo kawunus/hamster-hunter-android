@@ -3,8 +3,8 @@ package ru.practicum.android.diploma.filter.presentation.ui.fragment
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.text.Editable
-import android.text.TextWatcher
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,13 +19,10 @@ import ru.practicum.android.diploma.util.show
 class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAreaBinding::inflate) {
 
     override val viewModel: AreaViewModel by viewModel()
-    private var countryNameField: String? = null
-    private var regionNameField: String? = null
-    private var fieldCheckFlag = false
 
     override fun initViews() {
         binding.btnBack.setOnClickListener {
-            viewModel.saveFilters()
+            viewModel.clearTempFilters()
             findNavController().navigateUp()
         }
 
@@ -83,20 +80,12 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
         binding.tetCountry.setText(countryName)
         binding.tetRegion.setText(regionName)
 
-        if (countryName != countryNameField || regionName != regionNameField) {
-            countryNameField = countryName
-            regionNameField = regionName
-
-            if (!fieldCheckFlag) {
-                fieldCheckFlag = true
-            } else {
-                if (countryName.isNotEmpty() || regionName.isNotEmpty()) {
-                    binding.btnSelect.show()
-                } else {
-                    binding.btnSelect.hide()
-                }
-            }
+        if (!viewModel.areFiltersEqual(countryName, regionName)) {
+            binding.btnSelect.show()
+        } else {
+            binding.btnSelect.hide()
         }
+
     }
 
     private fun updateCountryIcon(countryName: String) {
@@ -131,18 +120,16 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
     }
 
     private fun setTextChangedListeners() {
-        binding.tetCountry.addTextChangedListener(createTextWatcher(binding.tilCountry))
-        binding.tetRegion.addTextChangedListener(createTextWatcher(binding.tilRegion))
-    }
-
-    private fun createTextWatcher(textInputLayout: TextInputLayout): TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                updateHintTextColor(textInputLayout, s)
+        binding.tetCountry.addTextChangedListener(
+            afterTextChanged = { s ->
+                updateHintTextColor(binding.tilCountry, s)
             }
-        }
+        )
+        binding.tetRegion.addTextChangedListener(
+            afterTextChanged = { s ->
+                updateHintTextColor(binding.tilRegion, s)
+            }
+        )
     }
 
     private fun updateHintTextColor(textInputLayout: TextInputLayout, text: Editable?) {

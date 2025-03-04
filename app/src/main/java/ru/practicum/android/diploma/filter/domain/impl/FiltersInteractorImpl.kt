@@ -9,8 +9,16 @@ class FiltersInteractorImpl(private val repository: FiltersRepository) : Filters
         repository.saveFilters(filters)
     }
 
+    override fun saveTempFilters(filters: FilterParameters) {
+        repository.saveTempFilters(filters)
+    }
+
     override fun readFilters(): FilterParameters {
         return repository.readFilters()
+    }
+
+    override fun readTempFilters(): FilterParameters {
+        return repository.readTempFilters()
     }
 
     override fun clearFilters() {

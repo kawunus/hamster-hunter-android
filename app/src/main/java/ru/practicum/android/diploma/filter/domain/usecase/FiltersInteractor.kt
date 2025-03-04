@@ -6,7 +6,11 @@ interface FiltersInteractor {
 
     fun saveFilters(filters: FilterParameters)
 
+    fun saveTempFilters(filters: FilterParameters)
+
     fun readFilters(): FilterParameters
+
+    fun readTempFilters(): FilterParameters
 
     fun clearFilters()
 

@@ -40,7 +40,7 @@ class RegionViewModel(
     )
 
     fun getParentId(): String? {
-        return filtersInteractor.readFilters().area?.country?.id
+        return filtersInteractor.readTempFilters().area?.country?.id
     }
 
     fun loadRegions(countryId: String) {
@@ -75,7 +75,7 @@ class RegionViewModel(
     }
 
     fun saveSelectedRegion(region: Region) {
-        val currentFilters = filtersInteractor.readFilters()
+        val currentFilters = filtersInteractor.readTempFilters()
         val country = currentFilters.area?.country
         val updatedFilters = currentFilters.copy(
             area = Area(
@@ -83,7 +83,7 @@ class RegionViewModel(
                 country = country
             )
         )
-        filtersInteractor.saveFilters(updatedFilters)
+        filtersInteractor.saveTempFilters(updatedFilters)
     }
 
     fun updateSearchQuery(query: String) {

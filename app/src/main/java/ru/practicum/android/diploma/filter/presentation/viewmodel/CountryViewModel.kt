@@ -59,7 +59,7 @@ class CountryViewModel(
     }
 
     fun onCountrySelected(country: Country) {
-        val currentFilters = filtersInteractor.readFilters()
+        val currentFilters = filtersInteractor.readTempFilters()
 
         val newArea = Area(
             country = country,
@@ -71,6 +71,6 @@ class CountryViewModel(
         )
         val updatedFilters = currentFilters.copy(area = newArea)
 
-        filtersInteractor.saveFilters(updatedFilters)
+        filtersInteractor.saveTempFilters(updatedFilters)
     }
 }
