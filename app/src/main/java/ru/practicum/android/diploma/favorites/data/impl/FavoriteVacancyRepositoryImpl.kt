@@ -31,6 +31,7 @@ class FavoriteVacancyRepositoryImpl(
     }
 
     override suspend fun getVacancyById(vacancyId: String): FavoritesVacancy {
+        favoriteVacancyDao.updateAddedAt(vacancyId, System.currentTimeMillis())
         return favoriteVacancyDao.getVacancyById(vacancyId).toDomain()
     }
 
