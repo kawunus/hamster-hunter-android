@@ -10,7 +10,7 @@ class FiltersInteractorImpl(private val repository: FiltersRepository) : Filters
     }
 
     override fun saveTempFilters(filters: FilterParameters) {
-        repository.saveFilters(filters)
+        repository.saveTempFilters(filters)
     }
 
     override fun readFilters(): FilterParameters {
@@ -18,7 +18,7 @@ class FiltersInteractorImpl(private val repository: FiltersRepository) : Filters
     }
 
     override fun readTempFilters(): FilterParameters {
-        return repository.readFilters()
+        return repository.readTempFilters()
     }
 
     override fun clearFilters() {

@@ -84,17 +84,13 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
         binding.tetRegion.setText(regionName)
 
         if (countryName != countryNameField || regionName != regionNameField) {
-            countryNameField = countryName
-            regionNameField = regionName
 
-            if (!fieldCheckFlag) {
-                fieldCheckFlag = true
+            if((countryNameField != countryName) or (regionNameField != regionName)) {
+                countryNameField = countryName
+                regionNameField = regionName
+                binding.btnSelect.show()
             } else {
-                if (countryName.isNotEmpty() || regionName.isNotEmpty()) {
-                    binding.btnSelect.show()
-                } else {
-                    binding.btnSelect.hide()
-                }
+                binding.btnSelect.hide()
             }
         }
     }
