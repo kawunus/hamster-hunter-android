@@ -35,6 +35,8 @@ class VacancyViewModel(
         } else if (vacancyDetails != null) {
             favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyDetails.id)
             vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
+        } else if (errorMessage == ErrorType.NO_INTERNET) {
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.NoInternet)
         } else {
             vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
         }

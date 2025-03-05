@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
+import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.mapToErrorType
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
@@ -29,11 +30,19 @@ class VacancyDetailsRepositoryImpl(
     }
 
     override suspend fun findVacancyDetails(vacancyId: String): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
-        val response = networkClient.doRequest(VacancyByIdRequest(vacancyId))
-        when (response.resultCode) {
-            HTTP_SUCCESS -> emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
-            else -> emit(NetworkResult.Error(response.resultCode.mapToErrorType()))
+        if (!isConnected()) {
+            emit(NetworkResult.Error(ErrorType.NO_INTERNET))
+        } else {
+            val response = networkClient.doRequest(VacancyByIdRequest(vacancyId))
+            when (response.resultCode) {
+                HTTP_SUCCESS -> emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
+                else -> emit(NetworkResult.Error(response.resultCode.mapToErrorType()))
+            }
         }
+    }
+
+    private fun isConnected(): Boolean {
+        return NetworkMonitor.isNetworkAvailable(context)
     }
 
     private companion object {

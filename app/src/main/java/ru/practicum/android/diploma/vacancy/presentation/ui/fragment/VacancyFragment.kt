@@ -71,20 +71,31 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         jobInfo.isVisible = !showErrorOrNot
     }
 
-    private fun changeErrorMessage(isServerError: Boolean) = with(binding) {
-        if (isServerError) {
+    private fun changeErrorMessage(isServerError: Int) = with(binding) {
+        if (isServerError == 0) { // 0 - сервер
             errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
             errorText.text = getString(R.string.error_server)
-        } else {
+        } else if (isServerError > 0) { // + сервер
             errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
             errorText.text = getString(R.string.error_job_not_found_or_deleted)
+        } else { // - нет интернета
+            errorImg.setImageResource(R.drawable.placeholder_network_error)
+            errorText.text = getString(R.string.error_no_internet)
         }
+    }
+
+    private fun showErrorNoInternet() = with(binding) {
+        renderError(true)
+        progressBar.hide()
+        changeErrorMessage(-1)
+        buttonShare.hide()
+        buttonLike.hide()
     }
 
     private fun showErrorServer() = with(binding) {
         renderError(true)
         progressBar.hide()
-        changeErrorMessage(true)
+        changeErrorMessage(1)
         buttonShare.hide()
         buttonLike.hide()
     }
@@ -92,7 +103,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     private fun showErrorNotFound() = with(binding) {
         renderError(true)
         progressBar.hide()
-        changeErrorMessage(false)
+        changeErrorMessage(0)
     }
 
     private fun showLoading() = with(binding) {
@@ -168,6 +179,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             is VacancyDetailsState.ServerError -> showErrorServer()
 
             is VacancyDetailsState.VacancyInfo -> showVacancyDetails(state)
+
+            is VacancyDetailsState.NoInternet -> showErrorNoInternet()
         }
     }
 
