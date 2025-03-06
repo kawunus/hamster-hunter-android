@@ -206,7 +206,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
                 is NothingFound -> {
                     ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
-                    tvErrorText.text = getString(R.string.error_nothing_found)
+                    tvErrorText.text = getString(R.string.error_nothing_found_vacancy)
                     notificationText.show()
                 }
 
