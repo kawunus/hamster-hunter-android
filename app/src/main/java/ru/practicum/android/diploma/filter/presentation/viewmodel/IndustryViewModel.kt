@@ -68,6 +68,10 @@ class IndustryViewModel(
     fun updateSearchQuery(query: String) {
         currentSearchQuery = query.trim().lowercase()
 
+        if (allIndustries.isNotEmpty()) {
+            _uiState.value = IndustriesState.Success(allIndustries)
+        }
+
         _filteredIndustries.value = if (currentSearchQuery.isEmpty()) {
             allIndustries
         } else {
