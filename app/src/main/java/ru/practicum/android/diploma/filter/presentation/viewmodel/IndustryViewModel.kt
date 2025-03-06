@@ -73,7 +73,7 @@ class IndustryViewModel(
         } else {
             allIndustries.filter { it.name!!.lowercase().contains(currentSearchQuery) }
         }
-        if (filteredIndustries.value.isNullOrEmpty()) {
+        if (filteredIndustries.value.isNullOrEmpty() && uiState.value is IndustriesState.Success) {
             _uiState.value = IndustriesState.NothingFound
         }
     }
