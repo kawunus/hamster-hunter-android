@@ -7,8 +7,6 @@ import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.domain.model.Country
 import ru.practicum.android.diploma.filter.domain.model.Region
 import ru.practicum.android.diploma.search.domain.model.Vacancy
-import ru.practicum.android.diploma.util.Constants.HTTP_NOT_FOUND
-import ru.practicum.android.diploma.vacancy.domain.model.ErrorType
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 
 fun VacancyDetails.toFavoritesVacancy(): FavoritesVacancy = FavoritesVacancy(
@@ -62,13 +60,6 @@ fun FavoritesVacancy.toVacancy(): Vacancy = Vacancy(
     company = this.employer,
     icon = this.icon
 )
-
-fun Int.mapToErrorType(): ErrorType {
-    return when (this) {
-        HTTP_NOT_FOUND -> ErrorType.NOT_FOUND
-        else -> ErrorType.UNKNOWN
-    }
-}
 
 fun CountryDto.toCountry(): Country {
     return Country(

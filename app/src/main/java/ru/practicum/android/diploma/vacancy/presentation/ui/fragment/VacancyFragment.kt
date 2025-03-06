@@ -83,8 +83,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     private fun showErrorServer() = with(binding) {
         showOrHideError(true)
         progressBar.hide()
-        errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
-        errorText.text = getString(R.string.error_job_not_found_or_deleted)
+        errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
+        errorText.text = getString(R.string.error_server)
         buttonShare.hide()
         buttonLike.hide()
     }
@@ -92,8 +92,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     private fun showErrorNotFound() = with(binding) {
         showOrHideError(true)
         progressBar.hide()
-        errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
-        errorText.text = getString(R.string.error_server)
+        errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
+        errorText.text = getString(R.string.error_job_not_found_or_deleted)
     }
 
     private fun showLoading() = with(binding) {
