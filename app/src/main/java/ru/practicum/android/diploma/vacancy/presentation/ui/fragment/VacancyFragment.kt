@@ -66,54 +66,44 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             .into(employerImg)
     }
 
-    private fun renderError(showErrorOrNot: Boolean) = with(binding) {
-        errorBox.isVisible = showErrorOrNot
-        jobInfo.isVisible = !showErrorOrNot
-    }
-
-    private fun changeErrorMessage(isServerError: Int) = with(binding) {
-        if (isServerError == 0) { // 0 - сервер
-            errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
-            errorText.text = getString(R.string.error_server)
-        } else if (isServerError > 0) { // + сервер
-            errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
-            errorText.text = getString(R.string.error_job_not_found_or_deleted)
-        } else { // - нет интернета
-            errorImg.setImageResource(R.drawable.placeholder_network_error)
-            errorText.text = getString(R.string.error_no_internet)
-        }
+    private fun showOrHideError(isErrorVisible: Boolean) = with(binding) {
+        errorBox.isVisible = isErrorVisible
+        jobInfo.isVisible = !isErrorVisible
     }
 
     private fun showErrorNoInternet() = with(binding) {
-        renderError(true)
+        showOrHideError(true)
         progressBar.hide()
-        changeErrorMessage(-1)
+        errorImg.setImageResource(R.drawable.placeholder_network_error)
+        errorText.text = getString(R.string.error_no_internet)
         buttonShare.hide()
         buttonLike.hide()
     }
 
     private fun showErrorServer() = with(binding) {
-        renderError(true)
+        showOrHideError(true)
         progressBar.hide()
-        changeErrorMessage(1)
+        errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
+        errorText.text = getString(R.string.error_job_not_found_or_deleted)
         buttonShare.hide()
         buttonLike.hide()
     }
 
     private fun showErrorNotFound() = with(binding) {
-        renderError(true)
+        showOrHideError(true)
         progressBar.hide()
-        changeErrorMessage(0)
+        errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
+        errorText.text = getString(R.string.error_server)
     }
 
     private fun showLoading() = with(binding) {
-        renderError(false)
+        showOrHideError(false)
         jobInfo.hide()
         progressBar.show()
     }
 
     private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyInfo) = with(binding) {
-        renderError(false)
+        showOrHideError(false)
         progressBar.hide()
         renderVacancyInfo(vacancyDetailsState.details)
 
