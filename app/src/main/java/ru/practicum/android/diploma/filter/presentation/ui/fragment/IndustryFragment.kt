@@ -70,10 +70,18 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     private fun renderState(state: IndustriesState) {
         when (state) {
             IndustriesState.Loading -> showLoadingState()
-            IndustriesState.NetworkError -> showNetworkError()
-            IndustriesState.ServerError -> showServerError()
+            IndustriesState.Error.NetworkError -> showNetworkError()
+            IndustriesState.Error.ServerError -> showServerError()
             is IndustriesState.Success -> showSuccessState(state.industriesList)
+            IndustriesState.Error.NothingFound -> showNothingFoundError()
         }
+    }
+
+    private fun showNothingFoundError() {
+        showPlaceholder(
+            placeholderDrawable = R.drawable.placeholder_not_found,
+            textRes = R.string.error_cant_get_list
+        )
     }
 
     private fun showNetworkError() {
@@ -91,7 +99,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     }
 
     private fun renderSelectButton(industry: Industry?) = with(binding) {
-        if (industry == null) {
+        if (industry == null || viewModel.uiState.value !is IndustriesState.Success) {
             chooseButton.hide()
             chooseButton.isEnabled = false
         } else {
