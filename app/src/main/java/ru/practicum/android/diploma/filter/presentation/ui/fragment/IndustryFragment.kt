@@ -70,10 +70,10 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     private fun renderState(state: IndustriesState) {
         when (state) {
             IndustriesState.Loading -> showLoadingState()
-            IndustriesState.NetworkError -> showNetworkError()
-            IndustriesState.ServerError -> showServerError()
+            IndustriesState.Error.NetworkError -> showNetworkError()
+            IndustriesState.Error.ServerError -> showServerError()
             is IndustriesState.Success -> showSuccessState(state.industriesList)
-            IndustriesState.NothingFound -> showNothingFoundError()
+            IndustriesState.Error.NothingFound -> showNothingFoundError()
         }
     }
 
