@@ -7,4 +7,5 @@ sealed interface IndustriesState {
     data class Success(val industriesList: List<Industry>) : IndustriesState
     data object NetworkError : IndustriesState
     data object ServerError : IndustriesState
+    data object NothingFound : IndustriesState
 }

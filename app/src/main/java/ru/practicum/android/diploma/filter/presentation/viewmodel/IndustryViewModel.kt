@@ -47,6 +47,7 @@ class IndustryViewModel(
                         _filteredIndustries.value = list
                         _uiState.value = IndustriesState.Success(list)
                     }
+
                     Constants.HTTP_NOT_FOUND, -1 -> _uiState.value = IndustriesState.NetworkError
                     else -> _uiState.value = IndustriesState.ServerError
                 }
@@ -71,6 +72,9 @@ class IndustryViewModel(
             allIndustries
         } else {
             allIndustries.filter { it.name!!.lowercase().contains(currentSearchQuery) }
+        }
+        if (filteredIndustries.value.isNullOrEmpty()) {
+            _uiState.value = IndustriesState.NothingFound
         }
     }
 

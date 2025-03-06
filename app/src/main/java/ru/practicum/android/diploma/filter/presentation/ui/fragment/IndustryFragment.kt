@@ -73,9 +73,16 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
             IndustriesState.NetworkError -> showNetworkError()
             IndustriesState.ServerError -> showServerError()
             is IndustriesState.Success -> showSuccessState(state.industriesList)
+            IndustriesState.NothingFound -> showNothingFoundError()
         }
     }
 
+    private fun showNothingFoundError() {
+        showPlaceholder(
+            placeholderDrawable = R.drawable.placeholder_not_found,
+            textRes = R.string.error_cant_get_list
+        )
+    }
     private fun showNetworkError() {
         showPlaceholder(
             placeholderDrawable = R.drawable.placeholder_network_error,
