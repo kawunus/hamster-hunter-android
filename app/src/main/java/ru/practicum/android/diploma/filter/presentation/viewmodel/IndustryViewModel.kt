@@ -37,7 +37,7 @@ class IndustryViewModel(
         viewModelScope.launch {
             getIndustriesUseCase.getAllIndustries().catch { throwable ->
                 Log.e("IndustriesSearch", "Ошибка загрузки: ${throwable.localizedMessage}", throwable)
-                _uiState.value = IndustriesState.NetworkError
+                _uiState.value = IndustriesState.Error.NetworkError
             }.collect { resource ->
                 when (resource.code) {
                     Constants.HTTP_SUCCESS -> {
@@ -47,8 +47,9 @@ class IndustryViewModel(
                         _filteredIndustries.value = list
                         _uiState.value = IndustriesState.Success(list)
                     }
-                    Constants.HTTP_NOT_FOUND, -1 -> _uiState.value = IndustriesState.NetworkError
-                    else -> _uiState.value = IndustriesState.ServerError
+
+                    Constants.HTTP_NOT_FOUND, -1 -> _uiState.value = IndustriesState.Error.NetworkError
+                    else -> _uiState.value = IndustriesState.Error.ServerError
                 }
             }
         }
@@ -67,10 +68,17 @@ class IndustryViewModel(
     fun updateSearchQuery(query: String) {
         currentSearchQuery = query.trim().lowercase()
 
+        if (allIndustries.isNotEmpty()) {
+            _uiState.value = IndustriesState.Success(allIndustries)
+        }
+
         _filteredIndustries.value = if (currentSearchQuery.isEmpty()) {
             allIndustries
         } else {
             allIndustries.filter { it.name!!.lowercase().contains(currentSearchQuery) }
+        }
+        if (filteredIndustries.value.isNullOrEmpty() && uiState.value !is IndustriesState.Error) {
+            _uiState.value = IndustriesState.Error.NothingFound
         }
     }
 

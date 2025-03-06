@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -52,7 +51,6 @@ class RegionViewModel(
                 getRegionsInteractor.getRegions(countryId)
             }
             regionsFlow.collect { resource ->
-                Log.e("RegionSearch", "Код ответа: ${resource.code}")
                 _screenState.value = when (resource.code) {
                     Constants.HTTP_SUCCESS -> {
                         val regions = resource.data?.sortedBy { it.name } ?: emptyList()
