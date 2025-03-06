@@ -83,6 +83,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
             textRes = R.string.error_cant_get_list
         )
     }
+
     private fun showNetworkError() {
         showPlaceholder(
             placeholderDrawable = R.drawable.placeholder_network_error,
@@ -98,7 +99,7 @@ class IndustryFragment : BaseFragment<FragmentIndustryBinding, IndustryViewModel
     }
 
     private fun renderSelectButton(industry: Industry?) = with(binding) {
-        if (industry == null) {
+        if (industry == null || viewModel.uiState.value !is IndustriesState.Success) {
             chooseButton.hide()
             chooseButton.isEnabled = false
         } else {
