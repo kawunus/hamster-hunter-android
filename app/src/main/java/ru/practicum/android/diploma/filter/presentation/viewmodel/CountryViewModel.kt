@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.filter.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.core.ui.BaseViewModel
 import ru.practicum.android.diploma.filter.domain.model.Area
@@ -26,9 +25,6 @@ class CountryViewModel(
 
         viewModelScope.launch {
             getCountriesUseCase.getCountries()
-                .catch {
-                    _uiState.value = CountriesState.NetworkError
-                }
                 .collect { resource ->
                     when (resource.code) {
                         Constants.HTTP_SUCCESS -> {
