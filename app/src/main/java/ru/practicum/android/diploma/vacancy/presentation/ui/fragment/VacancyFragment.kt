@@ -71,34 +71,35 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         jobInfo.isVisible = !showErrorOrNot
     }
 
-    private fun changeErrorMessage(isServerError: Boolean) = with(binding) {
-        if (isServerError) {
-            errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
-            errorText.text = getString(R.string.error_server)
-        } else {
-            errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
-            errorText.text = getString(R.string.error_job_not_found_or_deleted)
-        }
-    }
-
     private fun showErrorServer() = with(binding) {
         renderError(true)
         progressBar.hide()
-        changeErrorMessage(true)
         buttonShare.hide()
         buttonLike.hide()
+        errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
+        errorText.text = getString(R.string.error_server)
     }
 
     private fun showErrorNotFound() = with(binding) {
         renderError(true)
         progressBar.hide()
-        changeErrorMessage(false)
+        errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
+        errorText.text = getString(R.string.error_job_not_found_or_deleted)
     }
 
     private fun showLoading() = with(binding) {
         renderError(false)
         jobInfo.hide()
         progressBar.show()
+    }
+
+    private fun showNetworkError() = with(binding) {
+        renderError(true)
+        progressBar.hide()
+        buttonShare.hide()
+        buttonLike.hide()
+        errorImg.setImageResource(R.drawable.placeholder_network_error)
+        errorText.text = getString(R.string.error_no_internet)
     }
 
     private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyInfo) = with(binding) {
@@ -168,6 +169,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             is VacancyDetailsState.ServerError -> showErrorServer()
 
             is VacancyDetailsState.VacancyInfo -> showVacancyDetails(state)
+
+            is VacancyDetailsState.NetworkError -> showNetworkError()
         }
     }
 

@@ -35,6 +35,8 @@ class VacancyViewModel(
         } else if (vacancyDetails != null) {
             favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyDetails.id)
             vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
+        } else if (errorMessage == ErrorType.NO_NETWORK) {
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.NetworkError)
         } else {
             vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
         }
@@ -76,6 +78,7 @@ class VacancyViewModel(
             }
         }
     }
+
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId.isNotEmpty()) {
