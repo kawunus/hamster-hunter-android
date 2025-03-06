@@ -177,7 +177,7 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
                     llErrorContainer.show()
                     recycler.hide()
                     ivErrorImage.setImageResource(R.drawable.placeholder_not_found_regions)
-                    tvErrorText.setText(R.string.error_nothing_found)
+                    tvErrorText.setText(R.string.error_cant_get_list)
                 }
             }
         }

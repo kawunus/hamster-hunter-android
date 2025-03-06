@@ -50,7 +50,7 @@ class CountryFragment : BaseFragment<FragmentCountryBinding, CountryViewModel>(
 
                 is CountriesState.ServerError -> showPlaceholder(
                     placeholderDrawable = R.drawable.placeholder_not_found_regions,
-                    textRes = R.string.error_nothing_found
+                    textRes = R.string.error_cant_get_list
                 )
             }
         }
