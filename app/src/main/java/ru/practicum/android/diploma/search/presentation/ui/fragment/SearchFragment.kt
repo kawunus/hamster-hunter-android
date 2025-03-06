@@ -31,6 +31,7 @@ import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPaging
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
+import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.formatNumber
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
@@ -177,6 +178,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 // ошибки при загрузке страниц
                 loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
                     showPagingError(loadState.append as? LoadState.Error ?: loadState.prepend as LoadState.Error)
+                    lifecycleScope.launch {
+                        waitForInternetAndRetry()
+                    }
                 }
             }
         }
@@ -202,7 +206,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
                 is NothingFound -> {
                     ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
-                    tvErrorText.text = getString(R.string.error_nothing_found)
+                    tvErrorText.text = getString(R.string.error_nothing_found_vacancy)
                     notificationText.show()
                 }
 
@@ -307,6 +311,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
+    private suspend fun waitForInternetAndRetry() {
+        while (!NetworkMonitor.isNetworkAvailable(requireContext())) {
+            delay(RETRY_LOADING_DELAY)
+        }
+        adapter.retry() // Повторяем загрузку, когда интернет появился
+    }
+
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -321,5 +332,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val RETRY_LOADING_DELAY = 2000L
     }
 }
