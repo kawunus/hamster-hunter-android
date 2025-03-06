@@ -55,7 +55,7 @@ class VacancyViewModel(
                     favoriteVacancyInteractor.addVacancyToFavorites(pair.first!!.toFavoritesVacancy())
                     val vacancyFromBD = favoriteVacancyInteractor.getVacancyById(pair.first!!.id).toVacancyDetails()
                     processResult(vacancyFromBD, null)
-                    //Также если вакансия не найдена или нет доступа удаляем из БД
+                    // Также если вакансия не найдена или нет доступа удаляем из БД
                 } else if (pair.second == ErrorType.NOT_FOUND) {
                     favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId)
                     // Иначе получаем из БД
