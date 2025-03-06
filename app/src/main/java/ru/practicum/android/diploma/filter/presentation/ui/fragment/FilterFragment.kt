@@ -46,27 +46,25 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         viewModel.checkSavedFilters()
     }
 
-    private fun setClickListeners() {
-        binding.apply {
-            btnBack.setOnClickListener { findNavController().navigateUp() }
-            tetArea.setOnClickListener {
-                findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
-            }
-            tetIndustry.setOnClickListener {
-                findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
-            }
-            checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setOnlyWithSalary(isChecked)
-            }
-            checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.setOnlyInTitles(isChecked)
-            }
-            btnApply.setOnClickListener {
-                setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
-                findNavController().navigateUp()
-            }
-            btnReset.setOnClickListener { viewModel.clearFilters() }
+    private fun setClickListeners() = with(binding) {
+        btnBack.setOnClickListener { findNavController().navigateUp() }
+        tetArea.setOnClickListener {
+            findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToAreaFragment())
         }
+        tetIndustry.setOnClickListener {
+            findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToIndustryFragment())
+        }
+        checkBoxSalary.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setOnlyWithSalary(isChecked)
+        }
+        checkBoxSearchInTitle.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setOnlyInTitles(isChecked)
+        }
+        btnApply.setOnClickListener {
+            setFragmentResult(FILTERS_CHANGED_REQUEST_KEY, bundleOf(FILTERS_CHANGED_BUNDLE_KEY to true))
+            findNavController().navigateUp()
+        }
+        btnReset.setOnClickListener { viewModel.clearFilters() }
     }
 
     private fun updateSalaryHintColor(text: CharSequence?) {
@@ -108,15 +106,13 @@ class FilterFragment : BaseFragment<FragmentFilterBinding, FilterViewModel>(
         binding.btnClear.isVisible = !text.isNullOrEmpty()
     }
 
-    private fun renderScreen(filterParameters: FilterParameters) {
-        binding.apply {
-            with(filterParameters) {
-                renderAreaFilter(formatLocationString(area))
-                renderIndustryFilter(industry?.name)
-                renderSalaryFilter(salary)
-                checkBoxSalary.isChecked = onlyWithSalary ?: false
-                checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
-            }
+    private fun renderScreen(filterParameters: FilterParameters) = with(binding) {
+        filterParameters.run {
+            renderAreaFilter(formatLocationString(area))
+            renderIndustryFilter(industry?.name)
+            renderSalaryFilter(salary)
+            checkBoxSalary.isChecked = onlyWithSalary ?: false
+            checkBoxSearchInTitle.isChecked = onlyInTitles ?: false
         }
     }
 

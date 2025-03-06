@@ -152,18 +152,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun setDefaultScreen() {
-        viewModel.apply {
-            cancelSearchDebounce()
-            setDefaultScreen()
-        }
+    private fun setDefaultScreen() = with(viewModel) {
+        cancelSearchDebounce()
+        setDefaultScreen()
     }
 
-    private fun setRecyclerView() {
-        binding.recycler.apply {
-            adapter = this@SearchFragment.adapter.withLoadStateFooter(footer = loadStateAdapter)
-            layoutManager = LinearLayoutManager(requireContext())
-        }
+    private fun setRecyclerView() = with(binding.recycler) {
+        adapter = this@SearchFragment.adapter.withLoadStateFooter(footer = loadStateAdapter)
+        layoutManager = LinearLayoutManager(requireContext())
         setLoadStateListener()
     }
 
@@ -192,36 +188,32 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     // обработка разных типов ошибок
-    private fun placeholderContentManager(state: Error) {
-        binding.apply {
-            when (state) {
-                is NetworkError -> {
-                    ivErrorImage.setImageResource(R.drawable.placeholder_network_error)
-                    tvErrorText.text = getString(R.string.error_no_internet)
-                }
+    private fun placeholderContentManager(state: Error) = with(binding) {
+        when (state) {
+            is NetworkError -> {
+                ivErrorImage.setImageResource(R.drawable.placeholder_network_error)
+                tvErrorText.text = getString(R.string.error_no_internet)
+            }
 
-                is NothingFound -> {
-                    ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
-                    tvErrorText.text = getString(R.string.error_nothing_found)
-                    notificationText.show()
-                }
+            is NothingFound -> {
+                ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
+                tvErrorText.text = getString(R.string.error_nothing_found)
+                notificationText.show()
+            }
 
-                is ServerError -> {
-                    ivErrorImage.setImageResource(R.drawable.placeholder_server_error_search)
-                    tvErrorText.text = getString(R.string.error_server)
-                }
+            is ServerError -> {
+                ivErrorImage.setImageResource(R.drawable.placeholder_server_error_search)
+                tvErrorText.text = getString(R.string.error_server)
             }
         }
     }
 
-    private fun showDefaultScreen() {
-        binding.apply {
-            llErrorContainer.hide()
-            notificationText.hide()
-            ivPlaceholderMain.show()
-            recycler.hide()
-            progressBar.hide()
-        }
+    private fun showDefaultScreen() = with(binding) {
+        llErrorContainer.hide()
+        notificationText.hide()
+        ivPlaceholderMain.show()
+        recycler.hide()
+        progressBar.hide()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -229,7 +221,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         lifecycleScope.launch {
             refreshData(data)
             adapter.notifyDataSetChanged()
-            binding.apply {
+            with(binding) {
                 llErrorContainer.hide()
                 ivPlaceholderMain.hide()
                 progressBar.hide()
@@ -238,24 +230,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun showLoading() {
-        binding.apply {
-            llErrorContainer.hide()
-            notificationText.hide()
-            ivPlaceholderMain.hide()
-            recycler.hide()
-            progressBar.show()
-        }
+    private fun showLoading() = with(binding) {
+        llErrorContainer.hide()
+        notificationText.hide()
+        ivPlaceholderMain.hide()
+        recycler.hide()
+        progressBar.show()
     }
 
-    private fun showError(state: Error) {
-        binding.apply {
-            llErrorContainer.show()
-            notificationText.hide()
-            ivPlaceholderMain.hide()
-            recycler.hide()
-            progressBar.hide()
-        }
+    private fun showError(state: Error) = with(binding) {
+        llErrorContainer.show()
+        notificationText.hide()
+        ivPlaceholderMain.hide()
+        recycler.hide()
+        progressBar.hide()
+
         placeholderContentManager(state)
     }
 
