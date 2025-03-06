@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import ru.practicum.android.diploma.filter.presentation.model.RegionScreenState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.RegionsAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionViewModel
 import ru.practicum.android.diploma.util.Constants
+import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -58,17 +60,21 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
     //  обрабатываем клик по региону в списке
     private fun setupRegionClickListener() {
         regionsAdapter.onItemClick = { region ->
-            viewModel.saveSelectedRegion(region)
-            findNavController().navigateUp()
+            if (NetworkMonitor.isNetworkAvailable(requireContext())) {
+                viewModel.saveSelectedRegion(region)
+                findNavController().navigateUp()
+            } else {
+                Toast.makeText(requireContext(), R.string.error_toast_no_internet, Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
     // настраиваем обработчики кликов
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
-
         binding.btnClear.setOnClickListener {
             binding.edittextSearch.text?.clear()
         }
