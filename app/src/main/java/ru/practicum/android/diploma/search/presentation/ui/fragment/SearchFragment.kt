@@ -199,13 +199,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 tvErrorText.text = getString(R.string.error_no_internet)
             }
 
-
-                is NothingFound -> {
-                    ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
-                    tvErrorText.text = getString(R.string.error_nothing_found_vacancy)
-                    notificationText.show()
-                }
-
+            is NothingFound -> {
+                ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
+                tvErrorText.text = getString(R.string.error_nothing_found_vacancy)
+                notificationText.show()
+            }
 
             is ServerError -> {
                 ivErrorImage.setImageResource(R.drawable.placeholder_server_error_search)
