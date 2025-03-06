@@ -151,5 +151,4 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
             else -> false
         }
     }
-
 }

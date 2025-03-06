@@ -132,7 +132,7 @@
             android:layout_marginTop="@dimen/dp16"
             android:gravity="center"
             android:paddingHorizontal="@dimen/dp46"
-            android:text="@string/error_nothing_found" />
+            android:text="@string/error_cant_get_list" />
 
     </LinearLayout>
 
