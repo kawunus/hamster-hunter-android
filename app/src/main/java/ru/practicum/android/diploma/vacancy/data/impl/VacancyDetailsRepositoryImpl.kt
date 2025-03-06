@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.NetworkClient
+import ru.practicum.android.diploma.util.Constants
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
 import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
@@ -31,7 +32,7 @@ class VacancyDetailsRepositoryImpl(
     override suspend fun findVacancyDetails(vacancyId: String): Flow<NetworkResult<VacancyDetails?, ErrorType>> = flow {
         try {
             val response = networkClient.doRequest(VacancyByIdRequest(vacancyId))
-            if (response.resultCode == 404) {
+            if (response.resultCode == Constants.HTTP_NOT_FOUND) {
                 emit(NetworkResult.Error(ErrorType.NOT_FOUND))
             } else {
                 emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
