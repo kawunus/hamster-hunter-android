@@ -1,9 +1,8 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import android.os.Bundle
-import androidx.core.bundle.bundleOf
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +15,7 @@ import ru.practicum.android.diploma.filter.presentation.model.RegionScreenState
 import ru.practicum.android.diploma.filter.presentation.ui.adapter.RegionsAdapter
 import ru.practicum.android.diploma.filter.presentation.viewmodel.RegionViewModel
 import ru.practicum.android.diploma.util.Constants
+import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
 
@@ -60,25 +60,21 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
     //  обрабатываем клик по региону в списке
     private fun setupRegionClickListener() {
         regionsAdapter.onItemClick = { region ->
-            viewModel.saveSelectedRegion(region)
-            setFragmentResult(
-                REQUEST_KEY_REGION,
-                bundleOf(
-                    BUNDLE_KEY_REGION_ID to region.id,
-                    BUNDLE_KEY_REGION_NAME to region.name,
-                    BUNDLE_KEY_PARENT_ID to region.parentId
-                )
-            )
-            findNavController().popBackStack()
+            if (NetworkMonitor.isNetworkAvailable(requireContext())) {
+                viewModel.saveSelectedRegion(region)
+                findNavController().navigateUp()
+            } else {
+                Toast.makeText(requireContext(), R.string.error_toast_no_internet, Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
     // настраиваем обработчики кликов
     private fun setupClickListeners() {
         binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
-
         binding.btnClear.setOnClickListener {
             binding.edittextSearch.text?.clear()
         }
@@ -185,12 +181,5 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
                 }
             }
         }
-    }
-
-    companion object {
-        const val REQUEST_KEY_REGION = "request_key_region" // ключ для передачи результата выбора региона
-        const val BUNDLE_KEY_REGION_ID = "bundle_key_region_id" // ключ для ID выбранного региона
-        const val BUNDLE_KEY_REGION_NAME = "bundle_key_region_name" // ключ для названия выбранного региона
-        const val BUNDLE_KEY_PARENT_ID = "bundle_key_parent_id" // ключ для ID родительской страны
     }
 }
