@@ -58,8 +58,6 @@
     <string name="job_description">Описание вакансии</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="key_skill_separator">"   •    %s\n"</string>
-    <string name="description_li_replacement"><![CDATA[<li>&#160;]]></string>
-    <string name="description_regex_li"><![CDATA[<li>\s*<p>|<li>]]></string>
     <!--кнопки-->
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
