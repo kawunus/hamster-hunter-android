@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.vacancy.data.impl
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -38,8 +39,11 @@ class VacancyDetailsRepositoryImpl(
                 emit(NetworkResult.Success((response as VacancyByIdResponse).toVacancyDetails()))
             }
         } catch (e: IOException) {
+            Log.e("VacancyDetailsRepositoryImpl", "Ошибка сети: ${e.localizedMessage}", e)
             emit(NetworkResult.Error(ErrorType.NO_INTERNET))
         } catch (e: HttpException) {
+            val code = e.code()
+            Log.e("VacancyDetailsRepositoryImpl", "HTTP ошибка: Код $code", e)
             emit(NetworkResult.Error(ErrorType.UNKNOWN))
         }
     }
