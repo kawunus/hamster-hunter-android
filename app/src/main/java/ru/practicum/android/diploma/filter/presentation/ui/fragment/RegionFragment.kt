@@ -1,9 +1,7 @@
 package ru.practicum.android.diploma.filter.presentation.ui.fragment
 
 import android.os.Bundle
-import androidx.core.bundle.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,15 +59,7 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
     private fun setupRegionClickListener() {
         regionsAdapter.onItemClick = { region ->
             viewModel.saveSelectedRegion(region)
-            setFragmentResult(
-                REQUEST_KEY_REGION,
-                bundleOf(
-                    BUNDLE_KEY_REGION_ID to region.id,
-                    BUNDLE_KEY_REGION_NAME to region.name,
-                    BUNDLE_KEY_PARENT_ID to region.parentId
-                )
-            )
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
     }
 
@@ -185,12 +175,5 @@ class RegionFragment : BaseFragment<FragmentRegionBinding, RegionViewModel>(
                 }
             }
         }
-    }
-
-    companion object {
-        const val REQUEST_KEY_REGION = "request_key_region" // ключ для передачи результата выбора региона
-        const val BUNDLE_KEY_REGION_ID = "bundle_key_region_id" // ключ для ID выбранного региона
-        const val BUNDLE_KEY_REGION_NAME = "bundle_key_region_name" // ключ для названия выбранного региона
-        const val BUNDLE_KEY_PARENT_ID = "bundle_key_parent_id" // ключ для ID родительской страны
     }
 }

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -27,12 +26,7 @@ class CountryViewModel(
 
         viewModelScope.launch {
             getCountriesUseCase.getCountries()
-                .catch { throwable ->
-                    Log.e(
-                        "CountriesSearch",
-                        "Непредвиденная ошибка или IOException: ${throwable.localizedMessage}",
-                        throwable
-                    )
+                .catch {
                     _uiState.value = CountriesState.NetworkError
                 }
                 .collect { resource ->
@@ -40,10 +34,6 @@ class CountryViewModel(
                         Constants.HTTP_SUCCESS -> {
                             val list = resource.data ?: emptyList()
                             _uiState.value = CountriesState.Success(list)
-                        }
-
-                        Constants.HTTP_NOT_FOUND -> {
-                            _uiState.value = CountriesState.ServerError
                         }
 
                         -1 -> {
