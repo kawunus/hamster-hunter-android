@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
+import androidx.core.text.toSpanned
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -182,6 +183,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         val formattedHtml = htmlString
             ?.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0") ?: Constants.EMPTY_STRING
 
-        return HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
+        val finalHtml = HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
+
+        return finalHtml.trim().toSpanned()
     }
 }
