@@ -1,4 +1,7 @@
-package ru.practicum.android.diploma.search.presentation.viewmodel
+package ru.practicum.android.diploma.search.presentation.model
+
+import androidx.paging.PagingData
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 
 sealed interface SearchScreenState {
     data object Default : SearchScreenState
@@ -7,5 +10,5 @@ sealed interface SearchScreenState {
     data object ServerError : Error()
     data object NothingFound : Error()
     data object NetworkError : Error()
-    data object SearchResults : SearchScreenState
+    data class SearchResults(val data: PagingData<Vacancy>) : SearchScreenState
 }

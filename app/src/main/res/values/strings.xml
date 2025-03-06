@@ -25,6 +25,7 @@
     <string name="enter_salary">Введите сумму</string>
     <string name="dont_show_results_without_salary">Не показывать без зарплаты</string>
     <string name="search_only_in_titles">Искать только в заголовках вакансий</string>
+    <string name="error_enter_a_number">Введите число от 0 до 2 147 483 647</string>
     <!--выбор места работы-->
     <string name="choose_job_location">Выбор места работы</string>
     <string name="country">Страна</string>
@@ -57,6 +58,8 @@
     <string name="job_description">Описание вакансии</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="key_skill_separator">"   •    %s\n"</string>
+    <string name="description_li_replacement"><![CDATA[<li>&#160;]]></string>
+    <string name="description_regex_li"><![CDATA[<li>\s*<p>|<li>]]></string>
     <!--кнопки-->
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
@@ -68,6 +71,7 @@
     <string name="error_nothing_found_place">Не удалось получить\nсписок вакансий</string>
     <string name="error_nothing_found">Не удалось получить\nсписок</string>
     <string name="error_favorites_is_empty">Список пуст</string>
+    <string name="error_too_big_salary">Введите число больше 0 и меньше 2 147 483 647</string>
     <!-- team, список взят из пачки -->
     <string name="worked_on_project">Над приложением работали</string>
     <string name="dev1">Аксенов Александр Сергеевич</string>
@@ -82,6 +86,11 @@
     <string name="error_toast_server">Произошла ошибка</string>
     <string name="bearer_token">Bearer %s</string>
     <string name="search_screen">Экран поиска вакансий</string>
-    <string name="content_description_search_error">Ошибка при попытке поиска вакансий</string>
-    <string name="content_description_filters">Фильтры</string>
+    <string name="no_found_industry">Такой отрасли нет</string>
+    <string name="industry_placeholder">Отрасль</string>
+    <string name="not_region">Такого региона нет</string>
+    <!-- content descriptions -->
+    <string name="search_error">Ошибка при попытке поиска вакансий</string>
+    <string name="filters">Фильтры</string>
+    <string name="logotype">Логотип фирмы</string>
 </resources>

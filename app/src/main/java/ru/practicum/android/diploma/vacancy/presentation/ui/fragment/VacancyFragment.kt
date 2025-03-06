@@ -44,7 +44,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
     private fun bindButtons() = with(binding) {
         buttonBack.setOnClickListener { findNavController().navigateUp() }
         buttonShare.setOnClickListener { viewModel.shareVacancyUrl() }
-        buttonLike.setOnClickListener { viewModel.likeControl() }
+        buttonLike.setOnClickListener { viewModel.favoritesHandler() }
     }
 
     private fun renderVacancyInfo(vacancyDetails: VacancyDetails) = with(binding) {
@@ -129,7 +129,7 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             keySkillsText += getString(R.string.key_skill_separator, i)
         }
         keySkills.text = keySkillsText
-        keySkillsTitle.isVisible = currentKeySkills.size != 0
+        keySkillsTitle.isVisible = currentKeySkills.isNotEmpty()
     }
 
     private fun showEmploymentFormAndWorkFormat(employmentForm: String, currentWorkFormat: List<String>) =
@@ -177,7 +177,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
 
         val formattedHtml = htmlString
-            ?.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0") ?: ""
+            ?.replace(Regex(getString(R.string.description_regex_li)), getString(R.string.description_li_replacement))
+            ?: Constants.EMPTY_STRING
 
         return HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
     }

@@ -41,15 +41,11 @@
     <!--стили больших кнопок, по умолчанию enabled:false -->
     <style name="ApplyButtonStyle">
         <!-- незабудьте во время верстки layout_marginHorizontal dp16 -->
-        <item name="android:background">@drawable/notification_shape</item>
-        <item name="android:paddingTop">@dimen/dp20</item>
-        <item name="android:paddingBottom">@dimen/dp20</item>
-        <item name="android:paddingStart">@dimen/dp8</item>
-        <item name="android:paddingEnd">@dimen/dp8</item>
+        <item name="android:backgroundTint">@color/blue</item>
+        <item name="cornerRadius">@dimen/dp12</item>
         <item name="android:textColor">@color/white</item>
         <item name="textAllCaps">false</item>
         <item name="android:gravity">center</item>
-        <item name="android:enabled">false</item>
         <!--поменять на @string/select в случае если текст "выбрать" в лэйауте-->
         <item name="android:text">@string/apply</item>
         <item name="fontWeight">500</item>
@@ -140,6 +136,28 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="fontWeight">500</item>
+    </style>
+
+    <style name="PickedFilterTextInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextAppearance">@style/Regular12TextStyle</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="boxBackgroundColor">?attr/colorPrimary</item>
+        <item name="boxStrokeColor">@null</item>
+        <item name="boxStrokeWidth">@dimen/zero</item>
+        <item name="boxStrokeWidthFocused">@dimen/zero</item>
+        <item name="endIconDrawable">@drawable/ic_arrow_forward</item>
+        <item name="endIconMode">custom</item>
+        <item name="endIconTint">?attr/colorOnPrimary</item>
+        <item name="hintAnimationEnabled">true</item>
+        <item name="hintEnabled">true</item>
+    </style>
+
+    <style name="PickedFilterTextInputEditTextStyle" parent="@style/Regular16TextStyle">
+        <item name="background">@null</item>
+        <item name="android:clickable">true</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:inputType">textMultiLine|textNoSuggestions</item>
     </style>
 
 </resources>

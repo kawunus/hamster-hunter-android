@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.search.presentation.ui.fragment
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.core.view.isVisible
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,17 +18,19 @@ import ru.practicum.android.diploma.core.data.network.exception.NoInternetExcept
 import ru.practicum.android.diploma.core.ui.BaseFragment
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.domain.model.Vacancy
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.Default
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.Error
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.Loading
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.NetworkError
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.NothingFound
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.SearchResults
+import ru.practicum.android.diploma.search.presentation.model.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyLoadStateAdapter
 import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPagingAdapter
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Default
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Error
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.Loading
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.NetworkError
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.NothingFound
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.SearchResults
-import ru.practicum.android.diploma.search.presentation.viewmodel.SearchScreenState.ServerError
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
+import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
+import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
 import ru.practicum.android.diploma.util.formatNumber
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
@@ -36,7 +38,7 @@ import ru.practicum.android.diploma.util.show
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     inflate = FragmentSearchBinding::inflate
 ) {
-    override val viewModel: SearchViewModel by viewModel<SearchViewModel>()
+    override val viewModel: SearchViewModel by viewModel()
 
     private val adapter = VacancyPagingAdapter { vacancy ->
         if (clickDebounce()) {
@@ -48,7 +50,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private var lastPagingData: PagingData<Vacancy>? = null
 
     override fun initViews() {
-        // инициализируем наши вьюхи тут
         isClickAllowed = true
         setupSearchTextWatcher()
         setupClearButtonClickListener()
@@ -57,20 +58,29 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     override fun subscribe() {
-        // подписка на данные от viewModel
         with(viewModel) {
-            getSearchState().observe(viewLifecycleOwner) { state ->
-                renderScreen(state)
-            }
+            getSearchState().observe(viewLifecycleOwner) { renderScreen(it) }
 
-            getFoundCount().observe(viewLifecycleOwner) { foundCount ->
-                showFoundCount(foundCount)
-            }
+            getFoundCount().observe(viewLifecycleOwner) { showFoundCount(it) }
 
-            getPagingDataLiveData().observe(viewLifecycleOwner) { pagingData ->
-                refreshData(pagingData)
+            getAnyFilterApplied().observe(viewLifecycleOwner) { renderFilterButton(it) }
+        }
+        // подписка на изменения в FilterFragment
+        parentFragmentManager.setFragmentResultListener(
+            FILTERS_CHANGED_REQUEST_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val filtersChanged = bundle.getBoolean(FILTERS_CHANGED_BUNDLE_KEY)
+            if (filtersChanged && viewModel.getSearchState().value != Default) {
+                viewModel.startSearchWithLatestText()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkIfAnyFilterApplied()
+        hideNotificationIfNoNeedIt()
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
@@ -78,7 +88,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             lifecycleScope.launch {
                 lastPagingData = pagingData
                 adapter.clear() // Принудительно очищаем адаптер
-                delay(SHOW_RECYCLER_DELAY) // Небольшая задержка для корректного обновления UI
                 adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
             }
         }
@@ -91,6 +100,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 updateClearButtonIcon(text)
                 if (!text.isNullOrEmpty()) {
                     viewModel.searchWithDebounce(text.toString())
+                } else {
+                    setDefaultScreen()
                 }
             },
         )
@@ -111,8 +122,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun setupClearButtonClickListener() {
         binding.buttonClear.setOnClickListener {
             handleClearButtonClick()
-            viewModel.cancelSearchDebounce()
-            viewModel.setDefaultScreen()
+            setDefaultScreen()
+        }
+        binding.buttonFilter.setOnClickListener {
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
         }
     }
 
@@ -139,6 +152,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
+    private fun setDefaultScreen() {
+        viewModel.apply {
+            cancelSearchDebounce()
+            setDefaultScreen()
+        }
+    }
+
     private fun setRecyclerView() {
         binding.recycler.apply {
             adapter = this@SearchFragment.adapter.withLoadStateFooter(footer = loadStateAdapter)
@@ -162,30 +182,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun showPagingError(error: LoadState.Error) {
-        val message = when (error.error) {
-            is NoInternetException -> getString(R.string.error_toast_no_internet)
-            else -> getString(R.string.error_toast_server)
-        }
-        showToast(message)
-    }
-
-    private fun showToast(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
-    }
-
     private fun renderScreen(state: SearchScreenState) {
-        Log.d("DEBUG", "SearchScreenState = $state")
-        placeholderVisibilityManager(isError = state is Error)
-        notificationVisibilityManager(needToBeVisible = state is SearchResults || state is NothingFound)
-        defaultScreenVisibilityManager(needToBeVisible = state is Default)
-        recyclerVisibilityManager(needToBeVisible = state is SearchResults)
-        progressBarVisibilityManager(isLoading = state is Loading)
-
-        if (state is Error) {
-            placeholderContentManager(state)
+        when (state) {
+            is Default -> showDefaultScreen()
+            is Error -> showError(state)
+            is Loading -> showLoading()
+            is SearchResults -> showSearchResults(state.data)
         }
-
     }
 
     // обработка разных типов ошибок
@@ -200,6 +203,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 is NothingFound -> {
                     ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
                     tvErrorText.text = getString(R.string.error_nothing_found)
+                    notificationText.show()
                 }
 
                 is ServerError -> {
@@ -210,8 +214,49 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun clearAdapter() {
-        adapter.submitData(lifecycle, PagingData.empty())
+    private fun showDefaultScreen() {
+        binding.apply {
+            llErrorContainer.hide()
+            notificationText.hide()
+            ivPlaceholderMain.show()
+            recycler.hide()
+            progressBar.hide()
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun showSearchResults(data: PagingData<Vacancy>) {
+        lifecycleScope.launch {
+            refreshData(data)
+            adapter.notifyDataSetChanged()
+            binding.apply {
+                llErrorContainer.hide()
+                ivPlaceholderMain.hide()
+                progressBar.hide()
+                recycler.show()
+            }
+        }
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            llErrorContainer.hide()
+            notificationText.hide()
+            ivPlaceholderMain.hide()
+            recycler.hide()
+            progressBar.show()
+        }
+    }
+
+    private fun showError(state: Error) {
+        binding.apply {
+            llErrorContainer.show()
+            notificationText.hide()
+            ivPlaceholderMain.hide()
+            recycler.hide()
+            progressBar.hide()
+        }
+        placeholderContentManager(state)
     }
 
     // отображение сообщения "Найдено $count вакансий"
@@ -230,27 +275,36 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         }
     }
 
-    private fun notificationVisibilityManager(needToBeVisible: Boolean) {
-        if (!needToBeVisible) {
-            binding.notificationText.hide()
+    private fun hideNotificationIfNoNeedIt() {
+        binding.notificationText.apply {
+            if (viewModel.getSearchState().value == Default) {
+                hide()
+            }
         }
     }
 
-    private fun defaultScreenVisibilityManager(needToBeVisible: Boolean) {
-        binding.ivPlaceholderMain.isVisible = needToBeVisible
+    private fun renderFilterButton(anyFilterApplied: Boolean?) {
+        val iconRes = when (anyFilterApplied) {
+            true -> R.drawable.ic_filter_on
+            else -> R.drawable.ic_filter_off
+        }
+        binding.buttonFilter.setImageDrawable(getDrawable(requireContext(), iconRes))
     }
 
-    private fun recyclerVisibilityManager(needToBeVisible: Boolean) {
-        binding.recycler.isVisible = needToBeVisible
+    private fun clearAdapter() {
+        adapter.submitData(lifecycle, PagingData.empty())
     }
 
-    private fun placeholderVisibilityManager(isError: Boolean) {
-        binding.llErrorContainer.isVisible = isError
+    private fun showPagingError(error: LoadState.Error) {
+        val message = when (error.error) {
+            is NoInternetException -> getString(R.string.error_toast_no_internet)
+            else -> getString(R.string.error_toast_server)
+        }
+        showToast(message)
     }
 
-    private fun progressBarVisibilityManager(isLoading: Boolean) {
-        binding.progressBar.isVisible = isLoading
-
+    private fun showToast(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
     private fun clickDebounce(): Boolean {
@@ -267,7 +321,5 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SHOW_RECYCLER_DELAY = 200L
-
     }
 }

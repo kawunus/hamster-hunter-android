@@ -26,20 +26,20 @@
         android:layout_marginTop="@dimen/dp20"
         android:layout_marginEnd="@dimen/dp8"
         android:background="?attr/colorPrimary"
-        android:contentDescription="@string/content_description_filters"
+        android:contentDescription="@string/filters"
         android:paddingHorizontal="@dimen/dp12"
         android:src="@drawable/ic_filter_off"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="?attr/colorOnPrimary" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edittext_search"
         style="@style/EditSearchTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp8"
         android:layout_marginHorizontal="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp12"
+        android:minHeight="@dimen/dp56"
         android:hint="@string/enter_your_request"
         app:layout_constraintTop_toBottomOf="@id/tv_job_search" />
 
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/zero"
         android:clipToPadding="false"
-        android:paddingTop="46dp"
+        android:paddingTop="@dimen/dp46"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edittext_search"
@@ -120,7 +120,7 @@
             android:id="@+id/iv_error_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp224"
-            android:contentDescription="@string/content_description_search_error"
+            android:contentDescription="@string/search_error"
             android:src="@drawable/placeholder_network_error" />
 
         <TextView
