@@ -221,8 +221,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 with(binding) {
                     llErrorContainer.hide()
                     ivPlaceholderMain.hide()
-                    progressBar.hide()
                     recycler.show()
+                    progressBar.hide()
                 }
             }
         }
