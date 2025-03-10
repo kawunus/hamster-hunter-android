@@ -83,16 +83,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         viewModel.checkIfAnyFilterApplied()
     }
 
-    private fun refreshData(pagingData: PagingData<Vacancy>) {
-        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
-            lifecycleScope.launch {
-                lastPagingData = pagingData
-                adapter.clear() // Принудительно очищаем адаптер
-                adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
-            }
-        }
-    }
-
     // настройка отслеживания изменений текста
     private fun setupSearchTextWatcher() {
         binding.edittextSearch.addTextChangedListener(
@@ -221,19 +211,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showSearchResults(data: PagingData<Vacancy>) {
-        lifecycleScope.launch {
-            refreshData(data)
-            adapter.notifyDataSetChanged()
-            with(binding) {
-                llErrorContainer.hide()
-                ivPlaceholderMain.hide()
-                progressBar.hide()
-                recycler.show()
+        if (data != lastPagingData) { // проверяем, обновились ли данные
+            lifecycleScope.launch {
+                lastPagingData = data
+                adapter.clear() // Принудительно очищаем адаптер
+                adapter.submitData(lifecycle, data) // Загружаем новые данные
+                adapter.notifyDataSetChanged()
+                with(binding) {
+                    llErrorContainer.hide()
+                    ivPlaceholderMain.hide()
+                    recycler.show()
+                    progressBar.hide()
+                }
             }
         }
     }
 
     private fun showLoading() = with(binding) {
+        clearAdapter()
         llErrorContainer.hide()
         notificationText.hide()
         ivPlaceholderMain.hide()
