@@ -74,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_marginTop="@dimen/dp12"
+        android:visibility="gone"
         android:paddingHorizontal="@dimen/dp12"
         android:paddingVertical="@dimen/dp4"
         app:layout_constraintEnd_toEndOf="parent"
