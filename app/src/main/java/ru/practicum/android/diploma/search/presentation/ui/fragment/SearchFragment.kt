@@ -81,7 +81,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.checkIfAnyFilterApplied()
-        hideNotificationIfNoNeedIt()
     }
 
     private fun refreshData(pagingData: PagingData<Vacancy>) {
@@ -258,20 +257,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             if (count == null) {
                 hide()
             } else {
-                text = if (count == 0) {
-                    getString(R.string.no_such_jobs)
-                } else {
-                    resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
+                if (viewModel.getSearchState().value is SearchResults || viewModel.getSearchState().value is NothingFound) {
+                    text = if (count == 0) {
+                        getString(R.string.no_such_jobs)
+                    } else {
+                        resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
+                    }
+                    show()
                 }
-                show()
-            }
-        }
-    }
-
-    private fun hideNotificationIfNoNeedIt() {
-        binding.notificationText.apply {
-            if (viewModel.getSearchState().value == Default) {
-                hide()
             }
         }
     }
