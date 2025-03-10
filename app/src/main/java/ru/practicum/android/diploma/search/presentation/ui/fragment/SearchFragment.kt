@@ -84,17 +84,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         hideNotificationIfNoNeedIt()
     }
 
-    private fun refreshData(pagingData: PagingData<Vacancy>) {
-        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
-            lifecycleScope.launch {
-                lastPagingData = pagingData
-                adapter.clear() // Принудительно очищаем адаптер
-                adapter.submitData(lifecycle, pagingData)
-                adapter.notifyDataSetChanged()
-                showRecycler()
-            }
-        }
-    }
 
     private fun showRecycler() {
         with(binding) {
@@ -232,9 +221,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun showSearchResults(data: PagingData<Vacancy>) {
-        lifecycleScope.launch {
-            refreshData(data)
+    private fun showSearchResults(pagingData: PagingData<Vacancy>) {
+        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
+            lifecycleScope.launch {
+                lastPagingData = pagingData
+                adapter.clear() // Принудительно очищаем адаптер
+                adapter.submitData(lifecycle, pagingData)
+                adapter.notifyDataSetChanged()
+                showRecycler()
+            }
         }
     }
 
