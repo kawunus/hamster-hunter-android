@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.search.data.mapper
 
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
+import ru.practicum.android.diploma.search.data.dto.VacancyDto
+import ru.practicum.android.diploma.search.domain.model.Vacancy
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Companion.AREA
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Companion.INDUSTRY
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Companion.ONLY_WITH_SALARY
@@ -8,8 +10,7 @@ import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Compa
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Companion.SALARY
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Companion.SEARCH_FIELD
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Companion.TEXT
-import ru.practicum.android.diploma.search.data.dto.VacancyDto
-import ru.practicum.android.diploma.search.domain.model.Vacancy
+
 
 fun VacancyDto.toDomain(): Vacancy {
     return Vacancy(
