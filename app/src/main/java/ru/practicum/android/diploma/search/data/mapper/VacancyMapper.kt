@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest.Compa
 import ru.practicum.android.diploma.search.data.dto.VacancyDto
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 
-
 fun VacancyDto.toDomain(): Vacancy {
     return Vacancy(
         id = id ?: "",
