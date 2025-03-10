@@ -1,7 +1,7 @@
-package ru.practicum.android.diploma.vacancy.data.network.model
+package ru.practicum.android.diploma.vacancy.data.dto
 
 import com.google.gson.annotations.SerializedName
-import ru.practicum.android.diploma.core.data.network.dto.Response
+import ru.practicum.android.diploma.core.data.dto.Response
 
 data class VacancyByIdResponse(
     val id: String?,

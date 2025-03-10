@@ -10,7 +10,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent.getKoin
 import ru.practicum.android.diploma.filter.domain.api.FiltersRepository
 import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
-import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
+import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.domain.api.VacanciesSearchRepository
 import ru.practicum.android.diploma.search.domain.model.Vacancy
 

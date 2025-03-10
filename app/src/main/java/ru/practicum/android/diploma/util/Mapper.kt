@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.util
 
-import CountryDto
+import ru.practicum.android.diploma.filter.data.dto.CountryDto
 import ru.practicum.android.diploma.favorites.domain.model.FavoritesVacancy
 import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.RegionDto
