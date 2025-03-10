@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.data.impl
 
-import ru.practicum.android.diploma.filter.data.dto.CountriesResponse
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
@@ -8,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.filter.data.dto.CountriesRequest
+import ru.practicum.android.diploma.filter.data.dto.CountriesResponse
 import ru.practicum.android.diploma.filter.domain.api.CountriesRepository
 import ru.practicum.android.diploma.filter.domain.model.Country
 import ru.practicum.android.diploma.util.Constants

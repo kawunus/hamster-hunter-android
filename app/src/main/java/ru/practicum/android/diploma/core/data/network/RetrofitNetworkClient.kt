@@ -1,23 +1,23 @@
 package ru.practicum.android.diploma.core.data.network
 
-import ru.practicum.android.diploma.filter.data.dto.CountriesResponse
 import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.dto.Response
-import ru.practicum.android.diploma.filter.data.dto.AreaDto
-import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.data.dto.AllRegionsRequest
+import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.CountriesRequest
+import ru.practicum.android.diploma.filter.data.dto.CountriesResponse
 import ru.practicum.android.diploma.filter.data.dto.IndustriesRequest
 import ru.practicum.android.diploma.filter.data.dto.IndustriesResponse
+import ru.practicum.android.diploma.filter.data.dto.RegionDto
 import ru.practicum.android.diploma.filter.data.dto.RegionsRequest
 import ru.practicum.android.diploma.filter.data.dto.RegionsResponse
-import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacanciesSearchResponse
+import ru.practicum.android.diploma.search.data.mapper.toQueryMap
 import ru.practicum.android.diploma.util.Constants.HTTP_BAD_REQUEST
 import ru.practicum.android.diploma.util.Constants.HTTP_SERVER_ERROR
 import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
