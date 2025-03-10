@@ -216,14 +216,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             lifecycleScope.launch {
                 lastPagingData = data
                 adapter.clear() // Принудительно очищаем адаптер
-                adapter.submitData(lifecycle, data)
+                adapter.submitData(lifecycle, data) // Загружаем новые данные
                 adapter.notifyDataSetChanged()
                 with(binding) {
                     llErrorContainer.hide()
                     ivPlaceholderMain.hide()
                     progressBar.hide()
                     recycler.show()
-                }// Загружаем новые данные
+                }
             }
         }
     }
