@@ -256,8 +256,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         binding.notificationText.apply {
             if (count == null) {
                 hide()
-            } else {
-                if (viewModel.getSearchState().value is SearchResults || viewModel.getSearchState().value is NothingFound) {
+                return
+            }
+
+            when (viewModel.getSearchState().value) {
+                is SearchResults, is NothingFound -> {
                     text = if (count == 0) {
                         getString(R.string.no_such_jobs)
                     } else {
@@ -265,6 +268,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                     }
                     show()
                 }
+
+                else -> hide()
             }
         }
     }
