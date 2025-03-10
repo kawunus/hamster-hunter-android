@@ -89,8 +89,19 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
             lifecycleScope.launch {
                 lastPagingData = pagingData
                 adapter.clear() // Принудительно очищаем адаптер
-                adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
+                adapter.submitData(lifecycle, pagingData)
+                adapter.notifyDataSetChanged()
+                showRecycler()
             }
+        }
+    }
+
+    private fun showRecycler() {
+        with(binding) {
+            llErrorContainer.hide()
+            ivPlaceholderMain.hide()
+            progressBar.hide()
+            recycler.show()
         }
     }
 
@@ -224,13 +235,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     private fun showSearchResults(data: PagingData<Vacancy>) {
         lifecycleScope.launch {
             refreshData(data)
-            adapter.notifyDataSetChanged()
-            with(binding) {
-                llErrorContainer.hide()
-                ivPlaceholderMain.hide()
-                progressBar.hide()
-                recycler.show()
-            }
         }
     }
 
