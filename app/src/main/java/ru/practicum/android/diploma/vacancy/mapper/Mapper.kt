@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.vacancy.mapper
 
-import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
+import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdResponse
 import ru.practicum.android.diploma.vacancy.domain.model.VacancyDetails
 
 object Mapper {

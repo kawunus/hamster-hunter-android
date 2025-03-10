@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.vacancy.data.network.model
+package ru.practicum.android.diploma.vacancy.data.dto
 
 data class Address(
     val city: String?,

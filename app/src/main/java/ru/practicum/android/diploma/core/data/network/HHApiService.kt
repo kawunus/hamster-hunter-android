@@ -6,10 +6,10 @@ import retrofit2.http.Path
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.filter.data.dto.AreaDto
 import ru.practicum.android.diploma.filter.data.dto.IndustryCategoryDto
-import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
-import ru.practicum.android.diploma.search.data.network.model.DictionariesResponse
-import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchResponse
-import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
+import ru.practicum.android.diploma.filter.data.dto.RegionsResponse
+import ru.practicum.android.diploma.search.data.dto.DictionariesResponse
+import ru.practicum.android.diploma.search.data.dto.VacanciesSearchResponse
+import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdResponse
 
 interface HHApiService {
     @GET("vacancies")

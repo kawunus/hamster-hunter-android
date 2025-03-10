@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.core.data.network.NetworkClient
 import ru.practicum.android.diploma.util.Constants.HTTP_SUCCESS
 import ru.practicum.android.diploma.util.mapToErrorType
-import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdRequest
-import ru.practicum.android.diploma.vacancy.data.network.model.VacancyByIdResponse
+import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdRequest
+import ru.practicum.android.diploma.vacancy.data.dto.VacancyByIdResponse
 import ru.practicum.android.diploma.vacancy.domain.api.VacancyDetailsRepository
 import ru.practicum.android.diploma.vacancy.domain.model.ErrorType
 import ru.practicum.android.diploma.vacancy.domain.model.NetworkResult

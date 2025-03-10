@@ -102,11 +102,6 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
         return current
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getData()
-    }
-
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
 

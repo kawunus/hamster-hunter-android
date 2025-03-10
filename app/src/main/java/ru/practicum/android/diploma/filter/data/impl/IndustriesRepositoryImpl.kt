@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.RetrofitNetworkClient
-import ru.practicum.android.diploma.filter.data.network.model.IndustriesRequest
-import ru.practicum.android.diploma.filter.data.network.model.IndustriesResponse
+import ru.practicum.android.diploma.filter.data.dto.IndustriesRequest
+import ru.practicum.android.diploma.filter.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.filter.domain.api.IndustriesRepository
 import ru.practicum.android.diploma.filter.domain.model.Industry
 import ru.practicum.android.diploma.util.Constants

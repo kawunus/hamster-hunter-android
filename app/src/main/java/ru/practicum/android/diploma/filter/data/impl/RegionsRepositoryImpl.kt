@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import ru.practicum.android.diploma.core.data.network.NetworkClient
-import ru.practicum.android.diploma.filter.data.network.model.AllRegionsRequest
-import ru.practicum.android.diploma.filter.data.network.model.RegionsRequest
-import ru.practicum.android.diploma.filter.data.network.model.RegionsResponse
+import ru.practicum.android.diploma.filter.data.dto.AllRegionsRequest
+import ru.practicum.android.diploma.filter.data.dto.RegionsRequest
+import ru.practicum.android.diploma.filter.data.dto.RegionsResponse
 import ru.practicum.android.diploma.filter.domain.api.RegionsRepository
 import ru.practicum.android.diploma.filter.domain.model.Region
 import ru.practicum.android.diploma.util.Constants
