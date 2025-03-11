@@ -5,8 +5,11 @@ import android.content.res.Configuration
 import android.text.Editable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.core.ui.BaseFragment
@@ -77,7 +80,10 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
 
         viewModel.isAcceptable.observe(viewLifecycleOwner) { isAcceptable ->
             if (!isAcceptable) {
-                binding.btnSelect.show()
+                lifecycleScope.launch {
+                    delay(APPLY_BUTTON_DELAY)
+                    binding.btnSelect.show()
+                }
             } else {
                 binding.btnSelect.hide()
             }
@@ -150,5 +156,9 @@ class AreaFragment : BaseFragment<FragmentAreaBinding, AreaViewModel>(FragmentAr
             Configuration.UI_MODE_NIGHT_YES -> true
             else -> false
         }
+    }
+
+    private companion object {
+        const val APPLY_BUTTON_DELAY = 250L
     }
 }
