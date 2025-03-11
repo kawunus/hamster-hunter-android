@@ -81,7 +81,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.checkIfAnyFilterApplied()
-        hideNotificationIfNoNeedIt()
     }
 
     // настройка отслеживания изменений текста
@@ -252,21 +251,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         binding.notificationText.apply {
             if (count == null) {
                 hide()
-            } else {
-                text = if (count == 0) {
-                    getString(R.string.no_such_jobs)
-                } else {
-                    resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
-                }
-                show()
+                return
             }
-        }
-    }
 
-    private fun hideNotificationIfNoNeedIt() {
-        binding.notificationText.apply {
-            if (viewModel.getSearchState().value == Default) {
-                hide()
+            when (viewModel.getSearchState().value) {
+                is SearchResults, is NothingFound -> {
+                    text = if (count == 0) {
+                        getString(R.string.no_such_jobs)
+                    } else {
+                        resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
+                    }
+                    show()
+                }
+
+                else -> hide()
             }
         }
     }
