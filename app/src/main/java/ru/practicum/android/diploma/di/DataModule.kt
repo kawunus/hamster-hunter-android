@@ -18,8 +18,8 @@ import ru.practicum.android.diploma.di.DiConstants.HH_BASE_URL
 import ru.practicum.android.diploma.di.DiConstants.HH_DATABASE_NAME
 import ru.practicum.android.diploma.di.DiConstants.HH_SHARED_PREFS_NAME
 import ru.practicum.android.diploma.filter.data.sharedprefs.SharedPrefsStorage
+import ru.practicum.android.diploma.search.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.search.data.network.VacanciesPagingSource
-import ru.practicum.android.diploma.search.data.network.model.VacanciesSearchRequest
 
 val dataModule = module {
 // HHApiService
