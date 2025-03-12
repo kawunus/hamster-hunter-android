@@ -66,6 +66,7 @@ fun FavoritesVacancy.toVacancy(): Vacancy = Vacancy(
 fun Int.mapToErrorType(): ErrorType {
     return when (this) {
         HTTP_NOT_FOUND -> ErrorType.NOT_FOUND
+        -1 -> ErrorType.NO_NETWORK
         else -> ErrorType.UNKNOWN
     }
 }

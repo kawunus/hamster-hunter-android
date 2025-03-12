@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.vacancy.presentation.ui.fragment
 
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
+import androidx.core.text.toSpanned
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -71,34 +72,35 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         jobInfo.isVisible = !showErrorOrNot
     }
 
-    private fun changeErrorMessage(isServerError: Boolean) = with(binding) {
-        if (isServerError) {
-            errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
-            errorText.text = getString(R.string.error_server)
-        } else {
-            errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
-            errorText.text = getString(R.string.error_job_not_found_or_deleted)
-        }
-    }
-
     private fun showErrorServer() = with(binding) {
         renderError(true)
         progressBar.hide()
-        changeErrorMessage(true)
         buttonShare.hide()
         buttonLike.hide()
+        errorImg.setImageResource(R.drawable.placeholder_server_vacancy_error)
+        errorText.text = getString(R.string.error_server)
     }
 
     private fun showErrorNotFound() = with(binding) {
         renderError(true)
         progressBar.hide()
-        changeErrorMessage(false)
+        errorImg.setImageResource(R.drawable.placeholder_job_deleted_error)
+        errorText.text = getString(R.string.error_job_not_found_or_deleted)
     }
 
     private fun showLoading() = with(binding) {
         renderError(false)
         jobInfo.hide()
         progressBar.show()
+    }
+
+    private fun showNetworkError() = with(binding) {
+        renderError(true)
+        progressBar.hide()
+        buttonShare.hide()
+        buttonLike.hide()
+        errorImg.setImageResource(R.drawable.placeholder_network_error)
+        errorText.text = getString(R.string.error_no_internet)
     }
 
     private fun showVacancyDetails(vacancyDetailsState: VacancyDetailsState.VacancyInfo) = with(binding) {
@@ -168,6 +170,8 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
             is VacancyDetailsState.ServerError -> showErrorServer()
 
             is VacancyDetailsState.VacancyInfo -> showVacancyDetails(state)
+
+            is VacancyDetailsState.NetworkError -> showNetworkError()
         }
     }
 
@@ -177,9 +181,10 @@ class VacancyFragment : BaseFragment<FragmentVacancyBinding, VacancyViewModel>(
         }
 
         val formattedHtml = htmlString
-            ?.replace(Regex(getString(R.string.description_regex_li)), getString(R.string.description_li_replacement))
-            ?: Constants.EMPTY_STRING
+            ?.replace(Regex("<li>\\s*<p>|<li>"), "<li>\u00A0") ?: Constants.EMPTY_STRING
 
-        return HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
+        val finalHtml = HtmlCompat.fromHtml(formattedHtml, HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM)
+
+        return finalHtml.trim().toSpanned()
     }
 }

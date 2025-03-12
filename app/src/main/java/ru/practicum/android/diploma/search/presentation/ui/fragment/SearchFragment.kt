@@ -31,6 +31,7 @@ import ru.practicum.android.diploma.search.presentation.ui.adapter.VacancyPaging
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_BUNDLE_KEY
 import ru.practicum.android.diploma.util.Constants.FILTERS_CHANGED_REQUEST_KEY
+import ru.practicum.android.diploma.util.NetworkMonitor
 import ru.practicum.android.diploma.util.formatNumber
 import ru.practicum.android.diploma.util.hide
 import ru.practicum.android.diploma.util.show
@@ -80,17 +81,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
     override fun onResume() {
         super.onResume()
         viewModel.checkIfAnyFilterApplied()
-        hideNotificationIfNoNeedIt()
-    }
-
-    private fun refreshData(pagingData: PagingData<Vacancy>) {
-        if (pagingData != lastPagingData) { // проверяем, обновились ли данные
-            lifecycleScope.launch {
-                lastPagingData = pagingData
-                adapter.clear() // Принудительно очищаем адаптер
-                adapter.submitData(lifecycle, pagingData) // Загружаем новые данные
-            }
-        }
     }
 
     // настройка отслеживания изменений текста
@@ -173,6 +163,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
                 // ошибки при загрузке страниц
                 loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
                     showPagingError(loadState.append as? LoadState.Error ?: loadState.prepend as LoadState.Error)
+                    lifecycleScope.launch {
+                        waitForInternetAndRetry()
+                    }
                 }
             }
         }
@@ -197,7 +190,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
             is NothingFound -> {
                 ivErrorImage.setImageResource(R.drawable.placeholder_not_found)
-                tvErrorText.text = getString(R.string.error_nothing_found)
+                tvErrorText.text = getString(R.string.error_nothing_found_vacancy)
                 notificationText.show()
             }
 
@@ -218,19 +211,24 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showSearchResults(data: PagingData<Vacancy>) {
-        lifecycleScope.launch {
-            refreshData(data)
-            adapter.notifyDataSetChanged()
-            with(binding) {
-                llErrorContainer.hide()
-                ivPlaceholderMain.hide()
-                progressBar.hide()
-                recycler.show()
+        if (data != lastPagingData) { // проверяем, обновились ли данные
+            lifecycleScope.launch {
+                lastPagingData = data
+                adapter.clear() // Принудительно очищаем адаптер
+                adapter.submitData(lifecycle, data) // Загружаем новые данные
+                adapter.notifyDataSetChanged()
+                with(binding) {
+                    llErrorContainer.hide()
+                    ivPlaceholderMain.hide()
+                    recycler.show()
+                    progressBar.hide()
+                }
             }
         }
     }
 
     private fun showLoading() = with(binding) {
+        clearAdapter()
         llErrorContainer.hide()
         notificationText.hide()
         ivPlaceholderMain.hide()
@@ -253,21 +251,20 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         binding.notificationText.apply {
             if (count == null) {
                 hide()
-            } else {
-                text = if (count == 0) {
-                    getString(R.string.no_such_jobs)
-                } else {
-                    resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
-                }
-                show()
+                return
             }
-        }
-    }
 
-    private fun hideNotificationIfNoNeedIt() {
-        binding.notificationText.apply {
-            if (viewModel.getSearchState().value == Default) {
-                hide()
+            when (viewModel.getSearchState().value) {
+                is SearchResults, is NothingFound -> {
+                    text = if (count == 0) {
+                        getString(R.string.no_such_jobs)
+                    } else {
+                        resources.getQuantityString(R.plurals.found_jobs_plural, count, formatNumber(count))
+                    }
+                    show()
+                }
+
+                else -> hide()
             }
         }
     }
@@ -296,6 +293,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
         Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
+    private suspend fun waitForInternetAndRetry() {
+        while (!NetworkMonitor.isNetworkAvailable(requireContext())) {
+            delay(RETRY_LOADING_DELAY)
+        }
+        adapter.retry() // Повторяем загрузку, когда интернет появился
+    }
+
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -310,5 +314,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(
 
     private companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val RETRY_LOADING_DELAY = 2000L
     }
 }

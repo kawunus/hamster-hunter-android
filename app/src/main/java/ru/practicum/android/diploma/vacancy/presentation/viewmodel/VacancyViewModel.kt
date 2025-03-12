@@ -35,6 +35,8 @@ class VacancyViewModel(
         } else if (vacancyDetails != null) {
             favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyDetails.id)
             vacancyDetailsLiveData.postValue(VacancyDetailsState.NotFoundError)
+        } else if (errorMessage == ErrorType.NO_NETWORK) {
+            vacancyDetailsLiveData.postValue(VacancyDetailsState.NetworkError)
         } else {
             vacancyDetailsLiveData.postValue(VacancyDetailsState.ServerError)
         }
@@ -53,6 +55,9 @@ class VacancyViewModel(
                     favoriteVacancyInteractor.addVacancyToFavorites(pair.first!!.toFavoritesVacancy())
                     val vacancyFromBD = favoriteVacancyInteractor.getVacancyById(pair.first!!.id).toVacancyDetails()
                     processResult(vacancyFromBD, null)
+                    // Также если вакансия не найдена или нет доступа удаляем из БД
+                } else if (pair.second == ErrorType.NOT_FOUND) {
+                    favoriteVacancyInteractor.deleteVacancyFromFavorites(vacancyId)
                     // Иначе получаем из БД
                 } else {
                     val vacancy = favoriteVacancyInteractor.getVacancyById(vacancyId)
@@ -76,6 +81,7 @@ class VacancyViewModel(
             }
         }
     }
+
     private fun addVacancyToFavorites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             if (vacancyDetailsLiveData.value is VacancyDetailsState.VacancyInfo && vacancyId.isNotEmpty()) {
