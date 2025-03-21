@@ -3,8 +3,9 @@
 # Приложение для поиска вакансий на базе HeadHunter API 🔎
 
 ## Над приложением работали 👨🏻‍💻
-<a href="https://github.com/mandarin-kafe/Mandarin/graphs/contributors">  
-  <img src="https://contrib.rocks/image?repo=mandarin-kafe/Mandarin&max=6" />
+
+<a href="https://github.com/kawunus/hamster-hunter-android/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=kawunus/hamster-hunter-android&max=6" />
 </a>
 
 
